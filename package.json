@@ -1,0 +1,11 @@
+{
+  "name": "memory-app",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "npm --prefix \"memory-app-angular\" run start",
+    "build": "npm --prefix \"memory-app-angular\" run build",
+    "preview": "npm --prefix \"memory-app-angular\" run build && npm --prefix \"memory-app-angular\" run serve:ssr:memory-app-angular"
+  }
+}
