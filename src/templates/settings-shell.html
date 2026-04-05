@@ -1,0 +1,46 @@
+<main class="screen screen--settings">
+  <div class="settings-screen">
+    <div class="settings-screen__main">
+      <section class="settings-screen__controls" aria-label="Spieleinstellungen">
+        <nav class="settings-screen__nav" aria-label="Weiterführende Navigation">
+          <button type="button" class="settings-screen__back" data-action="go-home">← Zurück</button>
+        </nav>
+        <h1 class="settings-screen__heading">
+          <span class="settings-screen__title">Settings</span>
+          <span class="settings-screen__title-rule" aria-hidden="true">
+            <span class="settings-screen__title-diamond"></span>
+            <span class="settings-screen__title-line"></span>
+          </span>
+        </h1>
+        {{VISUAL_THEME_SECTION}}
+        {{PLAYER_COLOR_SECTION}}
+        {{BOARD_SIZE_SECTION}}
+      </section>
+      <aside class="settings-screen__aside" aria-label="Vorschau">
+        {{PREVIEW}}
+        <div class="settings-screen__action-bar">
+          <div
+            class="settings-screen__action-bar-inner"
+            role="group"
+            aria-label="Ausgewählte Einstellungen und Spiel starten"
+          >
+            <span class="settings-screen__action-chip settings-screen__action-chip--theme">{{FOOTER_THEME}}</span>
+            <span class="settings-screen__action-slash" aria-hidden="true"></span>
+            <span class="settings-screen__action-chip settings-screen__action-chip--player">{{FOOTER_PLAYER}}</span>
+            <span class="settings-screen__action-slash" aria-hidden="true"></span>
+            <span class="settings-screen__action-chip settings-screen__action-chip--board">{{FOOTER_BOARD}}</span>
+            <button type="button" class="settings-screen__start" data-action="start-game">
+              <span class="settings-screen__start-icon" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="2" y="2" width="20" height="20" rx="3" stroke="currentColor" stroke-width="1.5" />
+                  <path d="M9 7.5L16.5 12L9 16.5V7.5Z" fill="currentColor" />
+                </svg>
+              </span>
+              <span class="settings-screen__start-label">Start</span>
+            </button>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</main>

@@ -1,0 +1,136 @@
+/* Home (Figma) */
+
+.screen.screen--home {
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #252525;
+  padding: 0;
+
+  .screen-home__deco {
+    position: absolute;
+    width: 414.31px;
+    height: 301.31px;
+    left: -88px;
+    top: 546px;
+    pointer-events: none;
+  }
+
+  .screen-home__deco-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    pointer-events: auto;
+    cursor: default;
+
+    path {
+      fill: rgba(240, 234, 110, 0.05);
+      stroke: transparent;
+      stroke-width: 0;
+      vector-effect: non-scaling-stroke;
+      paint-order: stroke fill;
+      transition:
+        stroke 0.15s ease,
+        stroke-width 0.15s ease;
+    }
+
+    &:hover path {
+      stroke: #3b82f6;
+      stroke-width: 2px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .screen-home__deco-svg path {
+      transition: none;
+    }
+  }
+
+  .screen-home__content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    padding: 1.5rem;
+  }
+
+  .screen-home__headlines {
+    display: inline-block;
+    max-width: 100%;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .screen-home__kicker {
+    margin: 0;
+    font-family: Almarai, system-ui, sans-serif;
+    font-weight: 400;
+    font-size: clamp(1.5rem, 6vw, 3rem);
+    line-height: 1;
+    letter-spacing: 0;
+    color: #ffffff;
+  }
+
+  .screen-home__title {
+    margin: 0.75rem 0 0;
+    font-family: 'Red Rose', Georgia, serif;
+    font-weight: 700;
+    font-size: clamp(2.75rem, 12vw, 8.75rem);
+    line-height: 1;
+    letter-spacing: 0;
+    color: #ffffff;
+  }
+
+  .screen-home__play {
+    margin-top: 2.5rem;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: transform 0.15s ease;
+
+    &:focus-visible {
+      outline: 2px solid #f0ea6e;
+      outline-offset: 4px;
+    }
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  .screen-home__play-img {
+    display: block;
+    width: 250px;
+    height: 98px;
+    object-fit: contain;
+  }
+}
+
+@media (max-height: 880px) {
+  .screen.screen--home .screen-home__deco {
+    top: auto;
+    bottom: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .screen.screen--home .screen-home__deco {
+    width: min(414.31px, 120vw);
+    height: auto;
+    aspect-ratio: 414.31 / 301.31;
+    left: -88px;
+  }
+}

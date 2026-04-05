@@ -1,0 +1,124 @@
+@use '../abstracts/settings-tokens' as *;
+
+/* Settings: Board size (Figma Frame) */
+
+.screen--settings .panel--board-size {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0;
+  gap: 16px;
+  width: 244px;
+  max-width: 100%;
+  flex: none;
+  flex-grow: 0;
+  /* Figma „order: 1“ — wirkt nur, wenn das Elternelement ein Flex-Container ist */
+  order: 1;
+  margin: 0 0 24px;
+  font-family: Almarai, system-ui, sans-serif;
+}
+
+.screen--settings .panel__fieldset--board-size {
+  margin: 0;
+  padding: 0;
+  border: none;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  width: 244px;
+  max-width: 100%;
+  min-height: 144px;
+  flex: none;
+  flex-grow: 0;
+  box-sizing: border-box;
+}
+
+.settings-board-size__heading {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  max-width: 244px;
+  min-height: 32px;
+  font-family: Almarai, system-ui, sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 27px;
+  color: $settings-text;
+}
+
+.settings-board-size__cards-icon {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    display: block;
+  }
+}
+
+.settings-board-size__title-text {
+  flex: 1;
+  min-width: 0;
+  padding-bottom: 12px;
+  font-family: Almarai, system-ui, sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 27px;
+  color: inherit;
+}
+
+.screen--settings .panel__options--board-size {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 0 0 0 40px;
+  margin: 0;
+  width: 100%;
+  max-width: 244px;
+  box-sizing: border-box;
+  list-style: none;
+}
+
+.screen--settings .choice--board-size {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0;
+  gap: 10px;
+  width: 100%;
+  min-height: 24px;
+  border-radius: 0;
+  color: $settings-text;
+  cursor: pointer;
+
+  &:has(input:checked) {
+    background: transparent;
+  }
+}
+
+.choice__title--board {
+  display: inline-block;
+  font-family: Almarai, system-ui, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 22px;
+  color: $settings-text;
+}
+
+.screen--settings .choice--board-size:has(.choice__radio--theme:checked) .choice__title--board {
+  font-weight: 700;
+}
