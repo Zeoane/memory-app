@@ -30,6 +30,7 @@
   --card-front-bg: #f0fdfa;
   --card-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
   --card-radius: 12px;
+  --preview-bar-bg: rgba(77, 213, 188, 0.2);
 }
 
 .theme--gaming {
@@ -39,6 +40,7 @@
     0 0 0 1px rgba(56, 189, 248, 0.4),
     0 8px 28px rgba(0, 0, 0, 0.55);
   --card-radius: 10px;
+  --preview-bar-bg: rgba(56, 189, 248, 0.2);
 }
 
 .theme--da-projects {
@@ -46,6 +48,7 @@
   --card-front-bg: #f8fafc;
   --card-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
   --card-radius: 12px;
+  --preview-bar-bg: rgba(148, 163, 184, 0.2);
 }
 
 .theme--foods {
@@ -53,6 +56,7 @@
   --card-front-bg: #fff7ed;
   --card-shadow: 0 8px 22px rgba(194, 65, 12, 0.28);
   --card-radius: 14px;
+  --preview-bar-bg: rgba(245, 158, 11, 0.2);
 }
 
 .app-root {

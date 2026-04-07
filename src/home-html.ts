@@ -1,5 +1,5 @@
-import primaryButtonUrl from './assets/Primary button.svg?url';
-import stadiaSvg from './assets/stadia_controller.svg?raw';
+import primaryButtonUrl from './assets/img_homescreen/Primary button.svg?url';
+import stadiaSvg from './assets/img_homescreen/stadia_controller.svg?raw';
 import homeTpl from './templates/home.html?raw';
 import { fillTemplate } from './template-utils';
 

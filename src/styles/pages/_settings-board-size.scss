@@ -26,7 +26,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 16px;
+  gap: 12px;
   width: 244px;
   max-width: 100%;
   min-height: 144px;
@@ -39,7 +39,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 8px;
+  gap: 18px;
   padding: 0;
   margin: 0;
   width: 100%;
@@ -60,6 +60,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0 0 18px 0;
 
   svg {
     display: block;
@@ -69,7 +70,8 @@
 .settings-board-size__title-text {
   flex: 1;
   min-width: 0;
-  padding-bottom: 12px;
+  padding: 0;
+  margin-bottom: 18px;
   font-family: Almarai, system-ui, sans-serif;
   font-style: normal;
   font-weight: 700;
@@ -82,7 +84,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 16px;
+  gap: 12px;
   padding: 0 0 0 40px;
   margin: 0;
   width: 100%;

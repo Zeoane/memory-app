@@ -32,6 +32,7 @@
   align-items: start;
   max-width: 1200px;
   margin: 0 auto;
+  overflow: visible;
 }
 
 /* Eine Spalte: gleiche linke Kante wie Game themes (282px) — responsive, zentriert im Grid */
@@ -111,24 +112,19 @@
 .settings-screen__title-rule {
   display: flex;
   align-items: center;
+  justify-content: center;
   width: 100%;
   max-width: 100%;
-  gap: 0.35rem;
+  gap: 0;
 }
 
-.settings-screen__title-diamond {
-  width: 9px;
-  height: 9px;
-  flex-shrink: 0;
-  background: $settings-accent;
-  transform: rotate(45deg);
-}
-
-.settings-screen__title-line {
-  flex: 1;
-  height: 2px;
-  background: $settings-accent;
-  min-width: 0;
+.settings-screen__title-rule-img {
+  display: block;
+  width: 272px;
+  max-width: 100%;
+  height: auto;
+  flex: none;
+  transform: translateY(-0.92rem);
 }
 
 .screen--settings .panel--settings {
@@ -210,9 +206,19 @@
 .settings-screen__aside {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
   gap: 42px;
   min-width: 0;
+  overflow: visible;
+  position: relative;
+  /*
+   * Align: „Game themes“ (linke Spalte) und Preview-Chrome (rechte Spalte)
+   * starten auf gleicher Höhe. Links stehen über den Panels noch „Zurück“
+   * und die Settings-Headline, daher geben wir der rechten Spalte denselben Offset.
+   */
+  padding-top: calc(67px + 0.35rem + 1rem + 2rem);
+  /* Platz für absolut positionierte Action-Bar (Desktop) */
+  padding-bottom: 81px;
 }
 
 /* Theme-Vorschau (Figma: 460×412, Auto-Layout) */
@@ -231,13 +237,22 @@
   flex-grow: 0;
 }
 
+.settings-preview {
+  align-self: flex-end;
+}
+
 .settings-preview__chrome {
-  flex: 1;
+  box-sizing: border-box;
+  flex: none;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  padding: 17px 7px;
+  gap: 10px;
   width: 100%;
+  height: 412px;
   min-height: 0;
-  background: #3d3f3f;
+  background: linear-gradient(223.71deg, #303131 43.86%, #6d6d6d 122.2%);
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 12px 40px rgba(48, 49, 49, 0.12);
@@ -246,11 +261,143 @@
 .settings-preview__stage {
   flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 0;
   min-height: 0;
   background: transparent;
+}
+
+.settings-preview__topbar {
+  box-sizing: border-box;
+  width: 430px;
+  max-width: calc(100% - 14px);
+  height: 36px;
+  margin-top: 0;
+  padding: 8px 20px;
+  display: flex;
+  align-items: center;
+  background: var(--preview-bar-bg, rgba(77, 213, 188, 0.2));
+}
+
+.settings-preview__topbar-inner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.settings-preview__topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.settings-preview__topbar-left {
+  padding: 0 10px;
+  height: 18px;
+  border-radius: 4px;
+  background: rgba(240, 234, 110, 0.18);
+}
+
+.settings-preview__player-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.settings-preview__player-icon {
+  display: block;
+  height: 10px;
+  width: auto;
+}
+
+.settings-preview__player-count {
+  font-family: 'Red Rose', Georgia, serif;
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.settings-preview__player-chip--blue .settings-preview__player-count {
+  color: #2bb1ff;
+}
+
+.settings-preview__player-chip--orange .settings-preview__player-count {
+  color: #f58e39;
+}
+
+.settings-preview__current-player {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  gap: 6px;
+  min-width: 0;
+}
+
+.settings-preview__current-player-label {
+  font-family: 'Red Rose', Georgia, serif;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.92);
+  white-space: nowrap;
+}
+
+.settings-preview__current-player-icon {
+  display: block;
+  width: 10px;
+  height: 8px;
+}
+
+.settings-preview__exit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 20px;
+  padding: 0 10px;
+  border-radius: 2px;
+  border: 1px solid rgba(77, 213, 188, 0.95);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.settings-preview__exit-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 11px;
+  height: 9px;
+}
+
+.settings-preview__exit-icon svg {
+  width: 11px;
+  height: 9px;
+  display: block;
+}
+
+.settings-preview__exit-label {
+  font-family: 'Red Rose', Georgia, serif;
+  font-weight: 700;
+  font-size: 10px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.settings-preview__stage-art {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .settings-preview__stage-img {
@@ -260,6 +407,7 @@
   height: auto;
   max-height: 100%;
   object-fit: contain;
+  transform: translateY(-44px);
 }
 
 /* Action-Bar getrennt von Vorschau; Figma: Spalte gap 42px, Bar max ~546px, rechts bündig */
@@ -270,10 +418,17 @@
   align-items: flex-end;
   padding: 0;
   margin: 0;
-  width: 100%;
-  max-width: 546px;
+  gap: 42px;
+  /* Figma: 546.08px breit, rechts bündig zur Preview, links darf sie „rausragen“ */
+  width: 546.08px;
+  max-width: 546.08px;
   align-self: flex-end;
   flex: none;
+  height: 81px;
+  position: absolute;
+  right: 0;
+  /* Figma: top muss zum oberen Offset addiert werden */
+  top: calc(243px + 412px + 42px);
 }
 
 /* chosen settings + button: Zeile #F6F6F6, padding 14×20, gap 16 */
@@ -281,17 +436,36 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
-  align-content: center;
   gap: 16px;
-  width: 100%;
+  width: 546.08px;
   min-height: 81px;
   padding: 14px 20px;
   margin: 0;
   background: #f6f6f6;
   flex: none;
   order: 0;
+}
+
+/* Responsive: wenn der Block zu schmal ist, darf er umbrechen */
+@media (max-width: 520px) {
+  .settings-screen__action-bar-inner {
+    width: 100%;
+    max-width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .settings-screen__action-bar {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    position: static;
+  }
+
+  .settings-screen__aside {
+    padding-bottom: 0;
+  }
 }
 
 .settings-screen__action-chip {
@@ -325,19 +499,24 @@
   max-width: 91px;
 }
 
-/* Line 6 / Line 4: gelber Strich, rotiert (~Schrägstrich) */
+/* Trenner zwischen Chips: Figma Asset „Line 6.svg“ */
 .settings-screen__action-slash {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   flex: none;
   flex-grow: 0;
   order: 1;
-  width: 56px;
-  height: 0;
+  width: 27px;
+  height: 56px;
   margin: 0;
   padding: 0;
-  border: none;
-  border-top: 8px solid $settings-accent;
-  transform: rotate(109.33deg);
-  transform-origin: center;
+
+  svg {
+    display: block;
+    width: 27px;
+    height: 56px;
+  }
 }
 
 .settings-screen__action-chip--player ~ .settings-screen__action-slash {
@@ -351,21 +530,23 @@
   flex-wrap: nowrap;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 0;
   order: 5;
   flex: none;
   flex-grow: 0;
+  width: 126px;
+  height: 53px;
   min-width: 126px;
   min-height: 53px;
-  padding: 14px 20px;
+  padding: 0;
   margin: 0;
   border: none;
   border-radius: 4px;
-  background: $settings-accent;
+  background: transparent;
   color: $settings-text;
   font-family: inherit;
   cursor: pointer;
-  box-shadow: 0 2px 12px rgba(48, 49, 49, 0.08);
+  box-shadow: none;
   transition: transform 0.12s ease;
 
   &:hover:not(:disabled) {
@@ -378,24 +559,16 @@
   }
 }
 
-.settings-screen__start-icon {
-  display: flex;
-  flex: none;
-  order: 0;
-  width: 24px;
-  height: 24px;
-  color: $settings-text;
-}
+.settings-screen__start-asset {
+  display: block;
+  width: 126px;
+  height: 53px;
 
-.settings-screen__start-label {
-  flex: none;
-  order: 1;
-  font-family: 'Red Rose', Georgia, serif;
-  font-style: normal;
-  font-weight: 700;
-  font-size: 20px;
-  line-height: 25px;
-  color: $settings-text;
+  svg {
+    display: block;
+    width: 126px;
+    height: 53px;
+  }
 }
 
 @media (max-width: 900px) {
