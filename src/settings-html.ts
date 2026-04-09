@@ -12,17 +12,39 @@ import boardSizeSectionTpl from './templates/settings-board-size-section.html?ra
 import playerColorSectionTpl from './templates/settings-player-color-section.html?raw';
 import visualThemeSectionTpl from './templates/settings-visual-theme-section.html?raw';
 import { fillTemplate } from './template-utils';
-import settingsPreviewVisualUrl from './assets/img_settings_themes/Frame_codeing-vibes.svg?url';
+import previewTopbarCodeVibesUrl from './assets/img_settings_themes/Code-Vibes_Inner-Topbar.svg?url';
+import previewStageCodeVibesUrl from './assets/img_settings_themes/Code-Vibes-cv.svg?url';
+import previewTopbarGamingUrl from './assets/img_settings_themes/Gaming_Theme-topbar.svg?url';
+import previewStageGamingUrl from './assets/img_settings_themes/Gaming_Theme.svg?url';
+import previewTopbarDaProjectsUrl from './assets/img_settings_themes/DA_Projects-topbar.svg?url';
+import previewStageDaProjectsUrl from './assets/img_settings_themes/DA_Projects.svg?url';
+import previewTopbarFoodsUrl from './assets/img_settings_themes/Foods-theme-topbar.svg?url';
+import previewStageFoodsUrl from './assets/img_settings_themes/Foods-theme.svg?url';
 import settingsTitleRuleUrl from './assets/img_settings_themes/Line 3.svg?url';
 import settingsThemeRuleShortUrl from './assets/img_settings_themes/Line 3_short.svg?url';
-import playerBlueUrl from './assets/img_settings_themes/player_blue.svg?url';
-import playerOrangeUrl from './assets/img_settings_themes/player_orange.svg?url';
-import currentPlayerBlueUrl from './assets/img_settings_themes/current_player_blue.svg?url';
-import currentPlayerOrangeUrl from './assets/img_settings_themes/current_player_orange.svg?url';
-import exitGameSvg from './assets/img_settings_themes/exit_game.svg?raw';
+import type { SettingsDraft } from './app-state';
+import type { VisualThemeId } from './game-constants';
 
-function buildBoardSizeRadioItem(settings: GameSettings, opt: (typeof BOARD_SIZE_OPTIONS)[number]): string {
-  const checked = settings.boardSizeId === opt.id ? 'checked' : '';
+type SettingsPreviewAssets = {
+  readonly topbarUrl: string;
+  readonly stageUrl: string;
+};
+
+function getSettingsPreviewAssets(themeId: VisualThemeId): SettingsPreviewAssets {
+  switch (themeId) {
+    case 'code-vibes':
+      return { topbarUrl: previewTopbarCodeVibesUrl, stageUrl: previewStageCodeVibesUrl };
+    case 'gaming':
+      return { topbarUrl: previewTopbarGamingUrl, stageUrl: previewStageGamingUrl };
+    case 'da-projects':
+      return { topbarUrl: previewTopbarDaProjectsUrl, stageUrl: previewStageDaProjectsUrl };
+    case 'foods':
+      return { topbarUrl: previewTopbarFoodsUrl, stageUrl: previewStageFoodsUrl };
+  }
+}
+
+function buildBoardSizeRadioItem(draft: SettingsDraft, opt: (typeof BOARD_SIZE_OPTIONS)[number]): string {
+  const checked = draft.boardSizeId === opt.id ? 'checked' : '';
   return `
       <li>
         <label class="choice choice--board-size">
@@ -37,11 +59,15 @@ function buildBoardSizeRadioItem(settings: GameSettings, opt: (typeof BOARD_SIZE
  * Erzeugt die Radio-Liste für die Spielfeldgröße.
  */
 function buildBoardSizeRadiosHtml(settings: GameSettings): string {
-  return BOARD_SIZE_OPTIONS.map((opt) => buildBoardSizeRadioItem(settings, opt)).join('');
+  // backwards compat helper; not used anymore
+  return BOARD_SIZE_OPTIONS.map((opt) => buildBoardSizeRadioItem(
+    { boardSizeId: settings.boardSizeId, visualThemeId: settings.visualThemeId, firstPlayerColor: settings.firstPlayerColor },
+    opt,
+  )).join('');
 }
 
-function buildColorRadioItem(settings: GameSettings, c: PlayerColorChoice): string {
-  const checked = settings.firstPlayerColor === c ? 'checked' : '';
+function buildColorRadioItem(draft: SettingsDraft, c: PlayerColorChoice): string {
+  const checked = draft.firstPlayerColor === c ? 'checked' : '';
   const label = c === 'blue' ? 'Blue' : 'Orange';
   return `
       <li>
@@ -57,12 +83,20 @@ function buildColorRadioItem(settings: GameSettings, c: PlayerColorChoice): stri
  * Erzeugt die Radio-Liste für Spielerfarbe (Spieler 1).
  */
 function buildColorRadiosHtml(settings: GameSettings): string {
+  // backwards compat helper; not used anymore
   const choices: readonly PlayerColorChoice[] = ['blue', 'orange'];
-  return choices.map((c) => buildColorRadioItem(settings, c)).join('');
+  return choices
+    .map((c) =>
+      buildColorRadioItem(
+        { boardSizeId: settings.boardSizeId, visualThemeId: settings.visualThemeId, firstPlayerColor: settings.firstPlayerColor },
+        c,
+      ),
+    )
+    .join('');
 }
 
-function buildThemeRadioItem(settings: GameSettings, t: (typeof VISUAL_THEMES)[number]): string {
-  const checked = settings.visualThemeId === t.id ? 'checked' : '';
+function buildThemeRadioItem(draft: SettingsDraft, t: (typeof VISUAL_THEMES)[number]): string {
+  const checked = draft.visualThemeId === t.id ? 'checked' : '';
   return `
       <li>
         <label class="choice choice--game-theme">
@@ -82,84 +116,87 @@ function buildThemeRadioItem(settings: GameSettings, t: (typeof VISUAL_THEMES)[n
  * Erzeugt die Radio-Liste für visuelle Themes.
  */
 function buildThemeRadiosHtml(settings: GameSettings): string {
-  return VISUAL_THEMES.map((t) => buildThemeRadioItem(settings, t)).join('');
+  // backwards compat helper; not used anymore
+  return VISUAL_THEMES.map((t) =>
+    buildThemeRadioItem(
+      { boardSizeId: settings.boardSizeId, visualThemeId: settings.visualThemeId, firstPlayerColor: settings.firstPlayerColor },
+      t,
+    ),
+  ).join('');
 }
 
-function buildBoardSizeSectionHtml(settings: GameSettings): string {
-  return fillTemplate(boardSizeSectionTpl, { RADIOS: buildBoardSizeRadiosHtml(settings) });
-}
-
-function buildPlayerColorSectionHtml(settings: GameSettings): string {
-  return fillTemplate(playerColorSectionTpl, {
-    RADIOS: buildColorRadiosHtml(settings),
+function buildBoardSizeSectionHtml(draft: SettingsDraft): string {
+  return fillTemplate(boardSizeSectionTpl, {
+    RADIOS: BOARD_SIZE_OPTIONS.map((opt) => buildBoardSizeRadioItem(draft, opt)).join(''),
   });
 }
 
-function buildVisualThemeSectionHtml(settings: GameSettings): string {
-  return fillTemplate(visualThemeSectionTpl, { RADIOS: buildThemeRadiosHtml(settings) });
+function buildPlayerColorSectionHtml(draft: SettingsDraft): string {
+  const choices: readonly PlayerColorChoice[] = ['blue', 'orange'];
+  return fillTemplate(playerColorSectionTpl, {
+    RADIOS: choices.map((c) => buildColorRadioItem(draft, c)).join(''),
+  });
+}
+
+function buildVisualThemeSectionHtml(draft: SettingsDraft): string {
+  return fillTemplate(visualThemeSectionTpl, {
+    RADIOS: VISUAL_THEMES.map((t) => buildThemeRadioItem(draft, t)).join(''),
+  });
 }
 
 /**
  * Baut alle Sektionen für die Einstellungsseite.
  */
-function buildFooterThemeLabel(settings: GameSettings): string {
-  return getVisualTheme(settings.visualThemeId).label;
+function buildFooterThemeLabel(settings: GameSettings, draft: SettingsDraft): string {
+  if (draft.visualThemeId === null) {
+    return 'Game theme';
+  }
+  return getVisualTheme(draft.visualThemeId).label;
 }
 
-function buildFooterPlayerLabel(settings: GameSettings): string {
-  return settings.firstPlayerColor === 'blue' ? 'Blue' : 'Orange';
+function buildFooterPlayerLabel(_settings: GameSettings, draft: SettingsDraft): string {
+  if (draft.firstPlayerColor === null) {
+    return 'Player';
+  }
+  return draft.firstPlayerColor === 'blue' ? 'Blue' : 'Orange';
 }
 
-function buildFooterBoardLabel(settings: GameSettings): string {
-  return getBoardSizeOption(settings.boardSizeId).label;
+function buildFooterBoardLabel(_settings: GameSettings, draft: SettingsDraft): string {
+  if (draft.boardSizeId === null) {
+    return 'Board size';
+  }
+  return getBoardSizeOption(draft.boardSizeId).label;
 }
 
 /**
  * Statische Vorschau der Spieloberfläche (Figma-Export „Frame 628“).
  */
-function buildSettingsPreviewHtml(settings: GameSettings): string {
-  const currentPlayerIconUrl = settings.firstPlayerColor === 'blue' ? currentPlayerBlueUrl : currentPlayerOrangeUrl;
-
+function buildSettingsPreviewHtml(settings: GameSettings, draft: SettingsDraft): string {
+  const effectiveThemeId: VisualThemeId = (draft.visualThemeId ?? settings.visualThemeId) as VisualThemeId;
+  const preview = getSettingsPreviewAssets(effectiveThemeId);
+  const chromeClass = `settings-preview__chrome settings-preview__chrome--${effectiveThemeId}`;
   return `
     <div class="settings-preview">
-      <div class="settings-preview__chrome">
-        <div class="settings-preview__topbar" aria-hidden="true">
-          <div class="settings-preview__topbar-inner">
-            <div class="settings-preview__topbar-left">
-              <span class="settings-preview__player-chip settings-preview__player-chip--blue">
-                <img class="settings-preview__player-icon" src="${playerBlueUrl}" width="30" height="10" alt="" />
-                <span class="settings-preview__player-count">0</span>
-              </span>
-              <span class="settings-preview__player-chip settings-preview__player-chip--orange">
-                <img class="settings-preview__player-icon" src="${playerOrangeUrl}" width="30" height="10" alt="" />
-                <span class="settings-preview__player-count">0</span>
-              </span>
-            </div>
-
-            <div class="settings-preview__current-player">
-              <span class="settings-preview__current-player-label">Current player:</span>
-              <img
-                class="settings-preview__current-player-icon"
-                src="${currentPlayerIconUrl}"
-                width="10"
-                height="8"
-                alt=""
-              />
-            </div>
-
-            <button type="button" class="settings-preview__exit-btn">
-              <span class="settings-preview__exit-icon" aria-hidden="true">${exitGameSvg.trim()}</span>
-              <span class="settings-preview__exit-label">Exit game</span>
-            </button>
-          </div>
+      <div class="${chromeClass}">
+        <div class="settings-preview__topbar-art" aria-hidden="true">
+          <img
+            class="settings-preview__topbar-img"
+            src="${preview.topbarUrl}"
+            width="451"
+            height="57"
+            alt=""
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
         </div>
         <div class="settings-preview__stage">
           <div class="settings-preview__stage-art">
             <img
               class="settings-preview__stage-img"
-              src="${settingsPreviewVisualUrl}"
-              width="451"
-              height="387"
+              src="${preview.stageUrl}"
+              width="349"
+              height="249"
               alt="Vorschau: Spielleiste und Karten"
               decoding="async"
             />
@@ -170,15 +207,15 @@ function buildSettingsPreviewHtml(settings: GameSettings): string {
   `.trim();
 }
 
-function assembleSettingsSections(settings: GameSettings): Record<string, string> {
+function assembleSettingsSections(settings: GameSettings, draft: SettingsDraft): Record<string, string> {
   return {
-    BOARD_SIZE_SECTION: buildBoardSizeSectionHtml(settings),
-    PLAYER_COLOR_SECTION: buildPlayerColorSectionHtml(settings),
-    VISUAL_THEME_SECTION: buildVisualThemeSectionHtml(settings),
-    PREVIEW: buildSettingsPreviewHtml(settings),
-    FOOTER_THEME: escapeHtml(buildFooterThemeLabel(settings)),
-    FOOTER_PLAYER: escapeHtml(buildFooterPlayerLabel(settings)),
-    FOOTER_BOARD: escapeHtml(buildFooterBoardLabel(settings)),
+    BOARD_SIZE_SECTION: buildBoardSizeSectionHtml(draft),
+    PLAYER_COLOR_SECTION: buildPlayerColorSectionHtml(draft),
+    VISUAL_THEME_SECTION: buildVisualThemeSectionHtml(draft),
+    PREVIEW: buildSettingsPreviewHtml(settings, draft),
+    FOOTER_THEME: escapeHtml(buildFooterThemeLabel(settings, draft)),
+    FOOTER_PLAYER: escapeHtml(buildFooterPlayerLabel(settings, draft)),
+    FOOTER_BOARD: escapeHtml(buildFooterBoardLabel(settings, draft)),
     TITLE_RULE_IMG: settingsTitleRuleUrl,
   };
 }
@@ -186,7 +223,7 @@ function assembleSettingsSections(settings: GameSettings): Record<string, string
 /**
  * Vollständiges Markup der Einstellungsansicht.
  */
-export function buildSettingsHtml(settings: GameSettings): string {
-  const sections = assembleSettingsSections(settings);
+export function buildSettingsHtml(settings: GameSettings, draft: SettingsDraft): string {
+  const sections = assembleSettingsSections(settings, draft);
   return fillTemplate(settingsShellTpl, sections);
 }

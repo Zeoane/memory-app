@@ -1,4 +1,4 @@
-import { appState } from './app-state';
+import { appState, createEmptySettingsDraft, DEFAULT_GAME_SETTINGS } from './app-state';
 import { MemoryGame } from './memory-game';
 import { readSettingsFromForm } from './read-settings-form';
 
@@ -10,6 +10,7 @@ function bindDataAction(root: HTMLElement, action: string, handler: () => void):
 
 function goToSettingsView(render: () => void): void {
   appState.view = 'settings';
+  appState.settingsDraft = createEmptySettingsDraft();
   render();
 }
 
@@ -20,6 +21,12 @@ function goToHomeView(render: () => void): void {
 
 function startGameFromSettings(root: HTMLElement, render: () => void): void {
   readSettingsFromForm(root);
+  appState.settings = {
+    ...DEFAULT_GAME_SETTINGS,
+    ...(appState.settingsDraft.visualThemeId ? { visualThemeId: appState.settingsDraft.visualThemeId } : {}),
+    ...(appState.settingsDraft.firstPlayerColor ? { firstPlayerColor: appState.settingsDraft.firstPlayerColor } : {}),
+    ...(appState.settingsDraft.boardSizeId ? { boardSizeId: appState.settingsDraft.boardSizeId } : {}),
+  };
   appState.game = new MemoryGame(appState.settings);
   appState.showGameOver = false;
   appState.view = 'game';
@@ -30,6 +37,7 @@ function exitToSettings(render: () => void): void {
   appState.game = null;
   appState.showGameOver = false;
   appState.view = 'settings';
+  appState.settingsDraft = createEmptySettingsDraft();
   render();
 }
 

@@ -11,7 +11,7 @@ function resolveViewHtml(): string {
     return buildHomeHtml();
   }
   if (view === 'settings') {
-    return buildSettingsHtml(appState.settings);
+    return buildSettingsHtml(appState.settings, appState.settingsDraft);
   }
   return buildGameScreenHtml(appState.game, appState.settings, appState.showGameOver);
 }
