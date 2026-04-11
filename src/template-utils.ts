@@ -1,7 +1,7 @@
 /**
- * Ersetzt alle Platzhalter `{{KEY}}` in einem Template-String.
- * @param template Roh-HTML mit Platzhaltern
- * @param replacements Map von Platzhalter-Name zu Ersatztext
+ * Replaces all placeholders `{{KEY}}` in a template string.
+ * @param template Raw HTML with placeholders
+ * @param replacements Map of placeholder names to replacement texts
  */
 export function fillTemplate(template: string, replacements: Record<string, string>): string {
   let result = template;

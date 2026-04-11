@@ -56,7 +56,7 @@ function buildBoardSizeRadioItem(draft: SettingsDraft, opt: (typeof BOARD_SIZE_O
 }
 
 /**
- * Erzeugt die Radio-Liste für die Spielfeldgröße.
+ * Generates the radio playlist for the playing field size.
  */
 function buildBoardSizeRadiosHtml(settings: GameSettings): string {
   // backwards compat helper; not used anymore
@@ -80,10 +80,10 @@ function buildColorRadioItem(draft: SettingsDraft, c: PlayerColorChoice): string
 }
 
 /**
- * Erzeugt die Radio-Liste für Spielerfarbe (Spieler 1).
+ * Generates the radio list for player color (Player 1).
  */
 function buildColorRadiosHtml(settings: GameSettings): string {
-  // backwards compat helper; not used anymore
+
   const choices: readonly PlayerColorChoice[] = ['blue', 'orange'];
   return choices
     .map((c) =>
@@ -113,10 +113,10 @@ function buildThemeRadioItem(draft: SettingsDraft, t: (typeof VISUAL_THEMES)[num
 }
 
 /**
- * Erzeugt die Radio-Liste für visuelle Themes.
+ * Generates the radio list for visual themes.
  */
 function buildThemeRadiosHtml(settings: GameSettings): string {
-  // backwards compat helper; not used anymore
+
   return VISUAL_THEMES.map((t) =>
     buildThemeRadioItem(
       { boardSizeId: settings.boardSizeId, visualThemeId: settings.visualThemeId, firstPlayerColor: settings.firstPlayerColor },
@@ -145,7 +145,7 @@ function buildVisualThemeSectionHtml(draft: SettingsDraft): string {
 }
 
 /**
- * Baut alle Sektionen für die Einstellungsseite.
+ * Builds all sections for the settings page.
  */
 function buildFooterThemeLabel(settings: GameSettings, draft: SettingsDraft): string {
   if (draft.visualThemeId === null) {
@@ -169,7 +169,7 @@ function buildFooterBoardLabel(_settings: GameSettings, draft: SettingsDraft): s
 }
 
 /**
- * Statische Vorschau der Spieloberfläche (Figma-Export „Frame 628“).
+ * Static preview of the game interface.
  */
 function buildSettingsPreviewHtml(settings: GameSettings, draft: SettingsDraft): string {
   const effectiveThemeId: VisualThemeId = (draft.visualThemeId ?? settings.visualThemeId) as VisualThemeId;
@@ -221,7 +221,7 @@ function assembleSettingsSections(settings: GameSettings, draft: SettingsDraft):
 }
 
 /**
- * Vollständiges Markup der Einstellungsansicht.
+ * Full markup of the settings view.
  */
 export function buildSettingsHtml(settings: GameSettings, draft: SettingsDraft): string {
   const sections = assembleSettingsSections(settings, draft);

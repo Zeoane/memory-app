@@ -3,7 +3,7 @@ import { renderApp } from './app-render';
 const APP_MOUNT_ID = 'app';
 
 /**
- * Sucht das Mount-Element und startet die erste Render-Runde.
+ * Locate the mount element and start the first render cycle.
  */
 export function bootstrapApp(): void {
   const root = document.getElementById(APP_MOUNT_ID);

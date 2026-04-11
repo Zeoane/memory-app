@@ -1,7 +1,7 @@
 /**
- * Escaped HTML-Sonderzeichen für sichere Texteinbettung.
- * @param text Rohtext
- * @returns für innerHTML sicherer String
+ * Escaped HTML special characters for safe text embedding.
+ * @param text Raw text 
+ * @returns for innerHTML safe string
  */
 export function escapeHtml(text: string): string {
   const wrapper = document.createElement('div');

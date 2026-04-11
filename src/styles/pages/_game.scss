@@ -2,35 +2,159 @@
 
 .screen--game {
   display: block;
-  padding: 1rem;
+  padding: clamp(1rem, 2.5vh, 1.75rem) 1rem;
   align-items: stretch;
 }
 
-.game-bar {
+/* Gemeinsame Breite: 6×6-Raster = 750px → Bar und Spielfeld dieselbe Spaltenbreite wie in Figma */
+.game-playfield {
+  /* 6×6-Gesamt: 6×120px + 5×6px = 750px × 750px (Kachel 120×120, Lücken 6px) */
+  --grid-gap: 6px;
+  --memory-cell-size: 120px;
+  /* Abstand Game-Bar → Karten (Figma: deutlich mehr Luft als eine Zeile; hier weich skaliert) */
+  --game-bar-to-grid: clamp(2.75rem, 7vh, 5.5rem);
+  width: min(100%, 750px);
+  margin-inline: auto;
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem 1rem;
-  max-width: 960px;
-  margin: 0 auto 1rem;
-  padding: 0.75rem 1rem;
-  background: var(--panel-bg);
-  border: 1px solid var(--panel-border);
-  border-radius: 14px;
+  flex-direction: column;
+  align-items: stretch;
+}
 
+/* Frame 619 — volle Breite über dem Raster (750px), gleiche Außenkanten wie 6×6-Grid */
+.game-bar {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: clamp(0.5rem, 3vw, 2.5rem);
+  align-self: stretch;
+
+  /* Code vibes: 170px zwischen Scores, „Current player“ und Exit (Figma) */
+  &:has(.game-bar__scores-panel--code-vibes) {
+    gap: 170px;
+    justify-content: flex-start;
+
+    .game-bar__nav {
+      margin-left: auto;
+    }
+  }
+  width: 100%;
+  max-width: none;
+  height: 62px;
+  margin: 0 0 var(--game-bar-to-grid);
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+
+  /* Frame 565 */
+  &__scores-panel {
+    box-sizing: border-box;
+    flex: 0 0 292px;
+    width: 292px;
+    height: 62px;
+    padding: 17px 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 20px;
+    background: var(--game-bar-scores-bg);
+  }
+
+  /* Frame 564 — eine Zeile mit beiden Spieler-Paaren */
   &__scores {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 1rem;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 8px;
+    width: 225px;
+    height: 32px;
     margin: 0;
+    padding: 0;
   }
 
   &__pair {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: row;
+    flex-wrap: nowrap;
     align-items: center;
-    gap: 0.35rem 0.5rem;
+    gap: 8px;
+  }
+
+  /* Code vibes: Label-SVG + „Blue“/„Orange“ (Red Rose 24/700) + farbige Punktzahl */
+  &__scores-panel--code-vibes {
+    flex: 0 1 auto;
+    width: auto;
+    min-width: 292px;
+    max-width: 100%;
+  }
+
+  &__scores--code-vibes {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    min-height: 32px;
+    gap: 20px;
+  }
+
+  &__pair--code-vibes {
+    flex-shrink: 0;
+    gap: 8px;
+  }
+
+  /* label-blue.svg / label-orange.svg — fest 24×20 px (wie im Asset) */
+  &__label-icon {
+    display: block;
+    flex: 0 0 auto;
+    flex-shrink: 0;
+    width: 24px;
+    height: 20px;
+    object-fit: contain;
+  }
+
+  /* „Current player“-Icon: extra eingrenzen (sonst oft ~29×24 durch Flex/intrinsic size) */
+  &__turn-current-label {
+    display: block;
+    flex: 0 0 24px;
+    flex-shrink: 0;
+    flex-grow: 0;
+    align-self: center;
+    box-sizing: border-box;
+    width: 24px;
+    min-width: 24px;
+    max-width: 24px;
+    height: 20px;
+    min-height: 20px;
+    max-height: 20px;
+    aspect-ratio: 24 / 20;
+    object-fit: contain;
+    overflow: hidden;
+  }
+
+  &__player-name {
+    font-family: 'Red Rose', Georgia, serif;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1;
+    color: #f8fafc;
+  }
+
+  &__score-num {
+    font-family: 'Red Rose', Georgia, serif;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1;
+
+    &--blue {
+      color: #2bb1ff;
+    }
+
+    &--orange {
+      color: #f58e39;
+    }
   }
 
   &__score-label {
@@ -44,17 +168,10 @@
     margin: 0;
   }
 
-  &__nav-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
   &__turn {
     flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
     text-align: center;
     font-size: 0.95rem;
     color: var(--text-muted);
@@ -62,22 +179,88 @@
     strong {
       font-weight: 700;
     }
+
+    &--code-vibes {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-align: center;
+    }
+  }
+
+  &__turn-prefix {
+    font-family: 'Red Rose', Georgia, serif;
+    font-size: 26px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 1;
+    color: #f8fafc;
+    white-space: nowrap;
+  }
+
+  &__nav {
+    flex: 0 0 auto;
+    min-width: 207px;
+    width: auto;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+  }
+}
+
+@media (max-width: 720px) {
+  .game-bar {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 62px;
+    justify-content: center;
+    gap: clamp(0.75rem, 3vw, 1.5rem);
+  }
+
+  .game-bar:has(.game-bar__scores-panel--code-vibes) {
+    gap: clamp(0.75rem, 3vw, 1.5rem);
+
+    .game-bar__nav {
+      margin-left: 0;
+    }
+  }
+
+  .game-bar__scores-panel {
+    flex-basis: 100%;
+    width: 100%;
+    max-width: 292px;
+  }
+
+  .game-bar__nav {
+    flex-basis: 100%;
+    width: 100%;
+    max-width: min(100%, 280px);
+    justify-content: center;
   }
 }
 
 .memory-grid {
   display: grid;
-  grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr));
-  grid-template-rows: repeat(var(--rows, 4), minmax(0, 1fr));
-  gap: clamp(0.35rem, 1.5vw, 0.75rem);
-  width: 100%;
-  max-width: min(960px, 100%);
-  margin: 0 auto;
-  height: min(72vh, min(90vw, 720px));
+  grid-template-columns: repeat(var(--cols, 4), var(--memory-cell-size));
+  grid-auto-rows: var(--memory-cell-size);
+  row-gap: var(--grid-gap);
+  column-gap: var(--grid-gap);
+  width: fit-content;
+  max-width: 100%;
+  min-width: 0;
+  align-self: center;
+  margin-inline: auto;
+  margin-top: 0;
+  box-sizing: content-box;
 }
 
 .memory-card {
   position: relative;
+  aspect-ratio: 1 / 1;
+  min-height: 0;
   padding: 0;
   border: none;
   background: transparent;
@@ -88,10 +271,10 @@
   &:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
-    border-radius: var(--card-radius);
+    border-radius: var(--card-radius, 0);
   }
 
-  &:disabled {
+  &[aria-disabled='true'] {
     cursor: default;
   }
 
@@ -107,7 +290,7 @@
     height: 100%;
     transform-style: preserve-3d;
     transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
-    border-radius: var(--card-radius);
+    border-radius: var(--card-radius, 0);
     box-shadow: var(--card-shadow);
   }
 
@@ -122,7 +305,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: var(--card-radius);
+    border-radius: var(--card-radius, 0);
     backface-visibility: hidden;
     font-size: clamp(0.85rem, 3.5vw, 2rem);
     line-height: 1;
@@ -132,13 +315,32 @@
       color: rgba(255, 255, 255, 0.85);
       font-weight: 800;
       font-size: clamp(1rem, 4vw, 2.2rem);
+
+      &--illustrated {
+        padding: 0;
+        font-size: 0;
+        line-height: 0;
+        /* Volle Fläche ohne seitliche „Briefkasten“-Streifen (SVG füllt die Kachel) */
+        overflow: hidden;
+        background: var(--card-back);
+      }
     }
 
     &--front {
       background: var(--card-front-bg);
+      color: var(--card-front-fg, #0f172a);
       transform: rotateY(180deg);
       border: 1px solid rgba(255, 255, 255, 0.15);
     }
+  }
+
+  &__back-art {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: var(--card-radius, 0);
   }
 }
 

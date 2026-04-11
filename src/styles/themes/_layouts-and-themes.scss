@@ -26,37 +26,58 @@
 /* Darstellungs-Themes (Karten / Flächen) — IDs entsprechen Game themes in den Settings */
 
 .theme--code-vibes {
+  --page-bg: #252525;
   --card-back: linear-gradient(145deg, #14b8a6, #0d9488);
   --card-front-bg: #f0fdfa;
+  --card-front-fg: #0f172a;
   --card-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-  --card-radius: 12px;
+  --card-radius: 0;
   --preview-bar-bg: rgba(77, 213, 188, 0.2);
+  --game-bar-scores-bg: rgba(134, 233, 214, 0.2);
+  --game-bar-exit-bg: rgba(134, 233, 214, 0.2);
+  --game-bar-exit-bg-hover: rgba(134, 233, 214, 0.32);
+  --game-bar-exit-border: #4dd5bc;
 }
 
 .theme--gaming {
   --card-back: linear-gradient(145deg, #0f172a, #020617);
   --card-front-bg: #0c1220;
+  --card-front-fg: #e2e8f0;
   --card-shadow:
     0 0 0 1px rgba(56, 189, 248, 0.4),
     0 8px 28px rgba(0, 0, 0, 0.55);
-  --card-radius: 10px;
+  --card-radius: 0;
   --preview-bar-bg: rgba(56, 189, 248, 0.2);
+  --game-bar-scores-bg: rgba(56, 189, 248, 0.15);
+  --game-bar-exit-bg: rgba(56, 189, 248, 0.15);
+  --game-bar-exit-bg-hover: rgba(56, 189, 248, 0.28);
+  --game-bar-exit-border: #38bdf8;
 }
 
 .theme--da-projects {
   --card-back: linear-gradient(145deg, #334155, #1e293b);
   --card-front-bg: #f8fafc;
+  --card-front-fg: #0f172a;
   --card-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-  --card-radius: 12px;
+  --card-radius: 0;
   --preview-bar-bg: rgba(148, 163, 184, 0.2);
+  --game-bar-scores-bg: rgba(148, 163, 184, 0.18);
+  --game-bar-exit-bg: rgba(148, 163, 184, 0.18);
+  --game-bar-exit-bg-hover: rgba(148, 163, 184, 0.3);
+  --game-bar-exit-border: #94a3b8;
 }
 
 .theme--foods {
   --card-back: linear-gradient(145deg, #ea580c, #c2410c);
   --card-front-bg: #fff7ed;
+  --card-front-fg: #431407;
   --card-shadow: 0 8px 22px rgba(194, 65, 12, 0.28);
-  --card-radius: 14px;
+  --card-radius: 0;
   --preview-bar-bg: rgba(245, 158, 11, 0.2);
+  --game-bar-scores-bg: rgba(251, 146, 60, 0.15);
+  --game-bar-exit-bg: rgba(251, 146, 60, 0.15);
+  --game-bar-exit-bg-hover: rgba(251, 146, 60, 0.28);
+  --game-bar-exit-border: #fb923c;
 }
 
 .app-root {

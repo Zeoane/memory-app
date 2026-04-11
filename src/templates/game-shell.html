@@ -1,12 +1,9 @@
 <main class="screen screen--game">
-  <header class="game-bar">{{GAME_BAR}}</header>
-  <section
-    class="memory-grid"
-    style="{{GRID_STYLE}}"
-    role="grid"
-    aria-label="Memory-Spielfeld"
-  >
-    {{CARDS}}
-  </section>
+  <div class="game-playfield" style="{{GRID_STYLE}}">
+    <header class="game-bar">{{GAME_BAR}}</header>
+    <section class="memory-grid" role="grid" aria-label="Memory-Spielfeld">
+      {{CARDS}}
+    </section>
+  </div>
   {{GAME_OVER}}
 </main>

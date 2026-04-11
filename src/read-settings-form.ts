@@ -9,7 +9,8 @@ function readCheckedRadioValue(root: HTMLElement, name: string): string | null {
 function applyBoardSizeFromForm(root: HTMLElement): void {
   const value = readCheckedRadioValue(root, 'boardSize');
   if (value !== null) {
-    appState.settingsDraft.boardSizeId = value as GameSettings['boardSizeId'];
+    const trimmed = value.trim();
+    appState.settingsDraft.boardSizeId = trimmed as GameSettings['boardSizeId'];
   }
 }
 
@@ -28,7 +29,7 @@ function applyVisualThemeFromForm(root: HTMLElement): void {
 }
 
 /**
- * Liest die gewählten Radio-Werte aus dem Einstellungsformular in den App-State.
+ * Reads the selected radio values ​​from the settings form into the app state.
  */
 export function readSettingsFromForm(root: HTMLElement): void {
   applyBoardSizeFromForm(root);

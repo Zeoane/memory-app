@@ -1,11 +1,6 @@
-import {
-  GameSettings,
-  getBoardSizeOption,
-  getLayoutOption,
-  pairCountForBoard,
-} from './game-constants';
+import { GameSettings, getBoardSizeOption, getSymbolPoolForGame, pairCountForBoard } from './game-constants';
 
-/** Verzögerung in ms, bevor nicht passende Karten wieder umgedreht werden. */
+/** Delay in ms before unsuitable cards are turned over again. */
 export const FLIP_RESOLUTION_DELAY_MS = 700;
 
 export type PlayerIndex = 0 | 1;
@@ -29,9 +24,9 @@ export interface MemoryGameSnapshot {
 }
 
 /**
- * Mischt ein Array (Fisher–Yates).
- * @param items Eingabeelemente
- * @returns Neues, gemischtes Array
+ * Shuffles an array (Fisher–Yates).
+ * @param items Input elements
+ * @returns New, shuffled array
  */
 function shuffleArray<T>(items: readonly T[]): T[] {
   const arr = [...items];
@@ -43,9 +38,9 @@ function shuffleArray<T>(items: readonly T[]): T[] {
 }
 
 /**
- * Erzeugt Memory-Kartenpaare aus Symbolen.
- * @param symbols Symbole pro Paar
- * @param pairsNeeded Anzahl Paare
+ * Generates memory card pairs from symbols.
+ * @param symbols Symbols per pair
+ * @param pairsNeeded Number of pairs needed
  */
 function buildPairCards(symbols: readonly string[], pairsNeeded: number): MemoryCardModel[] {
   const deck: MemoryCardModel[] = [];
@@ -59,14 +54,13 @@ function buildPairCards(symbols: readonly string[], pairsNeeded: number): Memory
 }
 
 /**
- * Baut und mischt das Deck aus den Spieleinstellungen.
- * @param settings aktuelle Einstellungen
+ * Builds and shuffles the deck from the game settings.
+ * @param settings current settings
  */
 function buildShuffledDeck(settings: GameSettings): MemoryCardModel[] {
   const board = getBoardSizeOption(settings.boardSizeId);
-  const layout = getLayoutOption(settings.layoutId);
   const pairsNeeded = pairCountForBoard(board);
-  const symbols = layout.pairs.slice(0, pairsNeeded);
+  const symbols = getSymbolPoolForGame(settings).slice(0, pairsNeeded);
   if (symbols.length < pairsNeeded) {
     throw new Error('Nicht genügend Symbole für die gewählte Spielfeldgröße.');
   }
@@ -101,7 +95,7 @@ export class MemoryGame {
     this.currentPlayer = 0;
   }
 
-  /** Liefert den aktuellen Spielzustand für die UI. */
+  /** Provides the current game state for the UI. */
   getSnapshot(): MemoryGameSnapshot {
     return this.createSnapshot();
   }
@@ -120,7 +114,7 @@ export class MemoryGame {
     };
   }
 
-  /** True, wenn die Vorderseite der Karte sichtbar sein soll. */
+  /** True if the front of the card should be visible. */
   isFaceVisible(index: number): boolean {
     return this.revealed[index] || this.matched[index];
   }
@@ -129,7 +123,7 @@ export class MemoryGame {
     return this.firstSelection !== null && this.secondSelection !== null;
   }
 
-  /** True, wenn die Karte für einen Klick gewählt werden darf. */
+  /** True if the card can be selected for a click. */
   canSelect(index: number): boolean {
     const isLocked = this.busy || this.complete || this.matched[index];
     if (isLocked) {
@@ -224,10 +218,10 @@ export class MemoryGame {
   }
 
   /**
-   * Verarbeitet Kartenwahl; ruft Callbacks nach Zustandsänderungen auf.
-   * @param index Index der angeklickten Karte
-   * @param onUpdate nach jedem sichtbaren Update
-   * @param onComplete wenn die Runde beendet ist
+   * Processes card selection; calls back after state changes.
+   * @param index Index of the clicked card
+   * @param onUpdate after each visible update
+   * @param onComplete when the round is complete
    */
   selectCard(index: number, onUpdate: () => void, onComplete: () => void): void {
     if (!this.canSelect(index)) {
@@ -244,8 +238,8 @@ export class MemoryGame {
 }
 
 /**
- * Ermittelt den Gewinner aus den Punktzahlen.
- * @param scores [Spieler1, Spieler2]
+ * Determines the winner based on the scores.
+ * @param scores [Player1, Player2]
  */
 export function getWinnerLabel(scores: readonly [number, number]): 'player1' | 'player2' | 'draw' {
   const [s1, s2] = scores;

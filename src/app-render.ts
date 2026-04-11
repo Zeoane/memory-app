@@ -17,7 +17,7 @@ function resolveViewHtml(): string {
 }
 
 /**
- * Rendert die aktuelle Ansicht und bindet Events an das Wurzelelement.
+ * Renders the current view and binds events to the root element.
  */
 export function renderApp(root: HTMLElement): void {
   applyThemeClasses(root, appState.settings, appState.view);

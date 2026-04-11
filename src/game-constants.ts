@@ -1,8 +1,8 @@
 /**
- * Zentrale Konfiguration: Spielfeldgrößen, Themes, Layouts und Spielerfarben.
+ * Central configuration: playing field sizes, themes, layouts and player colors.
  */
 
-export type BoardSizeId = '4x4' | '4x6' | '6x6';
+export type BoardSizeId = '4x4' | '6x4' | '6x6';
 
 export interface BoardSizeOption {
   readonly id: BoardSizeId;
@@ -13,11 +13,11 @@ export interface BoardSizeOption {
 
 export const BOARD_SIZE_OPTIONS: readonly BoardSizeOption[] = [
   { id: '4x4', cols: 4, rows: 4, label: '16 cards' },
-  { id: '4x6', cols: 4, rows: 6, label: '24 cards' },
+  { id: '6x4', cols: 6, rows: 4, label: '24 cards' },
   { id: '6x6', cols: 6, rows: 6, label: '36 cards' },
 ] as const;
 
-/** Optische Darstellung des Spielfeldes (Game themes in den Einstellungen). */
+/** Visual representation of the playing field (Game themes in the settings). */
 export type VisualThemeId = 'code-vibes' | 'gaming' | 'da-projects' | 'foods';
 
 export interface VisualTheme {
@@ -34,7 +34,7 @@ export const VISUAL_THEMES: readonly VisualTheme[] = [
 ] as const;
 
 /**
- * Layouts: verändern Farbschema und Themengebiete der Memory-Bilder (User Story 3).
+ * Layouts: change the color scheme and subject areas of the memory images (User Story 3).
  */
 export type LayoutId = 'nature' | 'space';
 
@@ -116,6 +116,46 @@ const SPACE_PAIRS = [
   '🧑‍🚀',
 ] as const;
 
+/** Symbole für das Darstellungs-Theme „Code vibes“ (Dev-Zeichen, Tech-Emoji). */
+const CODE_VIBES_PAIRS = [
+  '<>',
+  '</>',
+  '&&',
+  '||',
+  '=>',
+  '::',
+  '===',
+  '!==',
+  '..',
+  '??',
+  '?.',
+  '...',
+  '//',
+  '#',
+  '@',
+  '%',
+  '&',
+  '$',
+  '_',
+  '^',
+  '~',
+  '++',
+  '--',
+  '!=',
+  ':=',
+  '->',
+  '|>',
+  '⌘',
+  '💻',
+  '⌨️',
+  '🐙',
+  '🐳',
+  '☕',
+  '🐍',
+  '⚛️',
+  '☁️',
+] as const;
+
 export const LAYOUT_OPTIONS: readonly LayoutOption[] = [
   {
     id: 'nature',
@@ -167,6 +207,26 @@ export function getLayoutOption(id: LayoutId): LayoutOption {
     throw new Error(`Unbekanntes Layout: ${id}`);
   }
   return found;
+}
+
+/**
+ * Symbol-Pool für das Memory-Deck: bei Code vibes / Gaming feste Motive,
+ * sonst nach Layout (Natur vs. Weltraum).
+ */
+export function getSymbolPoolForGame(settings: GameSettings): readonly string[] {
+  switch (settings.visualThemeId) {
+    case 'code-vibes':
+      return CODE_VIBES_PAIRS;
+    case 'gaming':
+      return SPACE_PAIRS;
+    case 'da-projects':
+    case 'foods':
+      return getLayoutOption(settings.layoutId).pairs;
+    default: {
+      const _exhaustive: never = settings.visualThemeId;
+      return _exhaustive;
+    }
+  }
 }
 
 export function getVisualTheme(id: VisualThemeId): VisualTheme {

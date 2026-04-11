@@ -5,10 +5,10 @@ import type { ViewId } from './app-state';
 const APP_ROOT_CLASS = 'app-root';
 
 /**
- * Setzt Theme- und Layout-Klassen am App-Container.
- * @param root Wurzelelement der SPA
- * @param settings aktuelle Spiel-Einstellungen
- * @param view aktuelle Ansicht (Einstellungen: helle Oberfläche ohne Layout-Verlauf)
+ * Sets theme and layout classes on the app container.
+ * @param root 
+ * @param settings 
+ * @param view 
  */
 export function applyThemeClasses(root: HTMLElement, settings: GameSettings, view: ViewId): void {
   root.className = '';

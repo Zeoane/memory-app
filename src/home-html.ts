@@ -4,7 +4,7 @@ import homeTpl from './templates/home.html?raw';
 import { fillTemplate } from './template-utils';
 
 /**
- * Erzeugt das Markup der Startseite (Figma Home).
+ * Generates the markup for the homepage
  */
 export function buildHomeHtml(): string {
   return fillTemplate(homeTpl, {
