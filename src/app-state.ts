@@ -15,6 +15,12 @@ export interface AppState {
   settingsDraft: SettingsDraft;
   game: MemoryGame | null;
   showGameOver: boolean;
+  /** Nach Game Over (Code Vibes): Gewinner-Overlay Orange nach 3 s — ersetzt die Game-Over-Ansicht. */
+  showCodeVibesWinnerOrange: boolean;
+  /** Nach Game Over (Code Vibes): Gewinner-Overlay Blue nach 3 s. */
+  showCodeVibesWinnerBlue: boolean;
+  /** Bestätigungs-Popup vor dem Verlassen der Spielansicht (Exit-Button in der Game-Bar). */
+  showExitConfirm: boolean;
 }
 
 export const DEFAULT_GAME_SETTINGS: GameSettings = {
@@ -38,4 +44,7 @@ export const appState: AppState = {
   settingsDraft: createEmptySettingsDraft(),
   game: null,
   showGameOver: false,
+  showCodeVibesWinnerOrange: false,
+  showCodeVibesWinnerBlue: false,
+  showExitConfirm: false,
 };

@@ -1,4 +1,5 @@
 import { appState, createEmptySettingsDraft, DEFAULT_GAME_SETTINGS } from './app-state';
+import { clearCodeVibesWinnerTimer, scheduleCodeVibesWinnerIfNeeded } from './code-vibes-winner-scheduler';
 import { MemoryGame } from './memory-game';
 import { readSettingsFromForm } from './read-settings-form';
 
@@ -29,6 +30,10 @@ function startGameFromSettings(root: HTMLElement, render: () => void): void {
   };
   appState.game = new MemoryGame(appState.settings);
   appState.showGameOver = false;
+  appState.showCodeVibesWinnerOrange = false;
+  appState.showCodeVibesWinnerBlue = false;
+  clearCodeVibesWinnerTimer();
+  appState.showExitConfirm = false;
   appState.view = 'game';
   render();
 }
@@ -36,6 +41,10 @@ function startGameFromSettings(root: HTMLElement, render: () => void): void {
 function exitToSettings(render: () => void): void {
   appState.game = null;
   appState.showGameOver = false;
+  appState.showCodeVibesWinnerOrange = false;
+  appState.showCodeVibesWinnerBlue = false;
+  clearCodeVibesWinnerTimer();
+  appState.showExitConfirm = false;
   appState.view = 'settings';
   appState.settingsDraft = createEmptySettingsDraft();
   render();
@@ -44,6 +53,20 @@ function exitToSettings(render: () => void): void {
 function startNewRound(render: () => void): void {
   appState.game = new MemoryGame(appState.settings);
   appState.showGameOver = false;
+  appState.showCodeVibesWinnerOrange = false;
+  appState.showCodeVibesWinnerBlue = false;
+  clearCodeVibesWinnerTimer();
+  appState.showExitConfirm = false;
+  render();
+}
+
+function openExitConfirm(render: () => void): void {
+  appState.showExitConfirm = true;
+  render();
+}
+
+function dismissExitConfirm(render: () => void): void {
+  appState.showExitConfirm = false;
   render();
 }
 
@@ -59,6 +82,9 @@ function onMemoryCardClick(event: Event, render: () => void): void {
   }
   const onRoundComplete = (): void => {
     appState.showGameOver = true;
+    appState.showCodeVibesWinnerOrange = false;
+    appState.showCodeVibesWinnerBlue = false;
+    scheduleCodeVibesWinnerIfNeeded(render);
     render();
   };
   game.selectCard(idx, () => render(), onRoundComplete);
@@ -102,7 +128,9 @@ export function bindAppEvents(root: HTMLElement, render: () => void): void {
   bindDataAction(root, 'go-settings', () => goToSettingsView(render));
   bindDataAction(root, 'go-home', () => goToHomeView(render));
   bindDataAction(root, 'start-game', () => startGameFromSettings(root, render));
-  bindDataAction(root, 'exit-game', () => exitToSettings(render));
+  bindDataAction(root, 'exit-game', () => openExitConfirm(render));
+  bindDataAction(root, 'dismiss-exit-confirm', () => dismissExitConfirm(render));
+  bindDataAction(root, 'confirm-exit-game', () => exitToSettings(render));
   bindDataAction(root, 'new-round', () => startNewRound(render));
   bindDataAction(root, 'go-settings-from-game', () => exitToSettings(render));
   attachMemoryCardListeners(root, render);

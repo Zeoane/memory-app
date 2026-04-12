@@ -1,7 +1,10 @@
 import { BOARD_SIZE_OPTIONS, getPlayerColors } from './game-constants';
-import type { BoardSizeOption, GameSettings, PlayerColors } from './game-constants';
+import type { BoardSizeOption, GameSettings, PlayerColors, VisualThemeId } from './game-constants';
 import { buildGameBarHtml } from './game-bar-html';
 import { buildMemoryCardHtml } from './game-card-html';
+import { buildExitConfirmDialogHtml } from './exit-confirm-dialog-html';
+import { buildCodeVibesWinnerBlueDialogHtml } from './code-vibes-winner-blue-dialog-html';
+import { buildCodeVibesWinnerOrangeDialogHtml } from './code-vibes-winner-orange-dialog-html';
 import { buildGameOverDialogHtml } from './game-over-dialog-html';
 import type { MemoryGame, MemoryGameSnapshot } from './memory-game';
 import gameShellTpl from './templates/game-shell.html?raw';
@@ -18,13 +21,21 @@ function buildAllCardsHtml(game: MemoryGame, snap: MemoryGameSnapshot, settings:
 function resolveModalHtml(
   snap: MemoryGameSnapshot,
   showGameOver: boolean,
+  showCodeVibesWinnerOrange: boolean,
+  showCodeVibesWinnerBlue: boolean,
   colors: PlayerColors,
+  visualThemeId: VisualThemeId,
 ): string {
-  const shouldShow = showGameOver && snap.isComplete;
-  if (!shouldShow) {
+  if (!snap.isComplete || !showGameOver) {
     return '';
   }
-  return buildGameOverDialogHtml(snap.scores[0], snap.scores[1], colors);
+  if (visualThemeId === 'code-vibes' && showCodeVibesWinnerBlue) {
+    return buildCodeVibesWinnerBlueDialogHtml();
+  }
+  if (visualThemeId === 'code-vibes' && showCodeVibesWinnerOrange) {
+    return buildCodeVibesWinnerOrangeDialogHtml();
+  }
+  return buildGameOverDialogHtml(snap.scores[0], snap.scores[1], colors, visualThemeId);
 }
 
 function resolveBoardOption(settings: GameSettings): BoardSizeOption {
@@ -33,7 +44,14 @@ function resolveBoardOption(settings: GameSettings): BoardSizeOption {
   return found ?? BOARD_SIZE_OPTIONS[0];
 }
 
-function assembleGameScreen(game: MemoryGame, settings: GameSettings, showGameOver: boolean): string {
+function assembleGameScreen(
+  game: MemoryGame,
+  settings: GameSettings,
+  showGameOver: boolean,
+  showCodeVibesWinnerOrange: boolean,
+  showCodeVibesWinnerBlue: boolean,
+  showExitConfirm: boolean,
+): string {
   const snap = game.getSnapshot();
   const colors = getPlayerColors(settings.firstPlayerColor);
   const board = resolveBoardOption(settings);
@@ -41,7 +59,15 @@ function assembleGameScreen(game: MemoryGame, settings: GameSettings, showGameOv
     GAME_BAR: buildGameBarHtml(snap, colors, settings.visualThemeId),
     GRID_STYLE: buildGridStyle(board.cols, board.rows),
     CARDS: buildAllCardsHtml(game, snap, settings),
-    GAME_OVER: resolveModalHtml(snap, showGameOver, colors),
+    GAME_OVER: resolveModalHtml(
+      snap,
+      showGameOver,
+      showCodeVibesWinnerOrange,
+      showCodeVibesWinnerBlue,
+      colors,
+      settings.visualThemeId,
+    ),
+    EXIT_CONFIRM: showExitConfirm ? buildExitConfirmDialogHtml() : '',
   };
   return fillTemplate(gameShellTpl, parts);
 }
@@ -53,6 +79,9 @@ export function buildGameScreenHtml(
   game: MemoryGame | null,
   settings: GameSettings,
   showGameOver: boolean,
+  showCodeVibesWinnerOrange: boolean,
+  showCodeVibesWinnerBlue: boolean,
+  showExitConfirm: boolean,
 ): string {
   if (game === null) {
     return `<main class="screen screen--game" role="alert">
@@ -66,5 +95,5 @@ export function buildGameScreenHtml(
   </div>
 </main>`;
   }
-  return assembleGameScreen(game, settings, showGameOver);
+  return assembleGameScreen(game, settings, showGameOver, showCodeVibesWinnerOrange, showCodeVibesWinnerBlue, showExitConfirm);
 }

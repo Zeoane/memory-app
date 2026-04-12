@@ -1,9 +1,10 @@
 import type { VisualThemeId } from './game-constants';
+import { getCodeVibesIconUrl } from './code-vibes-icon-urls';
 import { escapeHtml } from './html-utils';
 import type { MemoryGame, MemoryGameSnapshot } from './memory-game';
 import codeVibesCardBackUrl from './assets/img_code_vibes-theme/Code vibes card 1.svg?url';
 import daProjectsCardBackUrl from './assets/img_DA_projects-theme/DA Projects card 19.svg?url';
-import gamingCardBackUrl from './assets/img_gaming-theme/Game card 3.svg?url';
+import gamingCardArtUrl from './assets/img_gaming-theme/Game card 28.svg?url';
 import foodsCardBackUrl from './assets/img_foods-theme/food card 16.svg?url';
 
 function buildCardDisabledAttr(snap: MemoryGameSnapshot, matched: boolean): string {
@@ -24,7 +25,7 @@ function buildCardBackHtml(visualThemeId: VisualThemeId): string {
     return buildIllustratedCardBack(daProjectsCardBackUrl, 120, 100);
   }
   if (visualThemeId === 'gaming') {
-    return buildIllustratedCardBack(gamingCardBackUrl, 129, 144);
+    return buildIllustratedCardBack(gamingCardArtUrl, 105, 120);
   }
   if (visualThemeId === 'foods') {
     return buildIllustratedCardBack(foodsCardBackUrl, 122, 122);
@@ -32,10 +33,23 @@ function buildCardBackHtml(visualThemeId: VisualThemeId): string {
   return `<span class="memory-card__face memory-card__face--back" aria-hidden="true">?</span>`;
 }
 
+function buildCardFrontHtml(symbol: string, visualThemeId: VisualThemeId): string {
+  if (visualThemeId === 'gaming') {
+    return `<span class="memory-card__face memory-card__face--front memory-card__face--front--illustrated" aria-hidden="true"><img class="memory-card__front-art" src="${gamingCardArtUrl}" alt="" width="105" height="120" decoding="async" /><span class="memory-card__symbol">${escapeHtml(symbol)}</span></span>`;
+  }
+  if (visualThemeId === 'code-vibes') {
+    const iconUrl = getCodeVibesIconUrl(symbol);
+    if (iconUrl) {
+      return `<span class="memory-card__face memory-card__face--front memory-card__face--front--code-vibes-icon" aria-hidden="true"><img class="memory-card__front-icon" src="${iconUrl}" alt="" width="72" height="72" decoding="async" /></span>`;
+    }
+  }
+  return `<span class="memory-card__face memory-card__face--front" aria-hidden="true">${escapeHtml(symbol)}</span>`;
+}
+
 function buildCardFacesHtml(symbol: string, visualThemeId: VisualThemeId): string {
   return `<span class="memory-card__inner">
             ${buildCardBackHtml(visualThemeId)}
-            <span class="memory-card__face memory-card__face--front" aria-hidden="true">${escapeHtml(symbol)}</span>
+            ${buildCardFrontHtml(symbol, visualThemeId)}
           </span>`;
 }
 

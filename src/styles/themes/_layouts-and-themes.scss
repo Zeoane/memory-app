@@ -26,6 +26,9 @@
 /* Darstellungs-Themes (Karten / Flächen) — IDs entsprechen Game themes in den Settings */
 
 .theme--code-vibes {
+  /* Karten-Grafik (Rückseite) — mit game-card-html.ts width/height synchron halten */
+  --memory-card-art-w: 120;
+  --memory-card-art-h: 120;
   --page-bg: #252525;
   --card-back: linear-gradient(145deg, #14b8a6, #0d9488);
   --card-front-bg: #f0fdfa;
@@ -40,13 +43,16 @@
 }
 
 .theme--gaming {
+  --memory-card-art-w: 105;
+  --memory-card-art-h: 120;
   --card-back: linear-gradient(145deg, #0f172a, #020617);
   --card-front-bg: #0c1220;
   --card-front-fg: #e2e8f0;
-  --card-shadow:
-    0 0 0 1px rgba(56, 189, 248, 0.4),
-    0 8px 28px rgba(0, 0, 0, 0.55);
-  --card-radius: 0;
+  /* Motivseite mit illustriertem IMG: wie Game card 28 (Basisfläche + rx=12) */
+  --card-front-illustrated-bg: #f6f1f3;
+  --card-front-illustrated-fg: #0f172a;
+  --card-shadow: 0 8px 28px rgba(0, 0, 0, 0.55);
+  --card-radius: 12px;
   --preview-bar-bg: rgba(56, 189, 248, 0.2);
   --game-bar-scores-bg: rgba(56, 189, 248, 0.15);
   --game-bar-exit-bg: rgba(56, 189, 248, 0.15);
@@ -55,6 +61,8 @@
 }
 
 .theme--da-projects {
+  --memory-card-art-w: 120;
+  --memory-card-art-h: 100;
   --card-back: linear-gradient(145deg, #334155, #1e293b);
   --card-front-bg: #f8fafc;
   --card-front-fg: #0f172a;
@@ -68,6 +76,8 @@
 }
 
 .theme--foods {
+  --memory-card-art-w: 122;
+  --memory-card-art-h: 122;
   --card-back: linear-gradient(145deg, #ea580c, #c2410c);
   --card-front-bg: #fff7ed;
   --card-front-fg: #431407;

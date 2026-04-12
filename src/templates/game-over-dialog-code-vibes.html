@@ -1,0 +1,39 @@
+<dialog class="modal modal--game-over modal--game-over--code-vibes" open aria-labelledby="game-over-cv-title" aria-modal="true">
+  <div class="modal--game-over-cv">
+    <h2 id="game-over-cv-title" class="visually-hidden">Game over</h2>
+    <div class="modal--game-over-cv__main">
+    <img
+      class="modal--game-over-cv__hero"
+      src="{{GAME_OVER_SVG}}"
+      alt=""
+      width="991"
+      height="125"
+      decoding="async"
+    />
+    <div class="modal--game-over-cv__stack">
+      <p class="modal--game-over-cv__final-label">Final score</p>
+      {{DRAW_BANNER}}
+      <div class="modal--game-over-cv__scores-row" role="group" aria-label="Endergebnis">
+        <div class="modal--game-over-cv__group modal--game-over-cv__group--blue">
+          <span class="modal--game-over-cv__identity">
+            <img class="modal--game-over-cv__label-icon" src="{{LABEL_BLUE}}" alt="" width="24" height="20" decoding="async" />
+            <span class="modal--game-over-cv__player-name modal--game-over-cv__player-name--blue">Blue</span>
+          </span>
+          <span class="modal--game-over-cv__score modal--game-over-cv__score--blue">{{BLUE_SCORE}}</span>
+        </div>
+        <div class="modal--game-over-cv__group modal--game-over-cv__group--orange">
+          <span class="modal--game-over-cv__identity">
+            <img class="modal--game-over-cv__label-icon" src="{{LABEL_ORANGE}}" alt="" width="24" height="20" decoding="async" />
+            <span class="modal--game-over-cv__player-name modal--game-over-cv__player-name--orange">Orange</span>
+          </span>
+          <span class="modal--game-over-cv__score modal--game-over-cv__score--orange">{{ORANGE_SCORE}}</span>
+        </div>
+      </div>
+    </div>
+    </div>
+    <div class="modal--game-over-cv__actions modal__actions">
+      <button type="button" class="btn btn--primary btn--large" data-action="new-round">Neue Runde</button>
+      <button type="button" class="btn btn--ghost btn--large" data-action="go-settings-from-game">Back to start</button>
+    </div>
+  </div>
+</dialog>

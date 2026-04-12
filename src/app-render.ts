@@ -13,7 +13,14 @@ function resolveViewHtml(): string {
   if (view === 'settings') {
     return buildSettingsHtml(appState.settings, appState.settingsDraft);
   }
-  return buildGameScreenHtml(appState.game, appState.settings, appState.showGameOver);
+  return buildGameScreenHtml(
+    appState.game,
+    appState.settings,
+    appState.showGameOver,
+    appState.showCodeVibesWinnerOrange,
+    appState.showCodeVibesWinnerBlue,
+    appState.showExitConfirm,
+  );
 }
 
 /**

@@ -8,7 +8,7 @@
 
 /* Gemeinsame Breite: 6×6-Raster = 750px → Bar und Spielfeld dieselbe Spaltenbreite wie in Figma */
 .game-playfield {
-  /* 6×6-Gesamt: 6×120px + 5×6px = 750px × 750px (Kachel 120×120, Lücken 6px) */
+  /* Raster: 6×6 mit 120px-Kacheln + 6px Lücken (Gaming: Karten in Asset-Größe, siehe .theme--gaming .memory-grid) */
   --grid-gap: 6px;
   --memory-cell-size: 120px;
   /* Abstand Game-Bar → Karten (Figma: deutlich mehr Luft als eine Zeile; hier weich skaliert) */
@@ -255,6 +255,28 @@
   margin-inline: auto;
   margin-top: 0;
   box-sizing: content-box;
+
+  .memory-card {
+    align-self: center;
+    justify-self: center;
+    width: 100%;
+    max-width: var(--memory-cell-size);
+  }
+}
+
+/* Gaming: kein festes 120×120-Raster — Kachelgröße = Kartengrafik, Abstand nur über --grid-gap (6px) */
+.theme--gaming .game-playfield {
+  overflow-x: auto;
+}
+
+.theme--gaming .memory-grid {
+  grid-template-columns: repeat(var(--cols, 4), max-content);
+  grid-auto-rows: max-content;
+
+  .memory-card {
+    width: max-content;
+    max-width: none;
+  }
 }
 
 .memory-card {
@@ -264,7 +286,6 @@
   padding: 0;
   border: none;
   background: transparent;
-  cursor: pointer;
   perspective: 800px;
   -webkit-tap-highlight-color: transparent;
 
@@ -341,6 +362,121 @@
     object-fit: cover;
     object-position: center;
     border-radius: var(--card-radius, 0);
+    border: none;
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+/*
+ * Darstellungs-Themes (Settings „Game themes“): memory-card__inner = Seitenverhältnis der
+ * Karten-SVG (siehe --memory-card-art-* in _layouts-and-themes.scss, synchron zu game-card-html.ts).
+ * Die äußere .memory-card folgt der Innenhöhe, kein erzwungenes 1:1 zur Rasterzelle.
+ */
+.theme--code-vibes .memory-card,
+.theme--da-projects .memory-card,
+.theme--gaming .memory-card,
+.theme--foods .memory-card {
+  aspect-ratio: unset;
+  height: auto;
+}
+
+.theme--code-vibes .memory-card__inner,
+.theme--da-projects .memory-card__inner,
+.theme--foods .memory-card__inner {
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: var(--memory-card-art-w) / var(--memory-card-art-h);
+  height: auto;
+}
+
+.theme--gaming .memory-card__inner {
+  width: calc(var(--memory-card-art-w) * 1px);
+  aspect-ratio: var(--memory-card-art-w) / var(--memory-card-art-h);
+  height: auto;
+  /* Dunkle Füllung: vermindert helle Spalten beim Drehen (kein overflow:hidden: bricht preserve-3d / clippt die Flächen) */
+  background-color: #020617;
+}
+
+.theme--gaming .memory-card__face--front {
+  border: none;
+}
+
+/* Game themes: flüssige Dreh-Animation beim Umdrehen */
+.theme--code-vibes .memory-card__inner,
+.theme--da-projects .memory-card__inner,
+.theme--gaming .memory-card__inner,
+.theme--foods .memory-card__inner {
+  transition: transform 0.65s cubic-bezier(0.33, 1, 0.68, 1);
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+
+.theme--gaming .memory-card__face--back--illustrated {
+  display: block;
+  background: transparent;
+
+  .memory-card__back-art {
+    position: absolute;
+    inset: 0;
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    object-fit: fill;
+    object-position: center;
+    border-radius: 0;
+  }
+}
+
+.theme--code-vibes .memory-card__face--front--code-vibes-icon {
+  padding: 14%;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+
+  .memory-card__front-icon {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    object-position: center;
+  }
+}
+
+.theme--gaming .memory-card__face--front--illustrated {
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  overflow: hidden;
+  background: var(--card-front-illustrated-bg, #f6f1f3);
+  color: var(--card-front-illustrated-fg, #0f172a);
+  border: none;
+
+  .memory-card__front-art {
+    position: absolute;
+    inset: 0;
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    object-fit: fill;
+    object-position: center;
+    border-radius: 0;
+    /* Leicht vergrößern: überdeckt Subpixel-Lücken zur hellen Fläche beim Drehen */
+    transform: scale(1.02);
+    transform-origin: center center;
+  }
+
+  .memory-card__symbol {
+    position: relative;
+    z-index: 1;
   }
 }
 
@@ -412,6 +548,546 @@ dialog.modal {
   gap: 0.5rem;
 }
 
+/* Game over — Code vibes (Figma: Hintergrund #252525, Container 990.5×367.2, Gap 124) */
+dialog.modal.modal--game-over--code-vibes {
+  padding: 0;
+  background: #252525;
+
+  &::backdrop {
+    background: #252525;
+    backdrop-filter: none;
+  }
+}
+
+.modal--game-over-cv {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: min(990.5px, calc(100vw - 2rem));
+  margin: 0 auto;
+  padding: clamp(1.5rem, 8vh, 3rem) 1rem 2rem;
+  box-sizing: border-box;
+}
+
+.modal--game-over-cv__main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-height: 367.2px;
+  gap: 124px;
+  box-sizing: border-box;
+}
+
+.modal--game-over-cv__hero {
+  display: block;
+  width: 100%;
+  max-width: 990.5px;
+  height: auto;
+  aspect-ratio: 990.5 / 125.2;
+  object-fit: contain;
+}
+
+.modal--game-over-cv__stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+}
+
+.modal--game-over-cv__final-label {
+  box-sizing: border-box;
+  width: 324px;
+  max-width: 100%;
+  min-height: 32px;
+  margin: 0;
+  font-family: 'Red Rose', Georgia, serif;
+  font-weight: 400;
+  font-size: 26px;
+  font-style: normal;
+  line-height: 1.2;
+  text-align: center;
+  color: #f8fafc;
+}
+
+.modal--game-over-cv__draw {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 324px;
+  margin: 0;
+  font-family: 'Red Rose', Georgia, serif;
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 1.2;
+  text-align: center;
+  color: #cbd5e1;
+}
+
+.modal--game-over-cv__actions {
+  width: 100%;
+  max-width: min(320px, 100%);
+  margin-top: clamp(1.25rem, 4vh, 2rem);
+}
+
+.modal--game-over-cv__scores-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+}
+
+.modal--game-over-cv__group {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  /* Eine gemeinsame Mittellinie für Label + Zahl (unterschiedliche Font-Metriken) */
+  align-items: center;
+  gap: 12px;
+}
+
+.modal--game-over-cv__identity {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 32px;
+}
+
+.modal--game-over-cv__label-icon {
+  display: block;
+  flex-shrink: 0;
+  width: 24px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.modal--game-over-cv__player-name {
+  display: inline-flex;
+  align-items: center;
+  font-family: 'Red Rose', Georgia, serif;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 32px;
+  min-height: 32px;
+
+  &--blue {
+    color: #2bb1ff;
+  }
+
+  &--orange {
+    color: #f58e39;
+  }
+}
+
+/* Figma: October Devanagari — frei lizenzierte Alternative: Anek Devanagari (Google Fonts) */
+.modal--game-over-cv__score {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-height: 32px;
+  font-family: 'October Devanagari', 'Anek Devanagari', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 32px;
+  font-variant-numeric: tabular-nums;
+  /* Lateinische Ziffern in Anek sitzen leicht hoch ggü. Red Rose — nach unten ausrichten */
+  transform: translateY(0.15em);
+
+  &--blue {
+    color: #2bb1ff;
+  }
+
+  &--orange {
+    color: #f58e39;
+  }
+}
+
+@media (max-width: 720px) {
+  .modal--game-over-cv__main {
+    gap: clamp(2rem, 8vw, 124px);
+    min-height: 0;
+  }
+
+  .modal--game-over-cv__scores-row {
+    gap: clamp(1.25rem, 4vw, 48px);
+  }
+}
+
+/* Code Vibes — Gewinner Orange (Split-Layout wie Blue, Figma 1440px) */
+dialog.modal.modal--cv-winner-orange {
+  padding: 0;
+  background: #252525;
+  align-items: flex-start;
+  justify-content: center;
+  overflow: auto;
+
+  &::backdrop {
+    background: #252525;
+    backdrop-filter: none;
+  }
+}
+
+.modal--cv-winner-orange__wrap {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0 0 1.5rem;
+  overflow-x: auto;
+}
+
+.modal--cv-winner-orange__scene {
+  position: relative;
+  flex-shrink: 0;
+  width: 1440px;
+  min-height: 891px;
+  margin: 0 auto;
+}
+
+.modal--cv-winner-orange__confetti {
+  position: absolute;
+  display: block;
+  width: 1233.92px;
+  height: 358.88px;
+  top: -32px;
+  left: 103px;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.modal--cv-winner-orange__column {
+  position: absolute;
+  box-sizing: border-box;
+  top: 318px;
+  left: 507px;
+  width: 426px;
+  min-height: 573px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 64px;
+}
+
+.modal--cv-winner-orange__headline {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  width: 426px;
+  height: 133px;
+  flex-shrink: 0;
+}
+
+.modal--cv-winner-orange__headline-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.modal--cv-winner-orange__pawn-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 200px;
+  height: 250px;
+  flex-shrink: 0;
+}
+
+.modal--cv-winner-orange__pawn-img {
+  display: block;
+  width: 200px;
+  height: 250px;
+  object-fit: contain;
+}
+
+.modal--cv-winner-orange__back-btn {
+  box-sizing: border-box;
+  width: 204px;
+  min-height: 62px;
+  height: 62px;
+  padding: 16px 24px;
+  margin: 0;
+  border: 1px solid #4dd5bc;
+  border-radius: 0;
+  background: rgba(134, 233, 214, 0.2);
+  color: #f8fafc;
+  font-family: 'Red Rose', Georgia, serif;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.modal--cv-winner-orange__back-btn:hover {
+  background: rgba(134, 233, 214, 0.28);
+}
+
+.modal--cv-winner-orange__back-btn:focus-visible {
+  outline: 2px solid #4dd5bc;
+  outline-offset: 2px;
+}
+
+/* Code Vibes — Gewinner Blue (Split-Layout, Figma-Positionen) */
+dialog.modal.modal--cv-winner-blue {
+  padding: 0;
+  background: #252525;
+  align-items: flex-start;
+  justify-content: center;
+  overflow: auto;
+
+  &::backdrop {
+    background: #252525;
+    backdrop-filter: none;
+  }
+}
+
+.modal--cv-winner-blue__wrap {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 0 0 1.5rem;
+  overflow-x: auto;
+}
+
+.modal--cv-winner-blue__scene {
+  position: relative;
+  flex-shrink: 0;
+  width: 1440px;
+  min-height: 891px;
+  margin: 0 auto;
+}
+
+.modal--cv-winner-blue__confetti {
+  position: absolute;
+  display: block;
+  width: 1233.92px;
+  height: 358.88px;
+  top: -32px;
+  left: 103px;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.modal--cv-winner-blue__column {
+  position: absolute;
+  box-sizing: border-box;
+  top: 318px;
+  left: 507px;
+  width: 426px;
+  min-height: 573px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 64px;
+}
+
+.modal--cv-winner-blue__headline {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  width: 426px;
+  height: 133px;
+  flex-shrink: 0;
+}
+
+.modal--cv-winner-blue__headline-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.modal--cv-winner-blue__pawn-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 200px;
+  height: 250px;
+  flex-shrink: 0;
+}
+
+.modal--cv-winner-blue__pawn-img {
+  display: block;
+  width: 200px;
+  height: 250px;
+  object-fit: contain;
+}
+
+.modal--cv-winner-blue__back-btn {
+  box-sizing: border-box;
+  width: 204px;
+  min-height: 62px;
+  height: 62px;
+  padding: 16px 24px;
+  margin: 0;
+  border: 1px solid #4dd5bc;
+  border-radius: 0;
+  background: rgba(134, 233, 214, 0.2);
+  color: #f8fafc;
+  font-family: 'Red Rose', Georgia, serif;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.modal--cv-winner-blue__back-btn:hover {
+  background: rgba(134, 233, 214, 0.28);
+}
+
+.modal--cv-winner-blue__back-btn:focus-visible {
+  outline: 2px solid #4dd5bc;
+  outline-offset: 2px;
+}
+
+/* Exit bestätigen — Figma: 539×270, Padding 40, Gap 54; Textbereich + Buttonzeile 354×57, Gap 24 */
+dialog.modal.modal--exit-confirm {
+  z-index: 60;
+}
+
+.modal--exit-confirm__panel {
+  box-sizing: border-box;
+  width: 539px;
+  max-width: min(539px, calc(100vw - 2rem));
+  height: 270px;
+  min-height: 270px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 54px;
+  background: #ffffff;
+  border-radius: 0;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
+}
+
+.modal--exit-confirm__title {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 459px;
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  margin: 0;
+  font-family: 'Red Rose', Georgia, serif;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  color: #0f172a;
+}
+
+.modal--exit-confirm__actions {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  width: 354px;
+  max-width: 100%;
+  height: 57px;
+  flex: 0 0 57px;
+  flex-shrink: 0;
+}
+
+.btn--exit-back-to-game {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 182px;
+  min-width: 182px;
+  height: 57px;
+  padding: 16px 24px;
+  border: none;
+  border-radius: 0;
+  background: #66cfbc;
+  color: #ffffff;
+  font-family: 'Red Rose', Georgia, serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    transform 0.15s ease;
+
+  &:hover:not(:disabled) {
+    filter: brightness(0.97);
+  }
+
+  &:focus-visible {
+    outline: 2px solid #66cfbc;
+    outline-offset: 3px;
+  }
+}
+
+.btn--exit-confirm-quit {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 148px;
+  min-width: 148px;
+  height: 57px;
+  padding: 0;
+  border: 2px solid #66cfbc;
+  border-radius: 0;
+  background: #ffffff;
+  color: #66cfbc;
+  font-family: 'Red Rose', Georgia, serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    transform 0.15s ease;
+
+  &:hover:not(:disabled) {
+    background: rgba(102, 207, 188, 0.08);
+  }
+
+  &:focus-visible {
+    outline: 2px solid #66cfbc;
+    outline-offset: 3px;
+  }
+}
+
 @media (max-width: 600px) {
   .game-bar {
     flex-direction: column;
@@ -420,5 +1096,30 @@ dialog.modal {
     &__turn {
       text-align: left;
     }
+  }
+
+  .modal--exit-confirm__panel {
+    height: auto;
+    min-height: min(270px, calc(100vh - 4rem));
+  }
+
+  .modal--exit-confirm__actions {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 57px;
+  }
+}
+
+@media (max-width: 420px) {
+  .modal--exit-confirm__actions {
+    flex-direction: column;
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .btn--exit-back-to-game,
+  .btn--exit-confirm-quit {
+    width: 100%;
+    max-width: 354px;
   }
 }
