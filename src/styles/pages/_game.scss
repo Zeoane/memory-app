@@ -40,6 +40,17 @@
       margin-left: auto;
     }
   }
+
+  /* Gaming: 40px zwischen Scores, Turn und Exit (Figma) */
+  &:has(.game-bar__scores-panel--gaming) {
+    /* Abstand entsteht über space-between der Bar (Figma) */
+    gap: 0;
+    justify-content: space-between;
+
+    .game-bar__nav {
+      margin-left: auto;
+    }
+  }
   width: 100%;
   max-width: none;
   height: 62px;
@@ -92,6 +103,20 @@
     max-width: 100%;
   }
 
+  /* Gaming: Pawn-Icons + Score-Zahl (Orbitron 30/700) */
+  &__scores-panel--gaming {
+    box-sizing: border-box;
+    flex: 0 0 auto;
+    width: 182px;
+    height: 54px;
+    padding: 0 16px;
+    gap: 40px;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    border-radius: 10px;
+  }
+
   &__scores--code-vibes {
     width: auto;
     max-width: 100%;
@@ -100,9 +125,31 @@
     gap: 20px;
   }
 
+  &__scores--gaming {
+    width: 100%;
+    height: 100%;
+    gap: 40px;
+    align-items: center;
+    justify-content: space-between;
+  }
+
   &__pair--code-vibes {
     flex-shrink: 0;
     gap: 8px;
+  }
+
+  &__pair--gaming {
+    flex-shrink: 0;
+    gap: 8px;
+  }
+
+  &__pawn-icon {
+    display: block;
+    flex: 0 0 auto;
+    flex-shrink: 0;
+    width: 22px;
+    height: 28px;
+    object-fit: contain;
   }
 
   /* label-blue.svg / label-orange.svg — fest 24×20 px (wie im Asset) */
@@ -157,6 +204,23 @@
     }
   }
 
+  &__score-num--gaming {
+    font-family: Orbitron, system-ui, sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0;
+    font-variant-numeric: tabular-nums;
+
+    &.game-bar__score-num--orange {
+      color: #ea6900;
+    }
+
+    &.game-bar__score-num--blue {
+      color: #097fc5;
+    }
+  }
+
   &__score-label {
     margin: 0;
     font-size: 0.9rem;
@@ -189,6 +253,16 @@
       gap: 8px;
       text-align: center;
     }
+
+    &--gaming {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      text-align: center;
+    }
   }
 
   &__turn-prefix {
@@ -201,6 +275,42 @@
     white-space: nowrap;
   }
 
+  &__turn-prefix--gaming {
+    font-family: Orbitron, system-ui, sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.07em;
+    color: #ffffff;
+  }
+
+  &__current-badge {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 41px;
+    height: 40px;
+    padding: 4px 8px;
+    gap: 10px;
+    border-radius: 3px;
+  }
+
+  &__current-badge--orange {
+    background: #ea6900;
+  }
+
+  &__current-badge--blue {
+    background: #097fc5;
+  }
+
+  &__current-pawn {
+    display: block;
+    width: 22px;
+    height: 28px;
+    object-fit: contain;
+  }
+
   &__nav {
     flex: 0 0 auto;
     min-width: 207px;
@@ -209,6 +319,18 @@
     justify-content: flex-end;
     align-items: flex-end;
   }
+}
+
+/* Gaming: Game-Bar Maße / Layout nach Figma */
+.theme--gaming .game-bar {
+  width: min(100%, 1219px);
+  height: 102px;
+  padding: 24px;
+  border-radius: 10px;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(253, 150, 201, 0.2);
+  gap: 0;
 }
 
 @media (max-width: 720px) {
@@ -266,7 +388,45 @@
 
 /* Gaming: kein festes 120×120-Raster — Kachelgröße = Kartengrafik, Abstand nur über --grid-gap (6px) */
 .theme--gaming .game-playfield {
-  overflow-x: auto;
+  /* keine horizontale Scrollbar unter dem Spielfeld */
+  overflow-x: hidden;
+  width: min(100%, 1219px);
+  margin-inline: auto;
+}
+
+/* Gaming 4×4: Kartenabstand wie Figma */
+.theme--gaming .game-playfield[style*='--cols: 4'][style*='--rows: 4'] {
+  --grid-gap: 24px;
+}
+
+/* Code vibes: gleiche Bar-Aufteilung wie Figma in allen Größen */
+.theme--code-vibes .game-playfield {
+  width: min(100%, 1219px);
+}
+
+.theme--code-vibes .game-bar {
+  justify-content: space-between;
+  gap: 0;
+  padding-inline: 24px;
+}
+
+.theme--code-vibes .game-bar__nav {
+  margin-left: 0;
+}
+
+/* Code vibes 4×4: kompakteres Raster + Bar-Aufteilung wie Figma */
+.theme--code-vibes .game-playfield[style*='--cols: 4'][style*='--rows: 4'] {
+  --grid-gap: 12px;
+  --memory-cell-size: 96px;
+  --game-bar-to-grid: clamp(1.25rem, 4vh, 2.25rem);
+}
+
+.theme--code-vibes .game-playfield[style*='--cols: 4'][style*='--rows: 4'] .game-bar {
+  /* bleibt, falls 4×4 später noch weiter spezialisiert wird */
+}
+
+.theme--code-vibes .game-playfield[style*='--cols: 4'][style*='--rows: 4'] .game-bar__nav {
+  /* bleibt, falls 4×4 später noch weiter spezialisiert wird */
 }
 
 .theme--gaming .memory-grid {
@@ -971,6 +1131,86 @@ dialog.modal.modal--cv-winner-blue {
 /* Exit bestätigen — Figma: 539×270, Padding 40, Gap 54; Textbereich + Buttonzeile 354×57, Gap 24 */
 dialog.modal.modal--exit-confirm {
   z-index: 60;
+}
+
+/* Gaming: Exit bestätigen — Figma: 481×254, Padding 40, Gap 40, Radius 20 */
+.theme--gaming .modal--exit-confirm__panel {
+  width: 481px;
+  max-width: min(481px, calc(100vw - 2rem));
+  height: 254px;
+  min-height: 254px;
+  padding: 40px;
+  gap: 40px;
+  border-radius: 20px;
+  background: #f0f6f9;
+}
+
+.theme--gaming .modal--exit-confirm__title {
+  width: 376px;
+  max-width: 376px;
+  height: 76px;
+  flex: 0 0 auto;
+  font-family: Orbitron, system-ui, sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 40px;
+  letter-spacing: 0.02em;
+  text-align: center;
+  color: #294f60;
+}
+
+.theme--gaming .modal--exit-confirm__actions {
+  width: 100%;
+  max-width: 100%;
+  height: 44px;
+  flex: 0 0 44px;
+  gap: 24px;
+}
+
+.theme--gaming .btn--exit-back-to-game {
+  width: 201px;
+  min-width: 201px;
+  height: 44px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: 1px solid #e71c4f;
+  background: #ed1b76;
+  color: #f0f6f9;
+  font-family: Orbitron, system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.02em;
+
+  &:focus-visible {
+    outline: 2px solid #e71c4f;
+    outline-offset: 3px;
+  }
+}
+
+.theme--gaming .btn--exit-confirm-quit {
+  width: 176px;
+  min-width: 176px;
+  height: 44px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: 2px solid #e71c4f;
+  background: rgba(237, 27, 118, 0.08);
+  color: #e71c4f;
+  font-family: Orbitron, system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.02em;
+
+  &:hover:not(:disabled) {
+    background: rgba(237, 27, 118, 0.12);
+  }
+
+  &:focus-visible {
+    outline: 2px solid #e71c4f;
+    outline-offset: 3px;
+  }
 }
 
 .modal--exit-confirm__panel {

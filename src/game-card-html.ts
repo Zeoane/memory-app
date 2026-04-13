@@ -3,9 +3,7 @@ import { getCodeVibesIconUrl } from './code-vibes-icon-urls';
 import { escapeHtml } from './html-utils';
 import type { MemoryGame, MemoryGameSnapshot } from './memory-game';
 import codeVibesCardBackUrl from './assets/img_code_vibes-theme/Code vibes card 1.svg?url';
-import daProjectsCardBackUrl from './assets/img_DA_projects-theme/DA Projects card 19.svg?url';
 import gamingCardArtUrl from './assets/img_gaming-theme/Game card 28.svg?url';
-import foodsCardBackUrl from './assets/img_foods-theme/food card 16.svg?url';
 
 function buildCardDisabledAttr(snap: MemoryGameSnapshot, matched: boolean): string {
   const isDisabled = snap.isBusy || snap.isComplete || matched;
@@ -21,14 +19,8 @@ function buildCardBackHtml(visualThemeId: VisualThemeId): string {
   if (visualThemeId === 'code-vibes') {
     return buildIllustratedCardBack(codeVibesCardBackUrl, 120, 120);
   }
-  if (visualThemeId === 'da-projects') {
-    return buildIllustratedCardBack(daProjectsCardBackUrl, 120, 100);
-  }
   if (visualThemeId === 'gaming') {
     return buildIllustratedCardBack(gamingCardArtUrl, 105, 120);
-  }
-  if (visualThemeId === 'foods') {
-    return buildIllustratedCardBack(foodsCardBackUrl, 122, 122);
   }
   return `<span class="memory-card__face memory-card__face--back" aria-hidden="true">?</span>`;
 }

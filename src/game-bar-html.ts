@@ -2,6 +2,9 @@ import type { PlayerColors, VisualThemeId } from './game-constants';
 import type { MemoryGameSnapshot } from './memory-game';
 import labelBlueUrl from './assets/img_code_vibes-theme/label-blue.svg?url';
 import labelOrangeUrl from './assets/img_code_vibes-theme/label-orange.svg?url';
+import chessPawnOrangeUrl from './assets/img_gaming-theme/gt-chess_pawn-orange.svg?url';
+import chessPawnBlueUrl from './assets/img_gaming-theme/gt-chess_pawn-blue.svg?url';
+import chessPawnWhiteUrl from './assets/img_gaming-theme/gt-chess_pawn-white.svg?url';
 import exitGameIconUrl from './assets/img_settings_themes/exit_game.svg?url';
 
 const PLAYER_ONE_INDEX = 0;
@@ -45,6 +48,23 @@ function buildCodeVibesScoresHtml(snap: MemoryGameSnapshot, colors: PlayerColors
           </div>`;
 }
 
+function buildGamingScoresHtml(snap: MemoryGameSnapshot, colors: PlayerColors): string {
+  const blueScore = colors.player1 === 'blue' ? snap.scores[0] : snap.scores[1];
+  const orangeScore = colors.player1 === 'orange' ? snap.scores[0] : snap.scores[1];
+  return `<div class="game-bar__scores-panel game-bar__scores-panel--gaming">
+            <div class="game-bar__scores game-bar__scores--gaming" role="group" aria-label="Punktestände">
+              <div class="game-bar__pair game-bar__pair--gaming">
+                <img class="game-bar__pawn-icon" src="${chessPawnOrangeUrl}" alt="" width="22" height="28" decoding="async" />
+                <span class="game-bar__score-num game-bar__score-num--gaming game-bar__score-num--orange">${orangeScore}</span>
+              </div>
+              <div class="game-bar__pair game-bar__pair--gaming">
+                <img class="game-bar__pawn-icon" src="${chessPawnBlueUrl}" alt="" width="22" height="28" decoding="async" />
+                <span class="game-bar__score-num game-bar__score-num--gaming game-bar__score-num--blue">${blueScore}</span>
+              </div>
+            </div>
+          </div>`;
+}
+
 function buildCurrentPlayerClass(snap: MemoryGameSnapshot, colors: PlayerColors): string {
   const isFirst = snap.currentPlayer === PLAYER_ONE_INDEX;
   return isFirst ? `player-tag--${colors.player1}` : `player-tag--${colors.player2}`;
@@ -75,6 +95,17 @@ function buildTurnParagraphHtml(snap: MemoryGameSnapshot, colors: PlayerColors, 
               <span class="visually-hidden">${currentName}</span>
             </p>`;
   }
+  if (theme === 'gaming') {
+    const p = snap.currentPlayer === PLAYER_ONE_INDEX ? colors.player1 : colors.player2;
+    const cls = p === 'blue' ? 'game-bar__current-badge--blue' : 'game-bar__current-badge--orange';
+    const currentName = p === 'blue' ? 'Blue' : 'Orange';
+    return `<p class="game-bar__turn game-bar__turn--gaming" role="status" aria-live="polite">
+              <span class="game-bar__turn-prefix game-bar__turn-prefix--gaming">Current player:</span>
+              <span class="game-bar__current-badge ${cls}" aria-label="${currentName}">
+                <img class="game-bar__current-pawn" src="${chessPawnWhiteUrl}" alt="" width="22" height="28" decoding="async" />
+              </span>
+            </p>`;
+  }
   const cls = buildCurrentPlayerClass(snap, colors);
   const label = buildCurrentPlayerLabelDe(snap);
   return `<p class="game-bar__turn">Am Zug: <strong class="player-tag ${cls}">${label}</strong></p>`;
@@ -98,6 +129,10 @@ export function buildGameBarHtml(
   visualThemeId: VisualThemeId,
 ): string {
   const scoresBlock =
-    visualThemeId === 'code-vibes' ? buildCodeVibesScoresHtml(snap, colors) : buildScoresBlockHtml(snap, colors);
+    visualThemeId === 'code-vibes'
+      ? buildCodeVibesScoresHtml(snap, colors)
+      : visualThemeId === 'gaming'
+        ? buildGamingScoresHtml(snap, colors)
+        : buildScoresBlockHtml(snap, colors);
   return `${scoresBlock}${buildTurnParagraphHtml(snap, colors, visualThemeId)}${buildExitNavHtml()}`;
 }

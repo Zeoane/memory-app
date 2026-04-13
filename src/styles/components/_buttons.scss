@@ -102,3 +102,40 @@
     }
   }
 }
+
+/* Gaming: Exit-Button nach Figma (Orbitron, 195×54, Border 2px) */
+.theme--gaming .btn--game-exit {
+  width: 195px;
+  min-width: 195px;
+  height: 54px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: var(--game-bar-exit-border);
+  background: var(--game-bar-exit-bg);
+  gap: 10px;
+  justify-content: flex-start;
+  font-family: Orbitron, system-ui, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+}
+
+.theme--gaming .btn--game-exit__icon {
+  position: static;
+  top: auto;
+  left: auto;
+  width: 30px;
+  height: 30px;
+}
+
+.theme--gaming .btn--game-exit:hover:not(:disabled) {
+  border-color: var(--game-bar-exit-border-active, #e71c4f);
+}
+
+.theme--gaming .btn--game-exit:active:not(:disabled) {
+  border-color: var(--game-bar-exit-border-active, #e71c4f);
+}

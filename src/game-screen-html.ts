@@ -67,7 +67,7 @@ function assembleGameScreen(
       colors,
       settings.visualThemeId,
     ),
-    EXIT_CONFIRM: showExitConfirm ? buildExitConfirmDialogHtml() : '',
+    EXIT_CONFIRM: showExitConfirm ? buildExitConfirmDialogHtml(settings.visualThemeId) : '',
   };
   return fillTemplate(gameShellTpl, parts);
 }
@@ -83,6 +83,21 @@ export function buildGameScreenHtml(
   showCodeVibesWinnerBlue: boolean,
   showExitConfirm: boolean,
 ): string {
+  if (settings.visualThemeId === 'da-projects' || settings.visualThemeId === 'foods') {
+    return `<main class="screen screen--game" role="alert">
+  <div class="screen__content screen__content--wide">
+    <p class="screen__subtitle">
+      Dieses Game Theme steht aktuell nicht zur Verfügung. Bitte wähle &quot;Code vibes&quot; oder &quot;Gaming theme&quot;
+      in den Einstellungen.
+    </p>
+    <nav class="screen__nav" aria-label="Navigation">
+      <ul class="screen__nav-list">
+        <li><button type="button" class="btn btn--primary" data-action="go-settings">Zu den Einstellungen</button></li>
+      </ul>
+    </nav>
+  </div>
+</main>`;
+  }
   if (game === null) {
     return `<main class="screen screen--game" role="alert">
   <div class="screen__content screen__content--wide">

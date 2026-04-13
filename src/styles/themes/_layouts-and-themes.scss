@@ -54,10 +54,12 @@
   --card-shadow: 0 8px 28px rgba(0, 0, 0, 0.55);
   --card-radius: 12px;
   --preview-bar-bg: rgba(56, 189, 248, 0.2);
-  --game-bar-scores-bg: rgba(56, 189, 248, 0.15);
-  --game-bar-exit-bg: rgba(56, 189, 248, 0.15);
-  --game-bar-exit-bg-hover: rgba(56, 189, 248, 0.28);
-  --game-bar-exit-border: #38bdf8;
+  /* Gaming (Figma): #FD96C9 @20% */
+  --game-bar-scores-bg: rgba(253, 150, 201, 0.2);
+  --game-bar-exit-bg: transparent;
+  --game-bar-exit-bg-hover: rgba(253, 150, 201, 0.08);
+  --game-bar-exit-border: rgba(253, 150, 201, 0.2);
+  --game-bar-exit-border-active: #e71c4f;
 }
 
 .theme--da-projects {
