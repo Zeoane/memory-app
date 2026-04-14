@@ -22,6 +22,9 @@ import previewTopbarFoodsUrl from './assets/img_settings_themes/Foods-theme-topb
 import previewStageFoodsUrl from './assets/img_settings_themes/Foods-theme.svg?url';
 import settingsTitleRuleUrl from './assets/img_settings_themes/Line 3.svg?url';
 import settingsThemeRuleShortUrl from './assets/img_settings_themes/Line 3_short.svg?url';
+import startBtnDefaultUrl from './assets/img_settings_themes/start-btn-default.svg?url';
+import startBtnHoverUrl from './assets/img_settings_themes/Start-btn-hover.svg?url';
+import startBtnDisabledUrl from './assets/img_settings_themes/start-btn-disabled.svg?url';
 import type { SettingsDraft } from './app-state';
 import type { VisualThemeId } from './game-constants';
 
@@ -208,6 +211,8 @@ function buildSettingsPreviewHtml(settings: GameSettings, draft: SettingsDraft):
 }
 
 function assembleSettingsSections(settings: GameSettings, draft: SettingsDraft): Record<string, string> {
+  const isStartDisabled =
+    draft.boardSizeId === null || draft.visualThemeId === null || draft.firstPlayerColor === null;
   return {
     BOARD_SIZE_SECTION: buildBoardSizeSectionHtml(draft),
     PLAYER_COLOR_SECTION: buildPlayerColorSectionHtml(draft),
@@ -217,6 +222,10 @@ function assembleSettingsSections(settings: GameSettings, draft: SettingsDraft):
     FOOTER_PLAYER: escapeHtml(buildFooterPlayerLabel(settings, draft)),
     FOOTER_BOARD: escapeHtml(buildFooterBoardLabel(settings, draft)),
     TITLE_RULE_IMG: settingsTitleRuleUrl,
+    START_BTN_DEFAULT_SRC: startBtnDefaultUrl,
+    START_BTN_HOVER_SRC: startBtnHoverUrl,
+    START_BTN_DISABLED_SRC: startBtnDisabledUrl,
+    START_BTN_DISABLED_ATTR: isStartDisabled ? 'disabled' : '',
   };
 }
 

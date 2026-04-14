@@ -110,5 +110,22 @@ export function buildGameScreenHtml(
   </div>
 </main>`;
   }
+
+  const snap = game.getSnapshot();
+  const colors = getPlayerColors(settings.firstPlayerColor);
+  const gameOverOnly = resolveModalHtml(
+    snap,
+    showGameOver,
+    showCodeVibesWinnerOrange,
+    showCodeVibesWinnerBlue,
+    colors,
+    settings.visualThemeId,
+  );
+
+  // Wenn das Spiel abgeschlossen ist: Game-Over als eigenständige Ansicht rendern (kein Spielfeld dahinter).
+  if (snap.isComplete && showGameOver) {
+    return `<main class="screen screen--game">${gameOverOnly}</main>`;
+  }
+
   return assembleGameScreen(game, settings, showGameOver, showCodeVibesWinnerOrange, showCodeVibesWinnerBlue, showExitConfirm);
 }

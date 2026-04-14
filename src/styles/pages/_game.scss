@@ -439,6 +439,54 @@
   }
 }
 
+/* Gaming: gematchte Karten nicht „abdunkeln“ (wirkt sonst wie Schatten über dem Board). */
+.theme--gaming .memory-card.is-matched {
+  opacity: 1;
+}
+
+/* Gaming: Match-Rahmen + pinker Drop-Shadow (Border 3px #ED1B76). */
+.theme--gaming .memory-card.is-matched .memory-card__inner {
+  box-shadow: 0 0 8px rgba(237, 27, 118, 0.3);
+}
+
+.theme--gaming .memory-card.is-matched .memory-card__inner::after {
+  content: '';
+  position: absolute;
+  /* minimal überziehen, damit an Rundungen kein heller Saum bleibt */
+  inset: -1px;
+  box-sizing: border-box;
+  border: 3px solid #ed1b76;
+  border-radius: calc(var(--card-radius, 0px) + 1px);
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Code vibes: gematchte Karten nicht abdunkeln (sonst wirkt das Grid "dunkler"). */
+.theme--code-vibes .memory-card.is-matched {
+  opacity: 1;
+}
+
+/* Code vibes: Match-Rahmen + mintfarbener Drop-Shadow (Figma: Border 5px #4DD5BC, Shadow blur 8 @30%). */
+.theme--code-vibes .memory-card.is-matched .memory-card__inner {
+  box-shadow:
+    0 0 8px rgba(77, 213, 188, 0.3);
+}
+
+.theme--code-vibes .memory-card.is-matched .memory-card__inner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  border: 5px solid #4dd5bc;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Code vibes: aufgedeckte Karten bekommen mintfarbigen Drop-Shadow. */
+.theme--code-vibes .memory-card.is-flipped:not(.is-matched) .memory-card__inner {
+  box-shadow: 0 0 8px rgba(77, 213, 188, 0.3);
+}
+
 .memory-card {
   position: relative;
   aspect-ratio: 1 / 1;
@@ -554,8 +602,9 @@
   width: calc(var(--memory-card-art-w) * 1px);
   aspect-ratio: var(--memory-card-art-w) / var(--memory-card-art-h);
   height: auto;
-  /* Dunkle Füllung: vermindert helle Spalten beim Drehen (kein overflow:hidden: bricht preserve-3d / clippt die Flächen) */
-  background-color: #020617;
+  /* Keine zusätzliche Abdunklung über dem Spielfeld im Gaming-Theme */
+  background-color: transparent;
+  box-shadow: none;
 }
 
 .theme--gaming .memory-card__face--front {
@@ -594,6 +643,7 @@
 
 .theme--code-vibes .memory-card__face--front--code-vibes-icon {
   padding: 14%;
+  background: var(--card-front-bg);
   border: 1px solid rgba(15, 23, 42, 0.1);
 
   .memory-card__front-icon {
@@ -607,6 +657,11 @@
   }
 }
 
+/* Falls CSS-Variablen/Specificity irgendwo überschrieben werden: Code-vibes-Frontfläche hart setzen. */
+.theme--code-vibes .memory-card__face--front {
+  background: #e9f9f6;
+}
+
 .theme--gaming .memory-card__face--front--illustrated {
   align-items: center;
   justify-content: center;
@@ -616,27 +671,24 @@
   color: var(--card-front-illustrated-fg, #0f172a);
   border: none;
 
-  .memory-card__front-art {
+  .memory-card__front-icon {
     position: absolute;
-    inset: 0;
+    z-index: 1;
     display: block;
-    box-sizing: border-box;
-    width: 100%;
-    height: 100%;
+    /* Leicht überfüllen, damit keine Rest-Ränder sichtbar bleiben */
+    inset: -12px;
+    width: 136%;
+    height: 136%;
     max-width: none;
     max-height: none;
-    margin: 0;
-    object-fit: fill;
-    object-position: center;
-    border-radius: 0;
-    /* Leicht vergrößern: überdeckt Subpixel-Lücken zur hellen Fläche beim Drehen */
-    transform: scale(1.02);
-    transform-origin: center center;
-  }
-
-  .memory-card__symbol {
-    position: relative;
-    z-index: 1;
+    object-fit: cover;
+    /*
+     * Die gt-icons enthalten im SVG eine Drop-Shadow nach rechts/unten (viewBox 129×144,
+     * Karte liegt bei x/y=6 und hat rechts/unten mehr "Luft"). Dadurch wirkt das Motiv
+     * optisch nach oben/links verschoben. Mit object-position kompensieren wir das.
+     */
+    object-position: 43% 44%;
+    transform: none;
   }
 }
 
@@ -799,6 +851,93 @@ dialog.modal.modal--game-over--code-vibes {
   align-items: center;
   justify-content: center;
   gap: 48px;
+}
+
+.modal--game-over-gaming {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.modal--game-over-gaming__main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  width: min(969px, calc(100vw - 2rem));
+  min-height: 379px;
+  gap: 104px;
+}
+
+.modal--game-over-gaming__hero {
+  width: 100%;
+  height: 155px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal--game-over-gaming__title {
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  font-family: 'Orbitron', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-weight: 900;
+  font-size: 124px;
+  line-height: 1;
+  letter-spacing: 0.07em;
+  color: #ed1b76;
+}
+
+.modal--game-over-gaming__stack {
+  width: 222px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 24px;
+}
+
+.modal--game-over-gaming__final-label {
+  margin: 0;
+  width: 222px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-family: 'Orbitron', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 1;
+  letter-spacing: 0.07em;
+  color: #ffffff;
+}
+
+/* Game over — Gaming (Figma Maße für das Score-Panel) */
+.modal--game-over--gaming .game-bar__scores-panel--gaming {
+  width: 222px;
+  height: 66px;
+  padding: 8px 16px;
+}
+
+.modal--game-over--gaming .game-bar__pawn-icon {
+  width: 26px;
+  height: 32px;
+}
+
+.modal--game-over--gaming .game-bar__score-num--gaming {
+  font-size: 40px;
+}
+
+@media (max-width: 1024px) {
+  .modal--game-over-gaming__title {
+    font-size: clamp(3rem, 10vw, 124px);
+  }
 }
 
 .modal--game-over-cv__group {
@@ -1173,7 +1312,9 @@ dialog.modal.modal--exit-confirm {
   height: 44px;
   padding: 12px 20px;
   border-radius: 10px;
-  border: 1px solid #e71c4f;
+  /* Hover/Active sollen 2px Border bekommen, ohne Layout-Sprung. */
+  border: 2px solid transparent;
+  box-shadow: inset 0 0 0 1px #e71c4f;
   background: #ed1b76;
   color: #f0f6f9;
   font-family: Orbitron, system-ui, sans-serif;
@@ -1181,6 +1322,13 @@ dialog.modal.modal--exit-confirm {
   font-weight: 700;
   line-height: 1;
   letter-spacing: 0.02em;
+
+  &:hover:not(:disabled),
+  &:active:not(:disabled) {
+    background: rgba(242, 199, 218, 0.08);
+    border-color: #e71c4f;
+    box-shadow: none;
+  }
 
   &:focus-visible {
     outline: 2px solid #e71c4f;
@@ -1271,7 +1419,7 @@ dialog.modal.modal--exit-confirm {
   width: 182px;
   min-width: 182px;
   height: 57px;
-  padding: 16px 24px;
+  padding: 0;
   border: none;
   border-radius: 0;
   background: #66cfbc;
@@ -1293,6 +1441,19 @@ dialog.modal.modal--exit-confirm {
     outline: 2px solid #66cfbc;
     outline-offset: 3px;
   }
+}
+
+/* Code vibes: Exit-Confirm „Back to game“ — Hover/Active: BG #66CFBC @70%, Border 3px #3ABCA4 */
+.theme--code-vibes .btn--exit-back-to-game {
+  /* Border reservieren, damit beim Hover/Active nichts springt. */
+  border: 3px solid transparent;
+}
+
+.theme--code-vibes .btn--exit-back-to-game:hover:not(:disabled),
+.theme--code-vibes .btn--exit-back-to-game:active:not(:disabled) {
+  background: rgba(102, 207, 188, 0.7);
+  border-color: #3abca4;
+  filter: none;
 }
 
 .btn--exit-confirm-quit {

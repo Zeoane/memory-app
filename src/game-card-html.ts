@@ -1,5 +1,6 @@
 import type { VisualThemeId } from './game-constants';
 import { getCodeVibesIconUrl } from './code-vibes-icon-urls';
+import { getGamingIconUrl } from './gaming-icon-urls';
 import { escapeHtml } from './html-utils';
 import type { MemoryGame, MemoryGameSnapshot } from './memory-game';
 import codeVibesCardBackUrl from './assets/img_code_vibes-theme/Code vibes card 1.svg?url';
@@ -27,7 +28,11 @@ function buildCardBackHtml(visualThemeId: VisualThemeId): string {
 
 function buildCardFrontHtml(symbol: string, visualThemeId: VisualThemeId): string {
   if (visualThemeId === 'gaming') {
-    return `<span class="memory-card__face memory-card__face--front memory-card__face--front--illustrated" aria-hidden="true"><img class="memory-card__front-art" src="${gamingCardArtUrl}" alt="" width="105" height="120" decoding="async" /><span class="memory-card__symbol">${escapeHtml(symbol)}</span></span>`;
+    const iconUrl = getGamingIconUrl(symbol);
+    if (iconUrl) {
+      return `<span class="memory-card__face memory-card__face--front memory-card__face--front--illustrated" aria-hidden="true"><img class="memory-card__front-icon" src="${iconUrl}" alt="" width="96" height="96" decoding="async" /></span>`;
+    }
+    return `<span class="memory-card__face memory-card__face--front" aria-hidden="true">${escapeHtml(symbol)}</span>`;
   }
   if (visualThemeId === 'code-vibes') {
     const iconUrl = getCodeVibesIconUrl(symbol);

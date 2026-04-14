@@ -1,0 +1,21 @@
+<dialog
+  class="modal modal--game-over modal--game-over--gaming"
+  open
+  aria-labelledby="game-over-gaming-title"
+  aria-modal="true"
+>
+  <div class="modal--game-over-gaming">
+    <h2 id="game-over-gaming-title" class="visually-hidden">Game over</h2>
+
+    <div class="modal--game-over-gaming__main">
+      <div class="modal--game-over-gaming__hero">
+        <p class="modal--game-over-gaming__title">GAME OVER</p>
+      </div>
+
+      <div class="modal--game-over-gaming__stack">
+        <p class="modal--game-over-gaming__final-label">Final score</p>
+        {{SCORES_PANEL}}
+      </div>
+    </div>
+  </div>
+</dialog>

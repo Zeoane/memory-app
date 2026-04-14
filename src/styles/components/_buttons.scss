@@ -110,9 +110,11 @@
   height: 54px;
   padding: 12px 20px;
   border-radius: 10px;
-  border-width: 2px;
+  /* Ruhezustand: 2px #E71C4F; Hover/Active: 3px #E71C4F (ohne "Springen") */
+  border-width: 3px;
   border-style: solid;
-  border-color: var(--game-bar-exit-border);
+  border-color: transparent;
+  box-shadow: inset 0 0 0 2px #e71c4f;
   background: var(--game-bar-exit-bg);
   gap: 10px;
   justify-content: flex-start;
@@ -133,9 +135,26 @@
 }
 
 .theme--gaming .btn--game-exit:hover:not(:disabled) {
-  border-color: var(--game-bar-exit-border-active, #e71c4f);
+  border-color: #e71c4f;
+  box-shadow: none;
 }
 
 .theme--gaming .btn--game-exit:active:not(:disabled) {
-  border-color: var(--game-bar-exit-border-active, #e71c4f);
+  border-color: #e71c4f;
+  box-shadow: none;
+}
+
+/* Code vibes: Exit-Button Rahmen bei Hover/Active = 3px */
+.theme--code-vibes .btn--game-exit {
+  /* Verhindert "Springen": Außenmaße bleiben konstant (immer 3px Border). */
+  border-width: 3px;
+  border-style: solid;
+  border-color: transparent;
+  box-shadow: inset 0 0 0 1px var(--game-bar-exit-border);
+}
+
+.theme--code-vibes .btn--game-exit:hover:not(:disabled),
+.theme--code-vibes .btn--game-exit:active:not(:disabled) {
+  border-color: var(--game-bar-exit-border);
+  box-shadow: none;
 }

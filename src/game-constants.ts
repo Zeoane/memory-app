@@ -36,7 +36,7 @@ export const VISUAL_THEMES: readonly VisualTheme[] = [
 /**
  * Layouts: change the color scheme and subject areas of the memory images (User Story 3).
  */
-export type LayoutId = 'nature' | 'space';
+export type LayoutId = 'space';
 
 export interface LayoutOption {
   readonly id: LayoutId;
@@ -46,7 +46,7 @@ export interface LayoutOption {
   readonly pairs: readonly string[];
 }
 
-const SPACE_PAIRS = [
+const SPACE_LAYOUT_PAIRS = [
   '🚀',
   '🛸',
   '🛰️',
@@ -106,53 +106,38 @@ const CODE_VIBES_PAIRS = [
   'vetur icon',
 ] as const;
 
+/**
+ * Motive für „Gaming theme“: Keys = Dateiname ohne Endung in img_gaming-theme/gt-icons/ (max. 18 → 6×6).
+ * Reihenfolge = festes Deck (erste N je nach Spielfeldgröße).
+ */
+const GAMING_THEME_PAIRS = [
+  'gt-banana',
+  'gt-circle',
+  'gt-cmiyc',
+  'gt-controller',
+  'gt-diamond-card',
+  'gt-dice',
+  'gt-gb',
+  'gt-maze',
+  'gt-medal',
+  'gt-mushroom',
+  'gt-pack-man',
+  'gt-pacman-pixel',
+  'gt-play',
+  'gt-puzzle',
+  'gt-sq-face',
+  'gt-square',
+  'gt-star',
+  'gt-triangle',
+] as const;
+
 export const LAYOUT_OPTIONS: readonly LayoutOption[] = [
-  {
-    id: 'nature',
-    label: 'Natur & Tiere',
-    description: 'Grüntöne, Wald- und Tier-Motive',
-    cssClass: 'layout-nature',
-    pairs: [
-      '🐻',
-      '🦊',
-      '🐸',
-      '🐼',
-      '🦁',
-      '🐯',
-      '🐵',
-      '🐰',
-      '🦉',
-      '🦋',
-      '🐢',
-      '🦔',
-      '🌲',
-      '🌿',
-      '🍄',
-      '🌻',
-      '🦆',
-      '🐧',
-      '🦩',
-      '🐝',
-      '🍃',
-      '🌳',
-      '🌺',
-      '🪵',
-      '🪨',
-      '🦫',
-      '🐿️',
-      '🦌',
-      '🐬',
-      '🦭',
-      '🪷',
-      '🌴',
-    ] as const,
-  },
   {
     id: 'space',
     label: 'Weltraum',
     description: 'Dunkelblau/Violett, Kosmos-Motive',
     cssClass: 'layout-space',
-    pairs: SPACE_PAIRS,
+    pairs: SPACE_LAYOUT_PAIRS,
   },
 ] as const;
 
@@ -201,7 +186,7 @@ export function getSymbolPoolForGame(settings: GameSettings): readonly string[] 
     case 'code-vibes':
       return CODE_VIBES_PAIRS;
     case 'gaming':
-      return SPACE_PAIRS;
+      return GAMING_THEME_PAIRS;
     case 'da-projects':
     case 'foods':
       return getLayoutOption(settings.layoutId).pairs;

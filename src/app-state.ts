@@ -26,7 +26,7 @@ export interface AppState {
 export const DEFAULT_GAME_SETTINGS: GameSettings = {
   boardSizeId: '4x4',
   visualThemeId: 'code-vibes',
-  layoutId: 'nature',
+  layoutId: 'space',
   firstPlayerColor: 'blue',
 };
 

@@ -31,7 +31,7 @@
   --memory-card-art-h: 120;
   --page-bg: #252525;
   --card-back: linear-gradient(145deg, #14b8a6, #0d9488);
-  --card-front-bg: #f0fdfa;
+  --card-front-bg: #e9f9f6;
   --card-front-fg: #0f172a;
   --card-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
   --card-radius: 0;
@@ -45,6 +45,8 @@
 .theme--gaming {
   --memory-card-art-w: 105;
   --memory-card-art-h: 120;
+  /* Konstante Seiten-/Spielfeldfläche für das Gaming-Theme */
+  --page-bg: #294f60;
   --card-back: linear-gradient(145deg, #0f172a, #020617);
   --card-front-bg: #0c1220;
   --card-front-fg: #e2e8f0;
