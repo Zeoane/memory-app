@@ -33,6 +33,7 @@ type SettingsPreviewAssets = {
   readonly stageUrl: string;
 };
 
+/** Returns preview asset URLs for the given theme id. */
 function getSettingsPreviewAssets(themeId: VisualThemeId): SettingsPreviewAssets {
   switch (themeId) {
     case 'code-vibes':
@@ -46,6 +47,7 @@ function getSettingsPreviewAssets(themeId: VisualThemeId): SettingsPreviewAssets
   }
 }
 
+/** Builds a single board-size radio list item. */
 function buildBoardSizeRadioItem(draft: SettingsDraft, opt: (typeof BOARD_SIZE_OPTIONS)[number]): string {
   const checked = draft.boardSizeId === opt.id ? 'checked' : '';
   return `
@@ -62,13 +64,14 @@ function buildBoardSizeRadioItem(draft: SettingsDraft, opt: (typeof BOARD_SIZE_O
  * Generates the radio playlist for the playing field size.
  */
 function buildBoardSizeRadiosHtml(settings: GameSettings): string {
-  // backwards compat helper; not used anymore
+  // Backwards-compat helper; currently unused.
   return BOARD_SIZE_OPTIONS.map((opt) => buildBoardSizeRadioItem(
     { boardSizeId: settings.boardSizeId, visualThemeId: settings.visualThemeId, firstPlayerColor: settings.firstPlayerColor },
     opt,
   )).join('');
 }
 
+/** Builds a single player-color radio list item. */
 function buildColorRadioItem(draft: SettingsDraft, c: PlayerColorChoice): string {
   const checked = draft.firstPlayerColor === c ? 'checked' : '';
   const label = c === 'blue' ? 'Blue' : 'Orange';
@@ -98,6 +101,7 @@ function buildColorRadiosHtml(settings: GameSettings): string {
     .join('');
 }
 
+/** Builds a single theme radio list item. */
 function buildThemeRadioItem(draft: SettingsDraft, t: (typeof VISUAL_THEMES)[number]): string {
   const checked = draft.visualThemeId === t.id ? 'checked' : '';
   return `
@@ -128,12 +132,14 @@ function buildThemeRadiosHtml(settings: GameSettings): string {
   ).join('');
 }
 
+/** Builds the board-size section HTML. */
 function buildBoardSizeSectionHtml(draft: SettingsDraft): string {
   return fillTemplate(boardSizeSectionTpl, {
     RADIOS: BOARD_SIZE_OPTIONS.map((opt) => buildBoardSizeRadioItem(draft, opt)).join(''),
   });
 }
 
+/** Builds the player-color section HTML. */
 function buildPlayerColorSectionHtml(draft: SettingsDraft): string {
   const choices: readonly PlayerColorChoice[] = ['blue', 'orange'];
   return fillTemplate(playerColorSectionTpl, {
@@ -141,6 +147,7 @@ function buildPlayerColorSectionHtml(draft: SettingsDraft): string {
   });
 }
 
+/** Builds the visual-theme section HTML. */
 function buildVisualThemeSectionHtml(draft: SettingsDraft): string {
   return fillTemplate(visualThemeSectionTpl, {
     RADIOS: VISUAL_THEMES.map((t) => buildThemeRadioItem(draft, t)).join(''),
@@ -150,6 +157,7 @@ function buildVisualThemeSectionHtml(draft: SettingsDraft): string {
 /**
  * Builds all sections for the settings page.
  */
+/** Builds the footer label for the selected theme. */
 function buildFooterThemeLabel(settings: GameSettings, draft: SettingsDraft): string {
   if (draft.visualThemeId === null) {
     return 'Game theme';
@@ -157,6 +165,7 @@ function buildFooterThemeLabel(settings: GameSettings, draft: SettingsDraft): st
   return getVisualTheme(draft.visualThemeId).label;
 }
 
+/** Builds the footer label for the selected first player color. */
 function buildFooterPlayerLabel(_settings: GameSettings, draft: SettingsDraft): string {
   if (draft.firstPlayerColor === null) {
     return 'Player';
@@ -164,6 +173,7 @@ function buildFooterPlayerLabel(_settings: GameSettings, draft: SettingsDraft): 
   return draft.firstPlayerColor === 'blue' ? 'Blue' : 'Orange';
 }
 
+/** Builds the footer label for the selected board size. */
 function buildFooterBoardLabel(_settings: GameSettings, draft: SettingsDraft): string {
   if (draft.boardSizeId === null) {
     return 'Board size';
@@ -172,7 +182,7 @@ function buildFooterBoardLabel(_settings: GameSettings, draft: SettingsDraft): s
 }
 
 /**
- * Static preview of the game interface.
+ * Builds the static preview of the game UI.
  */
 function buildSettingsPreviewHtml(settings: GameSettings, draft: SettingsDraft): string {
   const effectiveThemeId: VisualThemeId = (draft.visualThemeId ?? settings.visualThemeId) as VisualThemeId;
@@ -210,6 +220,7 @@ function buildSettingsPreviewHtml(settings: GameSettings, draft: SettingsDraft):
   `.trim();
 }
 
+/** Assembles template replacements for the settings shell. */
 function assembleSettingsSections(settings: GameSettings, draft: SettingsDraft): Record<string, string> {
   const isStartDisabled =
     draft.boardSizeId === null || draft.visualThemeId === null || draft.firstPlayerColor === null;

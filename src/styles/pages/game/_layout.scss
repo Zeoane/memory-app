@@ -1,0 +1,104 @@
+.screen--game {
+  display: block;
+  padding: clamp(1rem, 2.5vh, 1.75rem) 1rem;
+  align-items: stretch;
+}
+
+.game-playfield {
+  --grid-gap: 6px;
+  --memory-cell-size: 120px;
+  --game-bar-to-grid: clamp(2.75rem, 7vh, 5.5rem);
+  width: min(100%, 750px);
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.memory-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 4), var(--memory-cell-size));
+  grid-auto-rows: var(--memory-cell-size);
+  row-gap: var(--grid-gap);
+  column-gap: var(--grid-gap);
+  width: fit-content;
+  max-width: 100%;
+  min-width: 0;
+  align-self: center;
+  margin-inline: auto;
+  margin-top: 0;
+  box-sizing: content-box;
+
+  .memory-card {
+    align-self: center;
+    justify-self: center;
+    width: 100%;
+    max-width: var(--memory-cell-size);
+  }
+}
+
+.theme--gaming .game-playfield {
+  overflow-x: hidden;
+  width: min(100%, 1219px);
+  margin-inline: auto;
+}
+
+.theme--gaming .game-playfield[style*='--cols: 4'][style*='--rows: 4'] {
+  --grid-gap: 24px;
+}
+
+.theme--code-vibes .game-playfield {
+  width: min(100%, 1219px);
+}
+
+.theme--gaming .memory-grid {
+  grid-template-columns: repeat(var(--cols, 4), max-content);
+  grid-auto-rows: max-content;
+
+  .memory-card {
+    width: max-content;
+    max-width: none;
+  }
+}
+
+.theme--gaming .memory-card.is-matched {
+  opacity: 1;
+}
+
+.theme--gaming .memory-card.is-matched .memory-card__inner {
+  box-shadow: 0 0 8px rgba(237, 27, 118, 0.3);
+}
+
+.theme--gaming .memory-card.is-matched .memory-card__inner::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  box-sizing: border-box;
+  border: 3px solid #ed1b76;
+  border-radius: calc(var(--card-radius, 0px) + 1px);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.theme--code-vibes .memory-card.is-matched {
+  opacity: 1;
+}
+
+.theme--code-vibes .memory-card.is-matched .memory-card__inner {
+  box-shadow: 0 0 8px rgba(77, 213, 188, 0.3);
+}
+
+.theme--code-vibes .memory-card.is-matched .memory-card__inner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  border: 5px solid #4dd5bc;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.theme--code-vibes .memory-card.is-flipped:not(.is-matched) .memory-card__inner {
+  box-shadow: 0 0 8px rgba(77, 213, 188, 0.3);
+}
+

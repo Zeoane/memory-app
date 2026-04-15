@@ -1,7 +1,7 @@
 /**
- * Escaped HTML special characters for safe text embedding.
- * @param text Raw text 
- * @returns for innerHTML safe string
+ * Escapes text for safe HTML embedding.
+ * @param text Raw text
+ * @returns Escaped string safe for innerHTML
  */
 export function escapeHtml(text: string): string {
   const wrapper = document.createElement('div');

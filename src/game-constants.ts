@@ -1,6 +1,4 @@
-/**
- * Central configuration: playing field sizes, themes, layouts and player colors.
- */
+/** Central configuration for game options and themes. */
 
 export type BoardSizeId = '4x4' | '6x4' | '6x6';
 
@@ -17,7 +15,7 @@ export const BOARD_SIZE_OPTIONS: readonly BoardSizeOption[] = [
   { id: '6x6', cols: 6, rows: 6, label: '36 cards' },
 ] as const;
 
-/** Visual representation of the playing field (Game themes in the settings). */
+/** Visual theme ids used by the settings UI. */
 export type VisualThemeId = 'code-vibes' | 'gaming' | 'da-projects' | 'foods';
 
 export interface VisualTheme {
@@ -26,6 +24,7 @@ export interface VisualTheme {
   readonly description: string;
 }
 
+/** Visual themes shown in settings. */
 export const VISUAL_THEMES: readonly VisualTheme[] = [
   { id: 'code-vibes', label: 'Code vibes theme', description: 'Teal, klarer Dev-Look' },
   { id: 'gaming', label: 'Gaming theme', description: 'Neon-Kanten, dunkle Karten' },
@@ -33,58 +32,7 @@ export const VISUAL_THEMES: readonly VisualTheme[] = [
   { id: 'foods', label: 'Foods theme', description: 'Warme Töne, einladend' },
 ] as const;
 
-/**
- * Layouts: change the color scheme and subject areas of the memory images (User Story 3).
- */
-export type LayoutId = 'space';
-
-export interface LayoutOption {
-  readonly id: LayoutId;
-  readonly label: string;
-  readonly description: string;
-  readonly cssClass: string;
-  readonly pairs: readonly string[];
-}
-
-const SPACE_LAYOUT_PAIRS = [
-  '🚀',
-  '🛸',
-  '🛰️',
-  '🌙',
-  '⭐',
-  '🌟',
-  '🪐',
-  '☄️',
-  '🌌',
-  '👽',
-  '🌑',
-  '🌠',
-  '🔭',
-  '🌍',
-  '🌕',
-  '☀️',
-  '🌎',
-  '🌖',
-  '🌗',
-  '🌘',
-  '🌒',
-  '🌓',
-  '🌔',
-  '🌚',
-  '👾',
-  '🤖',
-  '💫',
-  '✨',
-  '⚡',
-  '🌩️',
-  '📡',
-  '🧑‍🚀',
-] as const;
-
-/**
- * Motive für „Code vibes“: Keys = Dateiname ohne .svg in code-icons/ (max. 18 → 6×6).
- * Reihenfolge = festes Deck (erste N je nach Spielfeldgröße).
- */
+/** Fixed symbol keys for the code-vibes theme. */
 const CODE_VIBES_PAIRS = [
   'Angular Icon 1',
   'Bootstrap 1',
@@ -106,10 +54,7 @@ const CODE_VIBES_PAIRS = [
   'vetur icon',
 ] as const;
 
-/**
- * Motive für „Gaming theme“: Keys = Dateiname ohne Endung in img_gaming-theme/gt-icons/ (max. 18 → 6×6).
- * Reihenfolge = festes Deck (erste N je nach Spielfeldgröße).
- */
+/** Fixed symbol keys for the gaming theme. */
 const GAMING_THEME_PAIRS = [
   'gt-banana',
   'gt-circle',
@@ -131,16 +76,6 @@ const GAMING_THEME_PAIRS = [
   'gt-triangle',
 ] as const;
 
-export const LAYOUT_OPTIONS: readonly LayoutOption[] = [
-  {
-    id: 'space',
-    label: 'Weltraum',
-    description: 'Dunkelblau/Violett, Kosmos-Motive',
-    cssClass: 'layout-space',
-    pairs: SPACE_LAYOUT_PAIRS,
-  },
-] as const;
-
 export type PlayerColorChoice = 'blue' | 'orange';
 
 export interface PlayerColors {
@@ -148,6 +83,7 @@ export interface PlayerColors {
   readonly player2: PlayerColorChoice;
 }
 
+/** Resolves which logical player is blue/orange based on the first pick. */
 export function getPlayerColors(choice: PlayerColorChoice): PlayerColors {
   return choice === 'blue'
     ? { player1: 'blue', player2: 'orange' }
@@ -157,10 +93,10 @@ export function getPlayerColors(choice: PlayerColorChoice): PlayerColors {
 export interface GameSettings {
   boardSizeId: BoardSizeId;
   visualThemeId: VisualThemeId;
-  layoutId: LayoutId;
   firstPlayerColor: PlayerColorChoice;
 }
 
+/** Returns the board size option for the given id. */
 export function getBoardSizeOption(id: BoardSizeId): BoardSizeOption {
   const found = BOARD_SIZE_OPTIONS.find((o) => o.id === id);
   if (!found) {
@@ -169,18 +105,7 @@ export function getBoardSizeOption(id: BoardSizeId): BoardSizeOption {
   return found;
 }
 
-export function getLayoutOption(id: LayoutId): LayoutOption {
-  const found = LAYOUT_OPTIONS.find((l) => l.id === id);
-  if (!found) {
-    throw new Error(`Unbekanntes Layout: ${id}`);
-  }
-  return found;
-}
-
-/**
- * Symbol-Pool für das Memory-Deck: bei Code vibes / Gaming feste Motive,
- * sonst nach Layout (Natur vs. Weltraum).
- */
+/** Returns the symbol pool for the selected visual theme. */
 export function getSymbolPoolForGame(settings: GameSettings): readonly string[] {
   switch (settings.visualThemeId) {
     case 'code-vibes':
@@ -189,7 +114,7 @@ export function getSymbolPoolForGame(settings: GameSettings): readonly string[] 
       return GAMING_THEME_PAIRS;
     case 'da-projects':
     case 'foods':
-      return getLayoutOption(settings.layoutId).pairs;
+      return CODE_VIBES_PAIRS;
     default: {
       const _exhaustive: never = settings.visualThemeId;
       return _exhaustive;
@@ -197,6 +122,7 @@ export function getSymbolPoolForGame(settings: GameSettings): readonly string[] 
   }
 }
 
+/** Returns the visual theme metadata for the given id. */
 export function getVisualTheme(id: VisualThemeId): VisualTheme {
   const found = VISUAL_THEMES.find((t) => t.id === id);
   if (!found) {
@@ -205,6 +131,7 @@ export function getVisualTheme(id: VisualThemeId): VisualTheme {
   return found;
 }
 
+/** Returns the required number of pairs for a given board size. */
 export function pairCountForBoard(size: BoardSizeOption): number {
   return (size.cols * size.rows) / 2;
 }

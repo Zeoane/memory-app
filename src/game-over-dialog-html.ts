@@ -11,10 +11,12 @@ import labelOrangeUrl from './assets/img_code_vibes-theme/label-orange.svg?url';
 import chessPawnOrangeUrl from './assets/img_gaming-theme/gt-chess_pawn-orange.svg?url';
 import chessPawnBlueUrl from './assets/img_gaming-theme/gt-chess_pawn-blue.svg?url';
 
+/** Builds the generic score line for non-themed dialogs. */
 function buildScoreLineHtml(p1: number, p2: number, colors: PlayerColors): string {
   return `Spieler 1: <span class="player-tag player-tag--${colors.player1}">${p1}</span> · Spieler 2: <span class="player-tag player-tag--${colors.player2}">${p2}</span>`;
 }
 
+/** Returns a short winner message for the generic dialog. */
 function resolveWinnerMessage(winner: 'player1' | 'player2' | 'draw'): string {
   if (winner === 'draw') {
     return 'Unentschieden!';
@@ -25,11 +27,13 @@ function resolveWinnerMessage(winner: 'player1' | 'player2' | 'draw'): string {
   return 'Spieler 2 gewinnt!';
 }
 
+/** Returns the CSS modifier for highlighting a non-draw winner line. */
 function buildWinnerModifier(winner: 'player1' | 'player2' | 'draw'): string {
   const isDraw = winner === 'draw';
   return isDraw ? '' : ' modal__winner--highlight';
 }
 
+/** Maps raw scores to blue/orange scores based on the selected first player color. */
 function resolveBlueOrangeScores(
   scoreP1: number,
   scoreP2: number,
@@ -40,18 +44,19 @@ function resolveBlueOrangeScores(
   return { blue, orange };
 }
 
-/** Orange gewinnt im Code-Vibes-Scoreboard (Blue vs. Orange), nicht Unentschieden. */
+/** Returns true if orange wins (blue vs orange), excluding draws. */
 export function codeVibesOrangeWins(scoreP1: number, scoreP2: number, colors: PlayerColors): boolean {
   const { blue, orange } = resolveBlueOrangeScores(scoreP1, scoreP2, colors);
   return orange > blue;
 }
 
-/** Blue gewinnt im Code-Vibes-Scoreboard (Blue vs. Orange), nicht Unentschieden. */
+/** Returns true if blue wins (blue vs orange), excluding draws. */
 export function codeVibesBlueWins(scoreP1: number, scoreP2: number, colors: PlayerColors): boolean {
   const { blue, orange } = resolveBlueOrangeScores(scoreP1, scoreP2, colors);
   return blue > orange;
 }
 
+/** Builds the code-vibes themed game-over dialog HTML. */
 function buildCodeVibesGameOverHtml(scoreP1: number, scoreP2: number, colors: PlayerColors): string {
   const { blue, orange } = resolveBlueOrangeScores(scoreP1, scoreP2, colors);
   const isDraw = blue === orange;
@@ -68,6 +73,7 @@ function buildCodeVibesGameOverHtml(scoreP1: number, scoreP2: number, colors: Pl
   });
 }
 
+/** Builds the gaming themed scores panel HTML. */
 function buildGamingScoresPanelHtml(scoreP1: number, scoreP2: number, colors: PlayerColors): string {
   const { blue, orange } = resolveBlueOrangeScores(scoreP1, scoreP2, colors);
   return `<div class="game-bar__scores-panel game-bar__scores-panel--gaming">
@@ -84,6 +90,7 @@ function buildGamingScoresPanelHtml(scoreP1: number, scoreP2: number, colors: Pl
           </div>`;
 }
 
+/** Builds the gaming themed game-over dialog HTML. */
 function buildGamingGameOverHtml(scoreP1: number, scoreP2: number, colors: PlayerColors): string {
   return fillTemplate(gameOverGamingTpl, {
     SCORES_PANEL: buildGamingScoresPanelHtml(scoreP1, scoreP2, colors),
@@ -91,7 +98,7 @@ function buildGamingGameOverHtml(scoreP1: number, scoreP2: number, colors: Playe
 }
 
 /**
- * Markup für den Game-over-Dialog mit Punkten und Gewinnermeldung.
+ * Builds the game-over dialog HTML for the given theme.
  */
 export function buildGameOverDialogHtml(
   scoreP1: number,

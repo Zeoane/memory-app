@@ -9,6 +9,7 @@ import exitGameIconUrl from './assets/img_settings_themes/exit_game.svg?url';
 
 const PLAYER_ONE_INDEX = 0;
 
+/** Builds a single score row for the generic scoreboard. */
 function buildScorePairRow(label: string, score: number, spanClass: string): string {
   return `<div class="game-bar__pair">
             <span class="game-bar__score-label">${label}</span>
@@ -16,6 +17,7 @@ function buildScorePairRow(label: string, score: number, spanClass: string): str
           </div>`;
 }
 
+/** Builds the generic scoreboard HTML (non-themed). */
 function buildScoresBlockHtml(snap: MemoryGameSnapshot, colors: PlayerColors): string {
   const c1 = `score score--p1 player-tag player-tag--${colors.player1}`;
   const c2 = `score score--p2 player-tag player-tag--${colors.player2}`;
@@ -29,6 +31,7 @@ function buildScoresBlockHtml(snap: MemoryGameSnapshot, colors: PlayerColors): s
           </div>`;
 }
 
+/** Builds the code-vibes themed scoreboard HTML. */
 function buildCodeVibesScoresHtml(snap: MemoryGameSnapshot, colors: PlayerColors): string {
   const blueScore = colors.player1 === 'blue' ? snap.scores[0] : snap.scores[1];
   const orangeScore = colors.player1 === 'orange' ? snap.scores[0] : snap.scores[1];
@@ -48,6 +51,7 @@ function buildCodeVibesScoresHtml(snap: MemoryGameSnapshot, colors: PlayerColors
           </div>`;
 }
 
+/** Builds the gaming themed scoreboard HTML. */
 function buildGamingScoresHtml(snap: MemoryGameSnapshot, colors: PlayerColors): string {
   const blueScore = colors.player1 === 'blue' ? snap.scores[0] : snap.scores[1];
   const orangeScore = colors.player1 === 'orange' ? snap.scores[0] : snap.scores[1];
@@ -65,26 +69,31 @@ function buildGamingScoresHtml(snap: MemoryGameSnapshot, colors: PlayerColors): 
           </div>`;
 }
 
+/** Returns the CSS class for the currently active player tag. */
 function buildCurrentPlayerClass(snap: MemoryGameSnapshot, colors: PlayerColors): string {
   const isFirst = snap.currentPlayer === PLAYER_ONE_INDEX;
   return isFirst ? `player-tag--${colors.player1}` : `player-tag--${colors.player2}`;
 }
 
+/** Returns the current player's name for aria labels. */
 function buildCurrentPlayerNameForAria(snap: MemoryGameSnapshot, colors: PlayerColors): string {
   const p = snap.currentPlayer === PLAYER_ONE_INDEX ? colors.player1 : colors.player2;
   return p === 'blue' ? 'Blue' : 'Orange';
 }
 
+/** Resolves the current player's label icon URL for code-vibes. */
 function resolveCurrentPlayerLabelIconUrl(snap: MemoryGameSnapshot, colors: PlayerColors): string {
   const p = snap.currentPlayer === PLAYER_ONE_INDEX ? colors.player1 : colors.player2;
   return p === 'blue' ? labelBlueUrl : labelOrangeUrl;
 }
 
+/** Returns the current player label for the generic (German) fallback UI. */
 function buildCurrentPlayerLabelDe(snap: MemoryGameSnapshot): string {
   const isFirst = snap.currentPlayer === PLAYER_ONE_INDEX;
   return isFirst ? 'Spieler 1' : 'Spieler 2';
 }
 
+/** Builds the "current player" indicator HTML for the selected theme. */
 function buildTurnParagraphHtml(snap: MemoryGameSnapshot, colors: PlayerColors, theme: VisualThemeId): string {
   if (theme === 'code-vibes') {
     const iconUrl = resolveCurrentPlayerLabelIconUrl(snap, colors);
@@ -111,6 +120,7 @@ function buildTurnParagraphHtml(snap: MemoryGameSnapshot, colors: PlayerColors, 
   return `<p class="game-bar__turn">Am Zug: <strong class="player-tag ${cls}">${label}</strong></p>`;
 }
 
+/** Builds the exit navigation HTML. */
 function buildExitNavHtml(): string {
   return `<nav class="game-bar__nav" aria-label="Spielaktionen">
             <button type="button" class="btn btn--game-exit" data-action="exit-game">

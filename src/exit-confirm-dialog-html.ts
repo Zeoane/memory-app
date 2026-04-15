@@ -1,7 +1,7 @@
 import exitConfirmTpl from './templates/exit-confirm-dialog.html?raw';
 import type { VisualThemeId } from './game-constants';
 
-/** Markup für den Exit-Bestätigungsdialog (Figma: 539×270, vertikaler Flow). */
+/** Builds the exit confirmation dialog HTML for the given theme. */
 export function buildExitConfirmDialogHtml(visualThemeId: VisualThemeId): string {
   if (visualThemeId !== 'gaming') {
     return exitConfirmTpl;

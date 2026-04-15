@@ -1,0 +1,211 @@
+@use '../../abstracts/settings-tokens' as *;
+
+.settings-preview {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  gap: 10px;
+  margin: 0;
+  margin-top: 58px;
+  width: 460px;
+  max-width: 100%;
+  height: 412px;
+  flex: none;
+  flex-grow: 0;
+  transform: scale(0.92);
+  transform-origin: top right;
+  align-self: flex-end;
+}
+
+.settings-preview__chrome {
+  box-sizing: border-box;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 17px 7px;
+  gap: 10px;
+  width: 100%;
+  height: 412px;
+  min-height: 0;
+  background: linear-gradient(to top right, #2086b4 0%, #294f60 100%);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(48, 49, 49, 0.12);
+}
+
+.settings-preview__chrome--da-projects {
+  background: #bfe5f2;
+}
+
+.settings-preview__chrome--foods {
+  background: #e8e2dc;
+}
+
+.settings-preview__topbar-art {
+  width: 430px;
+  max-width: calc(100% - 14px);
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(57px + 12px);
+  margin-top: -12px;
+}
+
+.settings-preview__topbar-img {
+  display: block;
+  width: 100%;
+}
+
+.settings-preview__stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  min-height: 0;
+  background: transparent;
+}
+
+.settings-preview__topbar {
+  box-sizing: border-box;
+  width: 430px;
+  max-width: calc(100% - 14px);
+  height: 45px;
+  margin-top: 0;
+  padding: 8px 20px;
+  display: flex;
+  align-items: center;
+  background: var(--preview-bar-bg, rgba(77, 213, 188, 0.2));
+}
+
+.settings-preview__topbar-inner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.settings-preview__topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 0 10px;
+  height: 18px;
+  border-radius: 4px;
+  background: rgba(240, 234, 110, 0.18);
+}
+
+.settings-preview__player-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.settings-preview__player-icon {
+  display: block;
+  height: 10px;
+  width: auto;
+}
+
+.settings-preview__player-count {
+  font-family: 'Red Rose', Georgia, serif;
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.settings-preview__player-chip--blue .settings-preview__player-count {
+  color: #2bb1ff;
+}
+
+.settings-preview__player-chip--orange .settings-preview__player-count {
+  color: #f58e39;
+}
+
+.settings-preview__current-player {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  gap: 6px;
+  min-width: 0;
+}
+
+.settings-preview__current-player-label {
+  font-family: 'Red Rose', Georgia, serif;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.92);
+  white-space: nowrap;
+}
+
+.settings-preview__current-player-icon {
+  display: block;
+  width: 10px;
+  height: 8px;
+}
+
+.settings-preview__exit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 20px;
+  padding: 0 10px;
+  border-radius: 2px;
+  border: 1px solid rgba(77, 213, 188, 0.95);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.settings-preview__exit-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 11px;
+  height: 9px;
+}
+
+.settings-preview__exit-icon svg {
+  width: 11px;
+  height: 9px;
+  display: block;
+}
+
+.settings-preview__exit-label {
+  font-family: 'Red Rose', Georgia, serif;
+  font-weight: 700;
+  font-size: 10px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.settings-preview__stage-art {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.settings-preview__stage-img {
+  display: block;
+  width: 100%;
+  max-width: 451px;
+  height: auto;
+  object-fit: contain;
+  transform: translateY(-44px);
+  padding-top: 98px;
+}
+

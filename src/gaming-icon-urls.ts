@@ -38,6 +38,7 @@ const GAMING_ICON_URLS: Readonly<Record<string, string>> = {
   'gt-triangle': gtTriangleUrl,
 };
 
+/** Returns the icon URL for a given gaming symbol key. */
 export function getGamingIconUrl(key: string): string | undefined {
   return GAMING_ICON_URLS[key];
 }

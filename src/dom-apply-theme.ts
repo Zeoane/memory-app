@@ -1,14 +1,13 @@
-import { getLayoutOption } from './game-constants';
 import type { GameSettings } from './game-constants';
 import type { ViewId } from './app-state';
 
 const APP_ROOT_CLASS = 'app-root';
 
 /**
- * Sets theme and layout classes on the app container.
- * @param root 
- * @param settings 
- * @param view 
+ * Applies root CSS classes for the current theme and view.
+ * @param root App root element
+ * @param settings Current game settings
+ * @param view Current view id
  */
 export function applyThemeClasses(root: HTMLElement, settings: GameSettings, view: ViewId): void {
   root.className = '';
@@ -18,5 +17,4 @@ export function applyThemeClasses(root: HTMLElement, settings: GameSettings, vie
     root.classList.add('app-root--settings');
     return;
   }
-  root.classList.add(getLayoutOption(settings.layoutId).cssClass);
 }

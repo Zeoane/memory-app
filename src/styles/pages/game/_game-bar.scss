@@ -1,0 +1,354 @@
+.game-bar {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: clamp(0.5rem, 3vw, 2.5rem);
+  align-self: stretch;
+  width: 100%;
+  max-width: none;
+  height: 62px;
+  margin: 0 0 var(--game-bar-to-grid);
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+
+  &:has(.game-bar__scores-panel--code-vibes) {
+    gap: 170px;
+    justify-content: flex-start;
+
+    .game-bar__nav {
+      margin-left: auto;
+    }
+  }
+
+  &:has(.game-bar__scores-panel--gaming) {
+    gap: 0;
+    justify-content: space-between;
+
+    .game-bar__nav {
+      margin-left: auto;
+    }
+  }
+
+  &__scores-panel {
+    box-sizing: border-box;
+    flex: 0 0 292px;
+    width: 292px;
+    height: 62px;
+    padding: 17px 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 20px;
+    background: var(--game-bar-scores-bg);
+  }
+
+  &__scores {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 8px;
+    width: 225px;
+    height: 32px;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__pair {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__scores-panel--code-vibes {
+    flex: 0 1 auto;
+    width: auto;
+    min-width: 292px;
+    max-width: 100%;
+  }
+
+  &__scores-panel--gaming {
+    box-sizing: border-box;
+    flex: 0 0 auto;
+    width: 182px;
+    height: 54px;
+    padding: 0 16px;
+    gap: 40px;
+    align-items: center;
+    justify-content: center;
+    background-color: #ffffff;
+    border-radius: 10px;
+  }
+
+  &__scores--code-vibes {
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    min-height: 32px;
+    gap: 20px;
+  }
+
+  &__scores--gaming {
+    width: 100%;
+    height: 100%;
+    gap: 40px;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__pair--code-vibes {
+    flex-shrink: 0;
+    gap: 8px;
+  }
+
+  &__pair--gaming {
+    flex-shrink: 0;
+    gap: 8px;
+  }
+
+  &__pawn-icon {
+    display: block;
+    flex: 0 0 auto;
+    flex-shrink: 0;
+    width: 22px;
+    height: 28px;
+    object-fit: contain;
+  }
+
+  &__label-icon {
+    display: block;
+    flex: 0 0 auto;
+    flex-shrink: 0;
+    width: 24px;
+    height: 20px;
+    object-fit: contain;
+  }
+
+  &__turn-current-label {
+    display: block;
+    flex: 0 0 24px;
+    flex-shrink: 0;
+    flex-grow: 0;
+    align-self: center;
+    box-sizing: border-box;
+    width: 24px;
+    min-width: 24px;
+    max-width: 24px;
+    height: 20px;
+    min-height: 20px;
+    max-height: 20px;
+    aspect-ratio: 24 / 20;
+    object-fit: contain;
+    overflow: hidden;
+  }
+
+  &__player-name {
+    font-family: 'Red Rose', Georgia, serif;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1;
+    color: #f8fafc;
+  }
+
+  &__score-num {
+    font-family: 'Red Rose', Georgia, serif;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1;
+
+    &--blue {
+      color: #2bb1ff;
+    }
+
+    &--orange {
+      color: #f58e39;
+    }
+  }
+
+  &__score-num--gaming {
+    font-family: Orbitron, system-ui, sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0;
+    font-variant-numeric: tabular-nums;
+
+    &.game-bar__score-num--orange {
+      color: #ea6900;
+    }
+
+    &.game-bar__score-num--blue {
+      color: #097fc5;
+    }
+  }
+
+  &__score-label {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  &__score-value {
+    margin: 0;
+  }
+
+  &__turn {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+    text-align: center;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+
+    strong {
+      font-weight: 700;
+    }
+
+    &--code-vibes {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-align: center;
+    }
+
+    &--gaming {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      text-align: center;
+    }
+  }
+
+  &__turn-prefix {
+    font-family: 'Red Rose', Georgia, serif;
+    font-size: 26px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 1;
+    color: #f8fafc;
+    white-space: nowrap;
+  }
+
+  &__turn-prefix--gaming {
+    font-family: Orbitron, system-ui, sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.07em;
+    color: #ffffff;
+  }
+
+  &__current-badge {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 41px;
+    height: 40px;
+    padding: 4px 8px;
+    gap: 10px;
+    border-radius: 3px;
+  }
+
+  &__current-badge--orange {
+    background: #ea6900;
+  }
+
+  &__current-badge--blue {
+    background: #097fc5;
+  }
+
+  &__current-pawn {
+    display: block;
+    width: 22px;
+    height: 28px;
+    object-fit: contain;
+  }
+
+  &__nav {
+    flex: 0 0 auto;
+    min-width: 207px;
+    width: auto;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+  }
+}
+
+.theme--gaming .game-bar {
+  width: min(100%, 1219px);
+  height: 102px;
+  padding: 24px;
+  border-radius: 10px;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(253, 150, 201, 0.2);
+  gap: 0;
+}
+
+.theme--code-vibes .game-bar {
+  justify-content: space-between;
+  gap: 0;
+  padding-inline: 24px;
+}
+
+.theme--code-vibes .game-bar__nav {
+  margin-left: 0;
+}
+
+@media (max-width: 720px) {
+  .game-bar {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 62px;
+    justify-content: center;
+    gap: clamp(0.75rem, 3vw, 1.5rem);
+  }
+
+  .game-bar:has(.game-bar__scores-panel--code-vibes) {
+    gap: clamp(0.75rem, 3vw, 1.5rem);
+
+    .game-bar__nav {
+      margin-left: 0;
+    }
+  }
+
+  .game-bar__scores-panel {
+    flex-basis: 100%;
+    width: 100%;
+    max-width: 292px;
+  }
+
+  .game-bar__nav {
+    flex-basis: 100%;
+    width: 100%;
+    max-width: min(100%, 280px);
+    justify-content: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .game-bar {
+    flex-direction: column;
+    align-items: stretch;
+
+    &__turn {
+      text-align: left;
+    }
+  }
+}
+

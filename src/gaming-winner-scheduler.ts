@@ -2,13 +2,13 @@ import { appState } from './app-state';
 import { getPlayerColors } from './game-constants';
 import { codeVibesBlueWins, codeVibesOrangeWins } from './game-over-dialog-html';
 
-let codeVibesWinnerTimer: ReturnType<typeof setTimeout> | null = null;
+let gamingWinnerTimer: ReturnType<typeof setTimeout> | null = null;
 
-/** Cancels any scheduled code-vibes winner overlay. */
-export function clearCodeVibesWinnerTimer(): void {
-  if (codeVibesWinnerTimer !== null) {
-    clearTimeout(codeVibesWinnerTimer);
-    codeVibesWinnerTimer = null;
+/** Cancels any scheduled gaming winner overlay. */
+export function clearGamingWinnerTimer(): void {
+  if (gamingWinnerTimer !== null) {
+    clearTimeout(gamingWinnerTimer);
+    gamingWinnerTimer = null;
   }
 }
 
@@ -16,8 +16,8 @@ type WinnerKind = 'orange' | 'blue';
 
 /** Schedules showing the winner overlay after a fixed delay. */
 function scheduleOverlay(render: () => void, kind: WinnerKind): void {
-  codeVibesWinnerTimer = setTimeout(() => {
-    codeVibesWinnerTimer = null;
+  gamingWinnerTimer = setTimeout(() => {
+    gamingWinnerTimer = null;
     if (appState.view !== 'game' || appState.game === null || !appState.showGameOver) {
       return;
     }
@@ -31,25 +31,25 @@ function scheduleOverlay(render: () => void, kind: WinnerKind): void {
       if (!codeVibesOrangeWins(s[0], s[1], c)) {
         return;
       }
-      appState.showCodeVibesWinnerOrange = true;
-      appState.showCodeVibesWinnerBlue = false;
+      appState.showGamingWinnerOrange = true;
+      appState.showGamingWinnerBlue = false;
     } else {
       if (!codeVibesBlueWins(s[0], s[1], c)) {
         return;
       }
-      appState.showCodeVibesWinnerBlue = true;
-      appState.showCodeVibesWinnerOrange = false;
+      appState.showGamingWinnerBlue = true;
+      appState.showGamingWinnerOrange = false;
     }
     render();
   }, 3000);
 }
 
 /**
- * Schedules the code-vibes winner overlay after game over (only for a non-draw).
+ * Schedules the gaming winner overlay after game over (only for a non-draw).
  */
-export function scheduleCodeVibesWinnerIfNeeded(render: () => void): void {
-  clearCodeVibesWinnerTimer();
-  if (appState.settings.visualThemeId !== 'code-vibes' || appState.game === null) {
+export function scheduleGamingWinnerIfNeeded(render: () => void): void {
+  clearGamingWinnerTimer();
+  if (appState.settings.visualThemeId !== 'gaming' || appState.game === null) {
     return;
   }
   const snap = appState.game.getSnapshot();
@@ -66,3 +66,4 @@ export function scheduleCodeVibesWinnerIfNeeded(render: () => void): void {
     scheduleOverlay(render, 'blue');
   }
 }
+

@@ -1,0 +1,190 @@
+.memory-card {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  min-height: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  perspective: 800px;
+  -webkit-tap-highlight-color: transparent;
+
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: var(--card-radius, 0);
+  }
+
+  &[aria-disabled='true'] {
+    cursor: default;
+  }
+
+  &.is-matched {
+    opacity: 0.55;
+    pointer-events: none;
+  }
+
+  &__inner {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: var(--card-radius, 0);
+    box-shadow: var(--card-shadow);
+  }
+
+  &.is-flipped .memory-card__inner,
+  &.is-matched .memory-card__inner {
+    transform: rotateY(180deg);
+  }
+
+  &__face {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--card-radius, 0);
+    backface-visibility: hidden;
+    font-size: clamp(0.85rem, 3.5vw, 2rem);
+    line-height: 1;
+
+    &--back {
+      background: var(--card-back);
+      color: rgba(255, 255, 255, 0.85);
+      font-weight: 800;
+      font-size: clamp(1rem, 4vw, 2.2rem);
+
+      &--illustrated {
+        padding: 0;
+        font-size: 0;
+        line-height: 0;
+        overflow: hidden;
+        background: var(--card-back);
+      }
+    }
+
+    &--front {
+      background: var(--card-front-bg);
+      color: var(--card-front-fg, #0f172a);
+      transform: rotateY(180deg);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+  }
+
+  &__back-art {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: var(--card-radius, 0);
+    border: none;
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+.theme--code-vibes .memory-card,
+.theme--da-projects .memory-card,
+.theme--gaming .memory-card,
+.theme--foods .memory-card {
+  aspect-ratio: unset;
+  height: auto;
+}
+
+.theme--code-vibes .memory-card__inner,
+.theme--da-projects .memory-card__inner,
+.theme--foods .memory-card__inner {
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: var(--memory-card-art-w) / var(--memory-card-art-h);
+  height: auto;
+}
+
+.theme--gaming .memory-card__inner {
+  width: calc(var(--memory-card-art-w) * 1px);
+  aspect-ratio: var(--memory-card-art-w) / var(--memory-card-art-h);
+  height: auto;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.theme--gaming .memory-card__face--front {
+  border: none;
+}
+
+.theme--code-vibes .memory-card__inner,
+.theme--da-projects .memory-card__inner,
+.theme--gaming .memory-card__inner,
+.theme--foods .memory-card__inner {
+  transition: transform 0.65s cubic-bezier(0.33, 1, 0.68, 1);
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+
+.theme--gaming .memory-card__face--back--illustrated {
+  display: block;
+  background: transparent;
+
+  .memory-card__back-art {
+    position: absolute;
+    inset: 0;
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    object-fit: fill;
+    object-position: center;
+    border-radius: 0;
+  }
+}
+
+.theme--code-vibes .memory-card__face--front--code-vibes-icon {
+  padding: 14%;
+  background: var(--card-front-bg);
+  border: 1px solid rgba(15, 23, 42, 0.1);
+
+  .memory-card__front-icon {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    object-position: center;
+  }
+}
+
+.theme--code-vibes .memory-card__face--front {
+  background: #e9f9f6;
+}
+
+.theme--gaming .memory-card__face--front--illustrated {
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  overflow: hidden;
+  background: var(--card-front-illustrated-bg, #f6f1f3);
+  color: var(--card-front-illustrated-fg, #0f172a);
+  border: none;
+
+  .memory-card__front-icon {
+    position: absolute;
+    z-index: 1;
+    display: block;
+    inset: -12px;
+    width: 136%;
+    height: 136%;
+    max-width: none;
+    max-height: none;
+    object-fit: cover;
+    object-position: 43% 44%;
+    transform: none;
+  }
+}
+

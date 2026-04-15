@@ -1,0 +1,209 @@
+@use '../../abstracts/settings-tokens' as *;
+
+.app-root.app-root--settings {
+  --page-bg: #ffffff;
+  background: #ffffff;
+  color: $settings-text;
+}
+
+.screen.screen--settings {
+  min-height: 100vh;
+  display: block;
+  padding: 0;
+  margin: 0;
+  background: #ffffff;
+  color: $settings-text;
+  font-family: Montserrat, system-ui, sans-serif;
+}
+
+.settings-screen {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100vh;
+  padding: clamp(1rem, 3vw, 2.5rem);
+}
+
+.settings-screen__main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 460px);
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: start;
+  max-width: 1200px;
+  margin: 0 auto;
+  overflow: visible;
+}
+
+.settings-screen__controls {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 282px;
+  margin-left: auto;
+  margin-right: auto;
+  min-width: 0;
+}
+
+.settings-screen__nav {
+  margin-bottom: 1rem;
+}
+
+.settings-screen__back {
+  padding: 0.35rem 0;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: $settings-muted;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+
+  &:focus-visible {
+    outline: 2px solid $settings-accent;
+    outline-offset: 2px;
+  }
+}
+
+.settings-screen__heading {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  margin: calc(67px + 0.35rem) 0 2rem;
+  padding: 0;
+  width: 100%;
+  max-width: 282px;
+}
+
+.settings-screen__title {
+  position: absolute;
+  left: 0;
+  top: calc(-67px - 0.35rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  height: 67px;
+  margin: 0;
+  padding: 0;
+  font-family: 'Red Rose', Georgia, serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 54px;
+  line-height: 67px;
+  text-align: center;
+  color: $settings-text;
+}
+
+.settings-screen__title-rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 100%;
+  gap: 0;
+}
+
+.settings-screen__title-rule-img {
+  display: block;
+  width: 272px;
+  max-width: 100%;
+  height: auto;
+  flex: none;
+  transform: translateY(-0.92rem);
+}
+
+.screen--settings .panel--settings {
+  margin-bottom: 1.5rem;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+
+  .panel__title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 0.75rem;
+    padding: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: $settings-text;
+  }
+
+  .panel__title-icon {
+    font-size: 1.15rem;
+    line-height: 1;
+  }
+
+  .panel__hint {
+    color: $settings-muted;
+    font-size: 0.85rem;
+  }
+
+  .panel__aside {
+    margin: 0 0 0.65rem;
+  }
+}
+
+.screen--settings
+  .panel__options:not(.panel__options--game-themes):not(.panel__options--choose-player):not(
+    .panel__options--board-size
+  ) {
+  gap: 0.25rem;
+}
+
+.screen--settings .choice:not(.choice--game-theme):not(.choice--choose-player):not(.choice--board-size) {
+  position: relative;
+  border-radius: 8px;
+  padding: 0.5rem 2.25rem 0.5rem 0.5rem;
+  color: $settings-text;
+
+  &:has(input:checked) {
+    background: rgba(240, 234, 110, 0.12);
+  }
+
+  input {
+    accent-color: #0d9488;
+    margin-top: 0.15rem;
+  }
+
+  .choice__desc {
+    display: none;
+  }
+}
+
+.screen--settings
+  .choice:not(.choice--game-theme):not(.choice--choose-player):not(.choice--board-size):has(
+    input:checked
+  )::after {
+  content: '';
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 7px 0 7px 10px;
+  border-color: transparent transparent transparent $settings-accent;
+}
+
+.settings-screen__aside {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 42px;
+  min-width: 0;
+  overflow: visible;
+  position: relative;
+  padding-top: calc(67px + 0.35rem + 1rem + 2rem);
+}
+

@@ -1,7 +1,5 @@
 @use '../abstracts/settings-tokens' as *;
 
-/* Settings: Game themes (Figma Frame 571) */
-
 .screen--settings .panel--game-themes {
   display: flex;
   flex-direction: column;
@@ -24,7 +22,6 @@
   width: 100%;
 }
 
-/* Legend-Zeile „Game themes“ (Figma Auto layout: 244×32, row, gap 8) */
 .settings-game-themes__heading {
   box-sizing: border-box;
   display: flex;
@@ -153,10 +150,6 @@
   min-width: 0;
 }
 
-/*
- * Theme-Zeile: Figma „Radial buttons“-Zeile = row, gap 10, Höhe 24.
- * Breite hug (z. B. Code vibes ~238px, Gaming ~162px) → width: auto, nicht fix.
- */
 .choice__title--theme {
   box-sizing: border-box;
   display: flex;

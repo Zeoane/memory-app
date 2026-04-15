@@ -1,11 +1,13 @@
 import type { GameSettings, PlayerColorChoice } from './game-constants';
 import { appState } from './app-state';
 
+/** Reads the checked radio value for a given input name. */
 function readCheckedRadioValue(root: HTMLElement, name: string): string | null {
   const input = root.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`);
   return input?.value ?? null;
 }
 
+/** Reads the selected board size value into the settings draft. */
 function applyBoardSizeFromForm(root: HTMLElement): void {
   const value = readCheckedRadioValue(root, 'boardSize');
   if (value !== null) {
@@ -14,6 +16,7 @@ function applyBoardSizeFromForm(root: HTMLElement): void {
   }
 }
 
+/** Reads the selected first player color into the settings draft. */
 function applyPlayerColorFromForm(root: HTMLElement): void {
   const value = readCheckedRadioValue(root, 'playerColor');
   if (value !== null) {
@@ -21,6 +24,7 @@ function applyPlayerColorFromForm(root: HTMLElement): void {
   }
 }
 
+/** Reads the selected visual theme into the settings draft. */
 function applyVisualThemeFromForm(root: HTMLElement): void {
   const value = readCheckedRadioValue(root, 'visualTheme');
   if (value !== null) {
@@ -29,7 +33,7 @@ function applyVisualThemeFromForm(root: HTMLElement): void {
 }
 
 /**
- * Reads the selected radio values ​​from the settings form into the app state.
+ * Reads selected radio values from the settings form into app state.
  */
 export function readSettingsFromForm(root: HTMLElement): void {
   applyBoardSizeFromForm(root);

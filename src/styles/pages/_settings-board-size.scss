@@ -1,7 +1,5 @@
 @use '../abstracts/settings-tokens' as *;
 
-/* Settings: Board size (Figma Frame) */
-
 .screen--settings .panel--board-size {
   display: flex;
   flex-direction: column;
@@ -12,7 +10,6 @@
   max-width: 100%;
   flex: none;
   flex-grow: 0;
-  /* Figma „order: 1“ — wirkt nur, wenn das Elternelement ein Flex-Container ist */
   order: 1;
   margin: 0 0 24px;
   font-family: Almarai, system-ui, sans-serif;

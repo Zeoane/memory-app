@@ -5,6 +5,7 @@ import { buildGameScreenHtml } from './game-screen-html';
 import { buildHomeHtml } from './home-html';
 import { buildSettingsHtml } from './settings-html';
 
+/** Resolves the HTML string for the current app view. */
 function resolveViewHtml(): string {
   const view = appState.view;
   if (view === 'home') {
@@ -19,6 +20,8 @@ function resolveViewHtml(): string {
     appState.showGameOver,
     appState.showCodeVibesWinnerOrange,
     appState.showCodeVibesWinnerBlue,
+    appState.showGamingWinnerOrange,
+    appState.showGamingWinnerBlue,
     appState.showExitConfirm,
   );
 }

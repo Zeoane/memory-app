@@ -86,6 +86,7 @@ export class MemoryGame {
 
   private complete = false;
 
+  /** Creates a new game instance from settings. */
   constructor(settings: GameSettings) {
     const shuffled = buildShuffledDeck(settings);
     this.cards = shuffled;
@@ -100,6 +101,7 @@ export class MemoryGame {
     return this.createSnapshot();
   }
 
+  /** Builds an immutable snapshot of the current internal state. */
   private createSnapshot(): MemoryGameSnapshot {
     return {
       cards: this.cards,
@@ -119,6 +121,7 @@ export class MemoryGame {
     return this.revealed[index] || this.matched[index];
   }
 
+  /** Returns true when two picks are currently pending resolution. */
   private hasPendingSecondPick(): boolean {
     return this.firstSelection !== null && this.secondSelection !== null;
   }
@@ -135,25 +138,30 @@ export class MemoryGame {
     return this.firstSelection !== index;
   }
 
+  /** Clears the current pick selection state. */
   private clearSelection(): void {
     this.firstSelection = null;
     this.secondSelection = null;
   }
 
+  /** Returns true if two card indices belong to the same pair. */
   private isPairMatch(first: number, second: number): boolean {
     return this.cards[first].pairId === this.cards[second].pairId;
   }
 
+  /** Switches the active player. */
   private switchPlayer(): void {
     this.currentPlayer = this.currentPlayer === 0 ? 1 : 0;
   }
 
+  /** Marks a pair as matched and increments the active player's score. */
   private markPairMatched(first: number, second: number): void {
     this.matched[first] = true;
     this.matched[second] = true;
     this.scores[this.currentPlayer] += 1;
   }
 
+  /** Applies a successful match and completes the round if all pairs are matched. */
   private applyMatch(first: number, second: number, onUpdate: () => void, onComplete: () => void): void {
     this.markPairMatched(first, second);
     this.clearSelection();
@@ -167,6 +175,7 @@ export class MemoryGame {
     }
   }
 
+  /** Applies a mismatch by hiding cards, switching players, and unblocking input. */
   private applyMismatch(first: number, second: number, onUpdate: () => void): void {
     this.revealed[first] = false;
     this.revealed[second] = false;
@@ -176,6 +185,7 @@ export class MemoryGame {
     onUpdate();
   }
 
+  /** Resolves a completed pick by applying match or mismatch logic. */
   private resolveFlip(
     first: number,
     second: number,
@@ -190,6 +200,7 @@ export class MemoryGame {
     }
   }
 
+  /** Schedules flip resolution after the configured delay. */
   private scheduleFlipResolution(
     first: number,
     second: number,
@@ -201,6 +212,7 @@ export class MemoryGame {
     }, FLIP_RESOLUTION_DELAY_MS);
   }
 
+  /** Opens the second pick and schedules resolution. */
   private openSecondPick(
     index: number,
     onUpdate: () => void,

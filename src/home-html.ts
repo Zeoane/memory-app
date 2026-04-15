@@ -5,7 +5,7 @@ import homeTpl from './templates/home.html?raw';
 import { fillTemplate } from './template-utils';
 
 /**
- * Generates the markup for the homepage
+ * Generates the markup for the home screen.
  */
 export function buildHomeHtml(): string {
   return fillTemplate(homeTpl, {

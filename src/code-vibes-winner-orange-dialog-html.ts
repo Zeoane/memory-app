@@ -4,6 +4,7 @@ import pawnOrangeUrl from './assets/img_code_vibes-theme/chess_pawn-winner-orang
 import winnerOrangeUrl from './assets/img_code_vibes-theme/winner-orange.svg?url';
 import { fillTemplate } from './template-utils';
 
+/** Builds the code-vibes orange winner dialog HTML. */
 export function buildCodeVibesWinnerOrangeDialogHtml(): string {
   return fillTemplate(cvWinnerOrangeTpl, {
     CONFETTI_SVG: confettiUrl,
