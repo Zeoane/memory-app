@@ -4,22 +4,17 @@ import { clearGamingWinnerTimer, scheduleGamingWinnerIfNeeded } from './gaming-w
 import { MemoryGame } from './memory-game';
 import { readSettingsFromForm } from './read-settings-form';
 
-/** Binds a click handler to elements with a matching data-action attribute. */
-function bindDataAction(root: HTMLElement, action: string, handler: () => void): void {
-  root.querySelectorAll(`[data-action="${action}"]`).forEach((el) => {
-    el.addEventListener('click', handler);
-  });
-}
+type RenderFn = () => void;
 
 /** Switches the app to the settings view and resets the draft. */
-function goToSettingsView(render: () => void): void {
+function goToSettingsView(render: RenderFn): void {
   appState.view = 'settings';
   appState.settingsDraft = createEmptySettingsDraft();
   render();
 }
 
 /** Switches the app to the home view and clears transient game UI state. */
-function goToHomeView(render: () => void): void {
+function goToHomeView(render: RenderFn): void {
   appState.view = 'home';
   appState.showGameOver = false;
   appState.showCodeVibesWinnerOrange = false;
@@ -33,7 +28,7 @@ function goToHomeView(render: () => void): void {
 }
 
 /** Starts a new game using the current settings form selections. */
-function startGameFromSettings(root: HTMLElement, render: () => void): void {
+function startGameFromSettings(root: HTMLElement, render: RenderFn): void {
   readSettingsFromForm(root);
   appState.settings = {
     ...DEFAULT_GAME_SETTINGS,
@@ -55,7 +50,7 @@ function startGameFromSettings(root: HTMLElement, render: () => void): void {
 }
 
 /** Exits the current game and returns to the settings view. */
-function exitToSettings(render: () => void): void {
+function exitToSettings(render: RenderFn): void {
   appState.game = null;
   appState.showGameOver = false;
   appState.showCodeVibesWinnerOrange = false;
@@ -71,7 +66,7 @@ function exitToSettings(render: () => void): void {
 }
 
 /** Starts a new round with the existing game settings. */
-function startNewRound(render: () => void): void {
+function startNewRound(render: RenderFn): void {
   appState.game = new MemoryGame(appState.settings);
   appState.showGameOver = false;
   appState.showCodeVibesWinnerOrange = false;
@@ -85,19 +80,19 @@ function startNewRound(render: () => void): void {
 }
 
 /** Opens the "exit game" confirmation dialog. */
-function openExitConfirm(render: () => void): void {
+function openExitConfirm(render: RenderFn): void {
   appState.showExitConfirm = true;
   render();
 }
 
 /** Closes the "exit game" confirmation dialog. */
-function dismissExitConfirm(render: () => void): void {
+function dismissExitConfirm(render: RenderFn): void {
   appState.showExitConfirm = false;
   render();
 }
 
 /** Handles selection of a memory card from the UI. */
-function onMemoryCardClick(event: Event, render: () => void): void {
+function onMemoryCardClick(event: Event, render: RenderFn): void {
   const target = event.currentTarget as HTMLElement;
   if (target.getAttribute('aria-disabled') === 'true') {
     return;
@@ -121,7 +116,7 @@ function onMemoryCardClick(event: Event, render: () => void): void {
 }
 
 /** Attaches click and keyboard handlers for all currently rendered cards. */
-function attachMemoryCardListeners(root: HTMLElement, render: () => void): void {
+function attachMemoryCardListeners(root: HTMLElement, render: RenderFn): void {
   root.querySelectorAll('.memory-card[data-card-index]').forEach((el) => {
     el.addEventListener('click', (e) => onMemoryCardClick(e, render));
     el.addEventListener('keydown', (e: Event) => {
@@ -140,7 +135,7 @@ function attachMemoryCardListeners(root: HTMLElement, render: () => void): void 
 }
 
 /** Attaches listeners to settings radio inputs to update the draft preview. */
-function attachSettingsFormListeners(root: HTMLElement, render: () => void): void {
+function attachSettingsFormListeners(root: HTMLElement, render: RenderFn): void {
   const settingsRoot = root.querySelector('.screen--settings');
   if (settingsRoot === null) {
     return;
@@ -154,17 +149,63 @@ function attachSettingsFormListeners(root: HTMLElement, render: () => void): voi
 }
 
 /**
+ * Registers a single delegated click handler for `[data-action]` elements.
+ * This is resilient to partial DOM patching (e.g. updating `.game-bar` via `innerHTML`).
+ */
+function ensureDelegatedActionHandler(root: HTMLElement, render: RenderFn): void {
+  if (root.dataset.actionsBound === 'true') {
+    return;
+  }
+  root.dataset.actionsBound = 'true';
+
+  root.addEventListener('click', (e) => {
+    const target = e.target as Element | null;
+    const el = target?.closest?.('[data-action]') as HTMLElement | null;
+    if (!el) {
+      return;
+    }
+    const action = el.dataset.action;
+    if (!action) {
+      return;
+    }
+    e.preventDefault();
+
+    switch (action) {
+      case 'go-settings':
+        goToSettingsView(render);
+        break;
+      case 'go-home':
+        goToHomeView(render);
+        break;
+      case 'start-game':
+        startGameFromSettings(root, render);
+        break;
+      case 'exit-game':
+        openExitConfirm(render);
+        break;
+      case 'dismiss-exit-confirm':
+        dismissExitConfirm(render);
+        break;
+      case 'confirm-exit-game':
+        exitToSettings(render);
+        break;
+      case 'new-round':
+        startNewRound(render);
+        break;
+      case 'go-settings-from-game':
+        exitToSettings(render);
+        break;
+      default:
+        break;
+    }
+  });
+}
+
+/**
  * Registers all UI events for the currently rendered view.
  */
-export function bindAppEvents(root: HTMLElement, render: () => void): void {
-  bindDataAction(root, 'go-settings', () => goToSettingsView(render));
-  bindDataAction(root, 'go-home', () => goToHomeView(render));
-  bindDataAction(root, 'start-game', () => startGameFromSettings(root, render));
-  bindDataAction(root, 'exit-game', () => openExitConfirm(render));
-  bindDataAction(root, 'dismiss-exit-confirm', () => dismissExitConfirm(render));
-  bindDataAction(root, 'confirm-exit-game', () => exitToSettings(render));
-  bindDataAction(root, 'new-round', () => startNewRound(render));
-  bindDataAction(root, 'go-settings-from-game', () => exitToSettings(render));
+export function bindAppEvents(root: HTMLElement, render: RenderFn): void {
+  ensureDelegatedActionHandler(root, render);
   attachMemoryCardListeners(root, render);
   attachSettingsFormListeners(root, render);
 }
