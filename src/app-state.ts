@@ -15,15 +15,10 @@ export interface AppState {
   settingsDraft: SettingsDraft;
   game: MemoryGame | null;
   showGameOver: boolean;
-  /** Shows the code-vibes orange winner overlay after game over. */
   showCodeVibesWinnerOrange: boolean;
-  /** Shows the code-vibes blue winner overlay after game over. */
   showCodeVibesWinnerBlue: boolean;
-  /** Shows the gaming orange winner overlay after game over. */
   showGamingWinnerOrange: boolean;
-  /** Shows the gaming blue winner overlay after game over. */
   showGamingWinnerBlue: boolean;
-  /** Shows the "exit game" confirmation dialog. */
   showExitConfirm: boolean;
 }
 
