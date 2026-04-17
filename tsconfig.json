@@ -22,6 +22,6 @@
     "resolveJsonModule": true,           // erlaubt `import data from './data.json'`
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src"],                    // nur eigenen Code kompilieren
+  "include": ["src", "main.ts"],         // nur eigenen Code kompilieren
   "exclude": ["node_modules", "dist"]    // keine Fremd- oder Build-Dateien prüfen
 }

@@ -121,3 +121,8 @@
 .screen--settings .choice--choose-player:has(.choice__radio--theme:checked) .choice__title--player {
   font-weight: 700;
 }
+
+.screen--settings .choice--choose-player:hover .choice__title--player,
+.screen--settings .choice--choose-player:focus-within .choice__title--player {
+  font-weight: 700;
+}

@@ -1,0 +1,13 @@
+<dialog class="modal" open aria-labelledby="game-over-title" aria-modal="true">
+  <article class="modal__article">
+    <header class="modal__header">
+      <h2 id="game-over-title" class="modal__title">Game over</h2>
+    </header>
+    <p class="modal__scores">{{SCORE_LINE}}</p>
+    <p class="modal__winner{{WINNER_MODIFIER}}">{{MESSAGE}}</p>
+    <footer class="modal__actions">
+      <button type="button" class="btn btn--primary" data-action="new-round">Neue Runde</button>
+      <button type="button" class="btn btn--ghost" data-action="go-settings-from-game">Einstellungen</button>
+    </footer>
+  </article>
+</dialog>

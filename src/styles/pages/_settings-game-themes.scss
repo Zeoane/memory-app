@@ -175,6 +175,11 @@
   font-weight: 700;
 }
 
+.screen--settings .choice--game-theme:hover .choice__title--theme,
+.screen--settings .choice--game-theme:focus-within .choice__title--theme {
+  font-weight: 700;
+}
+
 .choice__theme-accent {
   display: none;
   flex-direction: row;
@@ -186,6 +191,11 @@
 }
 
 .screen--settings .choice--game-theme:has(.choice__radio--theme:checked) .choice__theme-accent {
+  display: inline-flex;
+}
+
+.screen--settings .choice--game-theme:hover .choice__theme-accent,
+.screen--settings .choice--game-theme:focus-within .choice__theme-accent {
   display: inline-flex;
 }
 

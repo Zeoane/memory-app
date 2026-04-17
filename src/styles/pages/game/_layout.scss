@@ -38,7 +38,7 @@
 }
 
 .theme--gaming .game-playfield {
-  overflow-x: hidden;
+  overflow: hidden;
   width: min(100%, 1219px);
   margin-inline: auto;
 }
@@ -66,19 +66,13 @@
 }
 
 .theme--gaming .memory-card.is-matched .memory-card__inner {
-  box-shadow: 0 0 8px rgba(237, 27, 118, 0.3);
+  box-shadow:
+    0 0 8px rgba(237, 27, 118, 0.3),
+    inset 0 0 0 3px #ed1b76;
 }
 
-.theme--gaming .memory-card.is-matched .memory-card__inner::after {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  box-sizing: border-box;
-  border: 3px solid #ed1b76;
-  border-radius: calc(var(--card-radius, 0px) + 1px);
-  pointer-events: none;
-  z-index: 10;
-}
+// NOTE: Use inset box-shadow for the match highlight to avoid sub-pixel overflow
+// and corner artifacts caused by an overlaid border/pseudo-element.
 
 .theme--code-vibes .memory-card.is-matched {
   opacity: 1;

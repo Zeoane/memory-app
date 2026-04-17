@@ -121,3 +121,8 @@
 .screen--settings .choice--board-size:has(.choice__radio--theme:checked) .choice__title--board {
   font-weight: 700;
 }
+
+.screen--settings .choice--board-size:hover .choice__title--board,
+.screen--settings .choice--board-size:focus-within .choice__title--board {
+  font-weight: 700;
+}

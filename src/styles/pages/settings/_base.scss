@@ -25,9 +25,10 @@
 
 .settings-screen__main {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(280px, 460px);
+  grid-template-columns: minmax(0, 282px) minmax(280px, 520px);
   gap: clamp(1.5rem, 4vw, 3.5rem);
-  align-items: start;
+  align-items: stretch;
+  justify-content: center;
   max-width: 1200px;
   margin: 0 auto;
   overflow: visible;
@@ -40,31 +41,14 @@
   align-items: flex-start;
   width: 100%;
   max-width: 282px;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 0;
+  margin-right: 0;
   min-width: 0;
+  align-self: stretch;
 }
 
 .settings-screen__nav {
   margin-bottom: 1rem;
-}
-
-.settings-screen__back {
-  padding: 0.35rem 0;
-  border: none;
-  background: transparent;
-  font-family: inherit;
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: $settings-muted;
-  cursor: pointer;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-
-  &:focus-visible {
-    outline: 2px solid $settings-accent;
-    outline-offset: 2px;
-  }
 }
 
 .settings-screen__heading {
@@ -200,10 +184,15 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 42px;
+  justify-content: space-between;
+  gap: 24px;
   min-width: 0;
   overflow: visible;
   position: relative;
-  padding-top: calc(67px + 0.35rem + 1rem + 2rem);
+  // Align the preview's top edge with the first settings section ("Game themes"),
+  // not with the big "Settings" headline above it.
+  padding-top: calc(67px + 0.35rem + 2rem + 58px);
+  padding-bottom: 24px;
+  align-self: stretch;
 }
 

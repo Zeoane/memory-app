@@ -8,15 +8,13 @@
   padding: 0;
   margin: 0;
   gap: 42px;
-  width: 100%;
-  max-width: none;
+  // Keep the bar width stable across selections (e.g. "DA Projects theme").
+  width: 600px;
+  max-width: 100%;
   align-self: flex-end;
   flex: none;
-  height: 81px;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 600px;
+  height: auto;
+  position: static;
 }
 
 .settings-screen__action-bar-inner {
@@ -25,14 +23,14 @@
   flex-direction: row;
   flex-wrap: nowrap;
   align-items: center;
-  gap: 16px;
-  width: max-content;
-  max-width: none;
-  margin-left: auto;
-  min-height: 81px;
-  padding: 8px 22px;
+  gap: 12px;
+  width: 100%;
+  max-width: 600px;
   margin: 0;
+  min-height: 81px;
+  padding: 10px 34px 10px 26px;
   background: #f6f6f6;
+  overflow: hidden;
   flex: none;
   order: 0;
 }
@@ -46,11 +44,12 @@
   font-style: normal;
   font-weight: 400;
   font-size: 20px;
-  line-height: 22px;
+  line-height: 1;
+  letter-spacing: 0;
   color: $settings-text;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow: visible;
+  text-overflow: clip;
 }
 
 .settings-screen__action-chip--theme {
@@ -60,12 +59,12 @@
 
 .settings-screen__action-chip--player {
   order: 2;
-  max-width: 56px;
+  max-width: none;
 }
 
 .settings-screen__action-chip--board {
   order: 4;
-  max-width: 91px;
+  max-width: none;
 }
 
 .settings-screen__action-slash {
@@ -102,11 +101,12 @@
   order: 5;
   flex: none;
   flex-grow: 0;
-  width: 126px;
-  height: 53px;
-  min-width: 126px;
-  min-height: 53px;
-  padding: 14px 20px;
+  // Keep the button comfortably inside the fixed action-bar width.
+  width: 120px;
+  height: 50px;
+  min-width: 120px;
+  min-height: 50px;
+  padding: 0;
   margin: 0;
   border: none;
   border-radius: 4px;
@@ -116,9 +116,7 @@
   cursor: pointer;
   box-shadow: none;
   transition:
-    transform 0.12s ease,
-    width 200ms ease-out,
-    height 200ms ease-out;
+    transform 0.12s ease;
   position: relative;
 
   &:hover:not(:disabled) {
@@ -133,8 +131,8 @@
 
 .settings-screen__start-asset {
   display: block;
-  width: 126px;
-  height: 53px;
+  width: 100%;
+  height: 100%;
   position: relative;
 }
 
@@ -180,16 +178,6 @@
 
 .settings-screen__start:hover:not(:disabled) .settings-screen__start-img--default {
   opacity: 0;
-}
-
-.settings-screen__start:hover:not(:disabled) {
-  width: 139.66px;
-  height: 60.66px;
-}
-
-.settings-screen__start:hover:not(:disabled) .settings-screen__start-asset {
-  width: 139.66px;
-  height: 60.66px;
 }
 
 @media (max-width: 520px) {
