@@ -5,8 +5,6 @@
     color 0.35s ease;
 }
 
-/* Layout-Varianten (Farbschema + passt zu Motiven) */
-
 .layout-nature {
   --page-bg: linear-gradient(165deg, #0f3d2e 0%, #1a5c40 45%, #0d2818 100%);
   --panel-bg: rgba(255, 255, 255, 0.08);
@@ -15,10 +13,7 @@
   --accent: #6ee7b7;
 }
 
-/* Darstellungs-Themes (Karten / Flächen) — IDs entsprechen Game themes in den Settings */
-
 .theme--code-vibes {
-  /* Karten-Grafik (Rückseite) — mit game-card-html.ts width/height synchron halten */
   --memory-card-art-w: 120;
   --memory-card-art-h: 120;
   --page-bg: #252525;
@@ -37,18 +32,15 @@
 .theme--gaming {
   --memory-card-art-w: 105;
   --memory-card-art-h: 120;
-  /* Konstante Seiten-/Spielfeldfläche für das Gaming-Theme */
   --page-bg: #294f60;
   --card-back: linear-gradient(145deg, #0f172a, #020617);
   --card-front-bg: #0c1220;
   --card-front-fg: #e2e8f0;
-  /* Motivseite mit illustriertem IMG: wie Game card 28 (Basisfläche + rx=12) */
   --card-front-illustrated-bg: #f6f1f3;
   --card-front-illustrated-fg: #0f172a;
   --card-shadow: 0 8px 28px rgba(0, 0, 0, 0.55);
   --card-radius: 12px;
   --preview-bar-bg: rgba(56, 189, 248, 0.2);
-  /* Gaming (Figma): #FD96C9 @20% */
   --game-bar-scores-bg: rgba(253, 150, 201, 0.2);
   --game-bar-exit-bg: transparent;
   --game-bar-exit-bg-hover: rgba(253, 150, 201, 0.08);

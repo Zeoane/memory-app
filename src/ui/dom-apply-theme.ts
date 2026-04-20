@@ -5,8 +5,8 @@ const APP_ROOT_CLASS = 'app-root';
 
 /**
  * Applies root CSS classes for the current theme and view.
- * @param root Root element wrapping the app
- * @param settings Current game settings
+ * @param root
+ * @param settings 
  * @param view Current view id
  */
 export function applyThemeClasses(root: HTMLElement, settings: GameSettings, view: ViewId): void {
