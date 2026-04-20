@@ -21,16 +21,20 @@ export type VisualThemeId = 'code-vibes' | 'gaming' | 'da-projects' | 'foods';
 export interface VisualTheme {
   readonly id: VisualThemeId;
   readonly label: string;
-  readonly description: string;
 }
 
 /** Visual themes shown in settings. */
 export const VISUAL_THEMES: readonly VisualTheme[] = [
-  { id: 'code-vibes', label: 'Code vibes theme', description: 'Teal, klarer Dev-Look' },
-  { id: 'gaming', label: 'Gaming theme', description: 'Neon-Kanten, dunkle Karten' },
-  { id: 'da-projects', label: 'DA Projects theme', description: 'Sachlich, hoher Kontrast' },
-  { id: 'foods', label: 'Foods theme', description: 'Warme Töne, einladend' },
+  { id: 'code-vibes', label: 'Code vibes theme' },
+  { id: 'gaming', label: 'Gaming theme' },
+  { id: 'da-projects', label: 'DA Projects theme' },
+  { id: 'foods', label: 'Foods theme' },
 ] as const;
+
+/** Returns a human-readable theme description derived from the id. */
+export function getVisualThemeDescription(id: VisualThemeId): string {
+  return id;
+}
 
 /** Fixed symbol keys for the code-vibes theme. */
 const CODE_VIBES_SYMBOL_KEYS = [

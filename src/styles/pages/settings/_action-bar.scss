@@ -8,8 +8,9 @@
   padding: 0;
   margin: 0;
   gap: 42px;
-  // Keep the bar width stable across selections (e.g. "DA Projects theme").
-  width: 600px;
+  // Width adapts to the actual visible content so the gray background hugs
+  // the chips (no dead gray area in front of short labels like "Theme").
+  width: fit-content;
   max-width: 100%;
   align-self: flex-end;
   flex: none;
@@ -24,13 +25,12 @@
   flex-wrap: nowrap;
   align-items: center;
   gap: 12px;
-  width: 100%;
-  max-width: 600px;
+  width: max-content;
+  max-width: 100%;
   margin: 0;
   min-height: 81px;
   padding: 10px 34px 10px 26px;
   background: #f6f6f6;
-  overflow: hidden;
   flex: none;
   order: 0;
 }
@@ -68,22 +68,41 @@
 }
 
 .settings-screen__action-slash {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  // Stack the inactive (plain) and active (diamond) separator images in the
+  // same grid cell; the larger diamond variant dictates the container size so
+  // swapping between variants never shifts the layout.
+  display: inline-grid;
+  place-items: center;
   flex: none;
   flex-grow: 0;
   order: 1;
-  width: 27px;
-  height: 56px;
+  width: 37px;
+  height: 60px;
   margin: 0;
   padding: 0;
+}
 
-  svg {
-    display: block;
-    width: 27px;
-    height: 56px;
-  }
+.settings-screen__action-slash-img {
+  display: block;
+  grid-column: 1;
+  grid-row: 1;
+  transition: opacity 150ms ease;
+}
+
+.settings-screen__action-slash-img--inactive {
+  opacity: 1;
+}
+
+.settings-screen__action-slash-img--active {
+  opacity: 0;
+}
+
+.settings-screen__action-slash[data-state='on'] .settings-screen__action-slash-img--inactive {
+  opacity: 0;
+}
+
+.settings-screen__action-slash[data-state='on'] .settings-screen__action-slash-img--active {
+  opacity: 1;
 }
 
 .settings-screen__action-chip--player ~ .settings-screen__action-slash {

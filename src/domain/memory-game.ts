@@ -3,6 +3,9 @@ import { GameSettings, getBoardSizeOption, getSymbolPoolForGame, pairCountForBoa
 /** Delay in ms before unsuitable cards are turned over again. */
 export const FLIP_RESOLUTION_DELAY_MS = 700;
 
+/** Small delay to allow the final match state to render before game-over UI takes over. */
+export const COMPLETE_RESOLUTION_DELAY_MS = 100;
+
 export type PlayerIndex = 0 | 1;
 
 export interface MemoryCardModel {
@@ -25,8 +28,8 @@ export interface MemoryGameSnapshot {
 
 /**
  * Shuffles an array (Fisher–Yates).
- * @param items Input elements
- * @returns New, shuffled array
+ * @param items 
+ * @returns 
  */
 function shuffleArray<T>(items: readonly T[]): T[] {
   const arr = [...items];
@@ -39,8 +42,8 @@ function shuffleArray<T>(items: readonly T[]): T[] {
 
 /**
  * Generates memory card pairs from symbols.
- * @param symbols Symbols per pair
- * @param pairsNeeded Number of pairs needed
+ * @param symbols 
+ * @param pairsNeeded 
  */
 function buildPairCards(symbols: readonly string[], pairsNeeded: number): MemoryCardModel[] {
   const deck: MemoryCardModel[] = [];
@@ -55,7 +58,7 @@ function buildPairCards(symbols: readonly string[], pairsNeeded: number): Memory
 
 /**
  * Builds and shuffles the deck from the game settings.
- * @param settings current settings
+ * @param settings 
  */
 function buildShuffledDeck(settings: GameSettings): MemoryCardModel[] {
   const board = getBoardSizeOption(settings.boardSizeId);
@@ -171,7 +174,7 @@ export class MemoryGame {
     }
     onUpdate();
     if (this.complete) {
-      onComplete();
+      window.setTimeout(() => onComplete(), COMPLETE_RESOLUTION_DELAY_MS);
     }
   }
 

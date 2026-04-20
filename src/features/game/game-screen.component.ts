@@ -12,6 +12,18 @@ import type { MemoryGame, MemoryGameSnapshot } from '../../domain/memory-game';
 import { fillTemplate } from '../../shared/template-utils';
 import { getTemplate } from '../../shared/template-registry';
 
+type GameOverFlags = {
+  readonly showGameOver: boolean;
+  readonly showCodeVibesWinnerOrange: boolean;
+  readonly showCodeVibesWinnerBlue: boolean;
+  readonly showGamingWinnerOrange: boolean;
+  readonly showGamingWinnerBlue: boolean;
+};
+
+type UiFlags = GameOverFlags & {
+  readonly showExitConfirm: boolean;
+};
+
 /** Builds the CSS grid sizing style for a board. */
 function buildGridStyle(cols: number, rows: number): string {
   return `--cols: ${cols}; --rows: ${rows};`;
@@ -22,33 +34,31 @@ function buildAllCardsHtml(game: MemoryGame, snap: MemoryGameSnapshot, settings:
   return snap.cards.map((_, i) => buildMemoryCardHtml(game, snap, i, settings.visualThemeId)).join('');
 }
 
-/** Resolves the dialog HTML to show on game-over. */
-function resolveModalHtml(
+function resolveWinnerDialogHtml(flags: GameOverFlags, visualThemeId: VisualThemeId): string | null {
+  if (visualThemeId === 'code-vibes' && flags.showCodeVibesWinnerBlue) return buildCodeVibesWinnerBlueDialogHtml();
+  if (visualThemeId === 'code-vibes' && flags.showCodeVibesWinnerOrange) return buildCodeVibesWinnerOrangeDialogHtml();
+  if (visualThemeId === 'gaming' && flags.showGamingWinnerBlue) return buildGamingWinnerBlueDialogHtml();
+  if (visualThemeId === 'gaming' && flags.showGamingWinnerOrange) return buildGamingWinnerOrangeDialogHtml();
+  return null;
+}
+
+function resolveDefaultGameOverDialogHtml(
   snap: MemoryGameSnapshot,
-  showGameOver: boolean,
-  showCodeVibesWinnerOrange: boolean,
-  showCodeVibesWinnerBlue: boolean,
-  showGamingWinnerOrange: boolean,
-  showGamingWinnerBlue: boolean,
   colors: PlayerColors,
   visualThemeId: VisualThemeId,
 ): string {
-  if (!snap.isComplete || !showGameOver) {
-    return '';
-  }
-  if (visualThemeId === 'code-vibes' && showCodeVibesWinnerBlue) {
-    return buildCodeVibesWinnerBlueDialogHtml();
-  }
-  if (visualThemeId === 'code-vibes' && showCodeVibesWinnerOrange) {
-    return buildCodeVibesWinnerOrangeDialogHtml();
-  }
-  if (visualThemeId === 'gaming' && showGamingWinnerBlue) {
-    return buildGamingWinnerBlueDialogHtml();
-  }
-  if (visualThemeId === 'gaming' && showGamingWinnerOrange) {
-    return buildGamingWinnerOrangeDialogHtml();
-  }
   return buildGameOverDialogHtml(snap.scores[0], snap.scores[1], colors, visualThemeId);
+}
+
+/** Resolves the dialog HTML to show on game-over. */
+function resolveModalHtml(
+  snap: MemoryGameSnapshot,
+  flags: GameOverFlags,
+  colors: PlayerColors,
+  visualThemeId: VisualThemeId,
+): string {
+  if (!snap.isComplete || !flags.showGameOver) return '';
+  return resolveWinnerDialogHtml(flags, visualThemeId) ?? resolveDefaultGameOverDialogHtml(snap, colors, visualThemeId);
 }
 
 /** Resolves the selected board option from settings. */
@@ -57,35 +67,33 @@ function resolveBoardOption(settings: GameSettings): BoardSizeOption {
   return found ?? BOARD_SIZE_OPTIONS[0];
 }
 
+type GameScreenContext = {
+  readonly snap: MemoryGameSnapshot;
+  readonly colors: PlayerColors;
+  readonly board: BoardSizeOption;
+};
+
+function resolveGameScreenContext(game: MemoryGame, settings: GameSettings): GameScreenContext {
+  return {
+    snap: game.getSnapshot(),
+    colors: getPlayerColors(settings.firstPlayerColor),
+    board: resolveBoardOption(settings),
+  };
+}
+
 /** Builds the full template replacements for the game screen. */
 function buildGameScreenParts(
   game: MemoryGame,
   settings: GameSettings,
-  showGameOver: boolean,
-  showCodeVibesWinnerOrange: boolean,
-  showCodeVibesWinnerBlue: boolean,
-  showGamingWinnerOrange: boolean,
-  showGamingWinnerBlue: boolean,
-  showExitConfirm: boolean,
+  flags: UiFlags,
 ): Record<string, string> {
-  const snap = game.getSnapshot();
-  const colors = getPlayerColors(settings.firstPlayerColor);
-  const board = resolveBoardOption(settings);
+  const ctx = resolveGameScreenContext(game, settings);
   return {
-    GAME_BAR: buildGameBarHtml(snap, colors, settings.visualThemeId),
-    GRID_STYLE: buildGridStyle(board.cols, board.rows),
-    CARDS: buildAllCardsHtml(game, snap, settings),
-    GAME_OVER: resolveModalHtml(
-      snap,
-      showGameOver,
-      showCodeVibesWinnerOrange,
-      showCodeVibesWinnerBlue,
-      showGamingWinnerOrange,
-      showGamingWinnerBlue,
-      colors,
-      settings.visualThemeId,
-    ),
-    EXIT_CONFIRM: showExitConfirm ? buildExitConfirmDialogHtml(settings.visualThemeId) : '',
+    GAME_BAR: buildGameBarHtml(ctx.snap, ctx.colors, settings.visualThemeId),
+    GRID_STYLE: buildGridStyle(ctx.board.cols, ctx.board.rows),
+    CARDS: buildAllCardsHtml(game, ctx.snap, settings),
+    GAME_OVER: resolveModalHtml(ctx.snap, flags, ctx.colors, settings.visualThemeId),
+    EXIT_CONFIRM: flags.showExitConfirm ? buildExitConfirmDialogHtml(settings.visualThemeId) : '',
   };
 }
 
@@ -93,23 +101,9 @@ function buildGameScreenParts(
 function assembleGameScreen(
   game: MemoryGame,
   settings: GameSettings,
-  showGameOver: boolean,
-  showCodeVibesWinnerOrange: boolean,
-  showCodeVibesWinnerBlue: boolean,
-  showGamingWinnerOrange: boolean,
-  showGamingWinnerBlue: boolean,
-  showExitConfirm: boolean,
+  flags: UiFlags,
 ): string {
-  const parts = buildGameScreenParts(
-    game,
-    settings,
-    showGameOver,
-    showCodeVibesWinnerOrange,
-    showCodeVibesWinnerBlue,
-    showGamingWinnerOrange,
-    showGamingWinnerBlue,
-    showExitConfirm,
-  );
+  const parts = buildGameScreenParts(game, settings, flags);
   return fillTemplate(getTemplate('game-shell.html'), parts);
 }
 
@@ -118,25 +112,25 @@ function isUnavailableTheme(id: VisualThemeId): boolean {
   return id === 'da-projects' || id === 'foods';
 }
 
+function resolveUnavailableThemeHtml(settings: GameSettings): string | null {
+  return isUnavailableTheme(settings.visualThemeId) ? getTemplate('game-unavailable-theme.html') : null;
+}
+
+function shouldRenderStandaloneGameOver(snap: MemoryGameSnapshot, flags: GameOverFlags): boolean {
+  return snap.isComplete && flags.showGameOver;
+}
+
 /** Builds the standalone game-over screen HTML for completed rounds. */
 function buildStandaloneGameOverHtml(
   snap: MemoryGameSnapshot,
   settings: GameSettings,
-  showGameOver: boolean,
-  showCodeVibesWinnerOrange: boolean,
-  showCodeVibesWinnerBlue: boolean,
-  showGamingWinnerOrange: boolean,
-  showGamingWinnerBlue: boolean,
+  flags: GameOverFlags,
 ): string {
-  if (!snap.isComplete || !showGameOver) return '';
+  if (!snap.isComplete || !flags.showGameOver) return '';
   const colors = getPlayerColors(settings.firstPlayerColor);
   const gameOverOnly = resolveModalHtml(
     snap,
-    showGameOver,
-    showCodeVibesWinnerOrange,
-    showCodeVibesWinnerBlue,
-    showGamingWinnerOrange,
-    showGamingWinnerBlue,
+    flags,
     colors,
     settings.visualThemeId,
   );
@@ -147,42 +141,14 @@ function buildStandaloneGameOverHtml(
 export function buildGameScreenHtml(
   game: MemoryGame | null,
   settings: GameSettings,
-  showGameOver: boolean,
-  showCodeVibesWinnerOrange: boolean,
-  showCodeVibesWinnerBlue: boolean,
-  showGamingWinnerOrange: boolean,
-  showGamingWinnerBlue: boolean,
-  showExitConfirm: boolean,
+  flags: UiFlags,
 ): string {
-  if (isUnavailableTheme(settings.visualThemeId)) {
-    return getTemplate('game-unavailable-theme.html');
-  }
-  if (game === null) {
-    return getTemplate('game-no-active-game.html');
-  }
-
+  const themeGuard = resolveUnavailableThemeHtml(settings);
+  if (themeGuard) return themeGuard;
+  if (game === null) return getTemplate('game-no-active-game.html');
   const snap = game.getSnapshot();
-  if (snap.isComplete && showGameOver) {
-    return buildStandaloneGameOverHtml(
-      snap,
-      settings,
-      showGameOver,
-      showCodeVibesWinnerOrange,
-      showCodeVibesWinnerBlue,
-      showGamingWinnerOrange,
-      showGamingWinnerBlue,
-    );
-  }
-
-  return assembleGameScreen(
-    game,
-    settings,
-    showGameOver,
-    showCodeVibesWinnerOrange,
-    showCodeVibesWinnerBlue,
-    showGamingWinnerOrange,
-    showGamingWinnerBlue,
-    showExitConfirm,
-  );
+  return shouldRenderStandaloneGameOver(snap, flags)
+    ? buildStandaloneGameOverHtml(snap, settings, flags)
+    : assembleGameScreen(game, settings, flags);
 }
 

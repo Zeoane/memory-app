@@ -54,7 +54,7 @@ function scheduleOverlay(render: () => void, kind: WinnerKind): void {
 }
 
 /**
- * Schedules the code-vibes winner overlay after game over (only for a non-draw).
+ * Schedules the code-vibes winner overlay after game over- only for a non-draw.
  */
 export function scheduleCodeVibesWinnerIfNeeded(render: () => void): void {
   clearCodeVibesWinnerTimer();

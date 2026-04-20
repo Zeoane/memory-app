@@ -21,6 +21,8 @@ import previewTopbarFoodsUrl from '../../assets/img_settings_themes/Foods-theme-
 import previewStageFoodsUrl from '../../assets/img_settings_themes/Foods-theme.svg?url';
 import settingsTitleRuleUrl from '../../assets/img_settings_themes/Line 3.svg?url';
 import settingsThemeRuleShortUrl from '../../assets/img_settings_themes/Line 3_short.svg?url';
+import settingsChipSeparatorActiveUrl from '../../assets/img_settings_themes/Line 3_diamond.svg?url';
+import settingsChipSeparatorInactiveUrl from '../../assets/img_settings_themes/Line 6.svg?url';
 import startBtnDefaultUrl from '../../assets/img_settings_themes/start-btn-default.svg?url';
 import startBtnHoverUrl from '../../assets/img_settings_themes/Start-btn-hover.svg?url';
 import startBtnDisabledUrl from '../../assets/img_settings_themes/start-btn-disabled.svg?url';
@@ -109,7 +111,7 @@ function buildVisualThemeSectionHtml(draft: SettingsDraft): string {
 /** Resolves the footer theme label from draft/settings. */
 function buildFooterThemeLabel(settings: GameSettings, draft: SettingsDraft): string {
   if (draft.visualThemeId === null) {
-    return 'Game theme';
+    return 'Theme';
   }
   return getVisualTheme(draft.visualThemeId).label;
 }
@@ -147,6 +149,18 @@ function isStartDisabled(draft: SettingsDraft): boolean {
   return draft.boardSizeId === null || draft.visualThemeId === null || draft.firstPlayerColor === null;
 }
 
+/** True as soon as the theme chip has a selection. Controls whether the
+ * separator between theme and player shows the active (diamond) variant. */
+function isThemePlayerSeparatorVisible(draft: SettingsDraft): boolean {
+  return draft.visualThemeId !== null;
+}
+
+/** True as soon as the player chip has a selection. Controls whether the
+ * separator between player and board shows the active (diamond) variant. */
+function isPlayerBoardSeparatorVisible(draft: SettingsDraft): boolean {
+  return draft.firstPlayerColor !== null;
+}
+
 /** Builds the template replacements for the settings shell. */
 function assembleSettingsSections(settings: GameSettings, draft: SettingsDraft): Record<string, string> {
   return {
@@ -162,6 +176,10 @@ function assembleSettingsSections(settings: GameSettings, draft: SettingsDraft):
     START_BTN_HOVER_SRC: startBtnHoverUrl,
     START_BTN_DISABLED_SRC: startBtnDisabledUrl,
     START_BTN_DISABLED_ATTR: isStartDisabled(draft) ? 'disabled' : '',
+    CHIP_SEPARATOR_ACTIVE_SRC: settingsChipSeparatorActiveUrl,
+    CHIP_SEPARATOR_INACTIVE_SRC: settingsChipSeparatorInactiveUrl,
+    SEP_THEME_PLAYER_STATE: isThemePlayerSeparatorVisible(draft) ? 'on' : 'off',
+    SEP_PLAYER_BOARD_STATE: isPlayerBoardSeparatorVisible(draft) ? 'on' : 'off',
   };
 }
 

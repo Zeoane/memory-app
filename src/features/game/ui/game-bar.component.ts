@@ -79,24 +79,37 @@ function buildCodeVibesScoreRight(score: number, color: 'blue' | 'orange'): stri
   });
 }
 
-/** Builds the code-vibes scores block (blue/orange). */
-function buildCodeVibesScoresHtml(snap: MemoryGameSnapshot, colors: PlayerColors): string {
-  const blueScore = colors.player1 === 'blue' ? snap.scores[0] : snap.scores[1];
-  const orangeScore = colors.player1 === 'orange' ? snap.scores[0] : snap.scores[1];
+/** Resolves the blue/orange scores based on the player-color mapping. */
+function resolveBlueOrangeScores(
+  snap: MemoryGameSnapshot,
+  colors: PlayerColors,
+): { readonly blue: number; readonly orange: number } {
+  const blue = colors.player1 === 'blue' ? snap.scores[0] : snap.scores[1];
+  const orange = colors.player1 === 'orange' ? snap.scores[0] : snap.scores[1];
+  return { blue, orange };
+}
 
-  const rows = [
+/** Builds the code-vibes score rows (blue + orange). */
+function buildCodeVibesScoreRows(blueScore: number, orangeScore: number): string {
+  const pairModifier = ' game-bar__pair--code-vibes';
+  return [
     buildScoreRow(
       buildCodeVibesScoreLeft(labelBlueUrl, 'Blue'),
       buildCodeVibesScoreRight(blueScore, 'blue'),
-      ' game-bar__pair--code-vibes',
+      pairModifier,
     ),
     buildScoreRow(
       buildCodeVibesScoreLeft(labelOrangeUrl, 'Orange'),
       buildCodeVibesScoreRight(orangeScore, 'orange'),
-      ' game-bar__pair--code-vibes',
+      pairModifier,
     ),
   ].join('');
+}
 
+/** Builds the code-vibes scores block (blue/orange). */
+function buildCodeVibesScoresHtml(snap: MemoryGameSnapshot, colors: PlayerColors): string {
+  const { blue, orange } = resolveBlueOrangeScores(snap, colors);
+  const rows = buildCodeVibesScoreRows(blue, orange);
   return buildScoresPanel(
     rows,
     ' game-bar__scores-panel--code-vibes',
@@ -117,24 +130,27 @@ function buildGamingScoreRight(score: number, color: 'blue' | 'orange'): string 
   });
 }
 
-/** Builds the gaming scores block (blue/orange). */
-function buildGamingScoresHtml(snap: MemoryGameSnapshot, colors: PlayerColors): string {
-  const blueScore = colors.player1 === 'blue' ? snap.scores[0] : snap.scores[1];
-  const orangeScore = colors.player1 === 'orange' ? snap.scores[0] : snap.scores[1];
-
-  const rows = [
+/** Builds the gaming score rows (orange + blue). */
+function buildGamingScoreRows(blueScore: number, orangeScore: number): string {
+  const pairModifier = ' game-bar__pair--gaming';
+  return [
     buildScoreRow(
       buildGamingScoreLeft(chessPawnOrangeUrl),
       buildGamingScoreRight(orangeScore, 'orange'),
-      ' game-bar__pair--gaming',
+      pairModifier,
     ),
     buildScoreRow(
       buildGamingScoreLeft(chessPawnBlueUrl),
       buildGamingScoreRight(blueScore, 'blue'),
-      ' game-bar__pair--gaming',
+      pairModifier,
     ),
   ].join('');
+}
 
+/** Builds the gaming scores block (blue/orange). */
+function buildGamingScoresHtml(snap: MemoryGameSnapshot, colors: PlayerColors): string {
+  const { blue, orange } = resolveBlueOrangeScores(snap, colors);
+  const rows = buildGamingScoreRows(blue, orange);
   return buildScoresPanel(
     rows,
     ' game-bar__scores-panel--gaming',

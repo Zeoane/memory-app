@@ -30,16 +30,16 @@ function applyWinnerOverlay(kind: WinnerKind): void {
   appState.showGamingWinnerOrange = false;
 }
 
-/** True if the given kind is the winner for the latest completed snapshot. */
-function isExpectedWinnerKind(scores: readonly [number, number], kind: WinnerKind): boolean {
-  const playerColors = getPlayerColors(appState.settings.firstPlayerColor);
-  return kind === 'orange'
-    ? codeVibesOrangeWins(scores[0], scores[1], playerColors)
-    : codeVibesBlueWins(scores[0], scores[1], playerColors);
+/** Resolves the winner kind (blue/orange) or null for draws. */
+function resolveWinnerKind(scores: readonly [number, number]): WinnerKind | null {
+  const colors = getPlayerColors(appState.settings.firstPlayerColor);
+  if (codeVibesOrangeWins(scores[0], scores[1], colors)) return 'orange';
+  if (codeVibesBlueWins(scores[0], scores[1], colors)) return 'blue';
+  return null;
 }
 
 /** Schedules showing the winner overlay after a fixed delay. */
-function scheduleOverlay(render: () => void, kind: WinnerKind): void {
+function scheduleOverlay(render: () => void): void {
   gamingWinnerTimer = setTimeout(() => {
     gamingWinnerTimer = null;
     if (!canShowWinnerOverlay()) return;
@@ -47,18 +47,11 @@ function scheduleOverlay(render: () => void, kind: WinnerKind): void {
     if (game === null) return;
     const latest = game.getSnapshot();
     if (!latest.isComplete) return;
-    if (!isExpectedWinnerKind(latest.scores, kind)) return;
+    const kind = resolveWinnerKind(latest.scores);
+    if (kind === null) return;
     applyWinnerOverlay(kind);
     render();
   }, 3000);
-}
-
-/** Resolves the winner kind (blue/orange) or null for draws. */
-function resolveWinnerKind(scores: readonly [number, number]): WinnerKind | null {
-  const colors = getPlayerColors(appState.settings.firstPlayerColor);
-  if (codeVibesOrangeWins(scores[0], scores[1], colors)) return 'orange';
-  if (codeVibesBlueWins(scores[0], scores[1], colors)) return 'blue';
-  return null;
 }
 
 /**
@@ -71,8 +64,7 @@ export function scheduleGamingWinnerIfNeeded(render: () => void): void {
   if (game === null) return;
   const snap = game.getSnapshot();
   if (!snap.isComplete) return;
-  const kind = resolveWinnerKind(snap.scores);
-  if (kind === null) return;
-  scheduleOverlay(render, kind);
+  if (resolveWinnerKind(snap.scores) === null) return;
+  scheduleOverlay(render);
 }
 

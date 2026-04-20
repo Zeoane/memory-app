@@ -1,6 +1,5 @@
 import { MemoryGame } from '../domain/memory-game';
 import { appState, createEmptySettingsDraft, DEFAULT_GAME_SETTINGS } from '../state/app-state';
-
 import { clearCodeVibesWinnerTimer, scheduleCodeVibesWinnerIfNeeded } from './code-vibes-winner-scheduler';
 import { clearGamingWinnerTimer, scheduleGamingWinnerIfNeeded } from './gaming-winner-scheduler';
 import { readSettingsFromForm } from './read-settings-form';
@@ -111,7 +110,7 @@ function handleRoundComplete(render: RenderFn): void {
   render();
 }
 
-/** Handles Enter/Space activation for memory cards. */
+/** Handles Enter activation for memory cards. */
 function onMemoryCardKeydown(event: KeyboardEvent, render: RenderFn): void {
   if (event.key !== 'Enter' && event.key !== ' ') return;
   const node = event.currentTarget as HTMLElement;
@@ -144,7 +143,6 @@ function attachSettingsFormListeners(root: HTMLElement, render: RenderFn): void 
 
 /**
  * Registers a single delegated click handler for `[data-action]` elements.
- * This is resilient to partial DOM patching (e.g. updating `.game-bar` via `innerHTML`).
  */
 function ensureDelegatedActionHandler(root: HTMLElement, render: RenderFn): void {
   if (root.dataset.actionsBound === 'true') return;

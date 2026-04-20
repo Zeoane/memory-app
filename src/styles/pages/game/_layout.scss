@@ -68,11 +68,15 @@
 .theme--gaming .memory-card.is-matched .memory-card__inner {
   box-shadow:
     0 0 8px rgba(237, 27, 118, 0.3),
-    inset 0 0 0 3px #ed1b76;
+    0 0 0 rgba(0, 0, 0, 0);
 }
 
 // NOTE: Use inset box-shadow for the match highlight to avoid sub-pixel overflow
 // and corner artifacts caused by an overlaid border/pseudo-element.
+
+.theme--gaming .memory-card.is-matched .memory-card__face {
+  border: 3px solid #ed1b76;
+}
 
 .theme--code-vibes .memory-card.is-matched {
   opacity: 1;

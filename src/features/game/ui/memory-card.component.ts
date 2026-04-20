@@ -81,6 +81,31 @@ function buildCardFacesHtml(symbol: string, visualThemeId: VisualThemeId): strin
   });
 }
 
+type CardWrapperState = {
+  readonly flippedClass: string;
+  readonly matchedClass: string;
+  readonly disabledAttr: string;
+  readonly label: number;
+  readonly symbol: string;
+};
+
+/** Resolves wrapper state (classes, label, symbol) for a card index. */
+function resolveCardWrapperState(
+  game: MemoryGame,
+  snap: MemoryGameSnapshot,
+  index: number,
+): CardWrapperState {
+  const visible = game.isFaceVisible(index);
+  const matched = snap.matched[index];
+  return {
+    flippedClass: visible ? ' is-flipped' : '',
+    matchedClass: matched ? ' is-matched' : '',
+    disabledAttr: buildCardDisabledAttr(snap, matched),
+    label: index + 1,
+    symbol: snap.cards[index].symbol,
+  };
+}
+
 /** Builds the full memory card wrapper HTML. */
 export function buildMemoryCardHtml(
   game: MemoryGame,
@@ -88,21 +113,14 @@ export function buildMemoryCardHtml(
   index: number,
   visualThemeId: VisualThemeId,
 ): string {
-  const visible = game.isFaceVisible(index);
-  const matched = snap.matched[index];
-  const flippedClass = visible ? ' is-flipped' : '';
-  const matchedClass = matched ? ' is-matched' : '';
-  const disabledAttr = buildCardDisabledAttr(snap, matched);
-  const card = snap.cards[index];
-  const label = index + 1;
-
+  const s = resolveCardWrapperState(game, snap, index);
   return fillTemplate(getTemplate('memory-card-wrapper.html'), {
-    FLIPPED_CLASS: flippedClass,
-    MATCHED_CLASS: matchedClass,
+    FLIPPED_CLASS: s.flippedClass,
+    MATCHED_CLASS: s.matchedClass,
     INDEX: String(index),
-    LABEL: String(label),
-    DISABLED_ATTR: disabledAttr,
-    FACES: buildCardFacesHtml(card.symbol, visualThemeId),
+    LABEL: String(s.label),
+    DISABLED_ATTR: s.disabledAttr,
+    FACES: buildCardFacesHtml(s.symbol, visualThemeId),
   });
 }
 

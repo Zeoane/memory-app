@@ -25,11 +25,14 @@
 
 .settings-screen__main {
   display: grid;
-  grid-template-columns: minmax(0, 282px) minmax(280px, 520px);
+  // The aside column must be wide enough to host the action bar at its
+  // longest-combination width (DA Projects theme / Orange / 36 cards) plus
+  // both diamond separators.
+  grid-template-columns: minmax(0, 282px) minmax(280px, 720px);
   gap: clamp(1.5rem, 4vw, 3.5rem);
   align-items: stretch;
   justify-content: center;
-  max-width: 1200px;
+  max-width: 1300px;
   margin: 0 auto;
   overflow: visible;
 }
@@ -189,9 +192,7 @@
   min-width: 0;
   overflow: visible;
   position: relative;
-  // Align the preview's top edge with the first settings section ("Game themes"),
-  // not with the big "Settings" headline above it.
-  padding-top: calc(67px + 0.35rem + 2rem + 58px);
+  padding-top: calc(67px + 0.35rem + 2rem + 2.5px);
   padding-bottom: 24px;
   align-self: stretch;
 }

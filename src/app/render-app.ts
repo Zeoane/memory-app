@@ -17,16 +17,14 @@ function resolveViewHtml(): string {
   if (view === 'settings') {
     return buildSettingsHtml(appState.settings, appState.settingsDraft);
   }
-  return buildGameScreenHtml(
-    appState.game,
-    appState.settings,
-    appState.showGameOver,
-    appState.showCodeVibesWinnerOrange,
-    appState.showCodeVibesWinnerBlue,
-    appState.showGamingWinnerOrange,
-    appState.showGamingWinnerBlue,
-    appState.showExitConfirm,
-  );
+  return buildGameScreenHtml(appState.game, appState.settings, {
+    showGameOver: appState.showGameOver,
+    showCodeVibesWinnerOrange: appState.showCodeVibesWinnerOrange,
+    showCodeVibesWinnerBlue: appState.showCodeVibesWinnerBlue,
+    showGamingWinnerOrange: appState.showGamingWinnerOrange,
+    showGamingWinnerBlue: appState.showGamingWinnerBlue,
+    showExitConfirm: appState.showExitConfirm,
+  });
 }
 
 /** Patches a single card element to match current game state. */

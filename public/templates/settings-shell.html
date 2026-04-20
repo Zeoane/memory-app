@@ -28,16 +28,42 @@
             aria-label="Ausgewählte Einstellungen und Spiel starten"
           >
             <span class="settings-screen__action-chip settings-screen__action-chip--theme">{{FOOTER_THEME}}</span>
-            <span class="settings-screen__action-slash" aria-hidden="true">
-              <svg width="27" height="56" viewBox="0 0 27 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <line x1="22.3154" y1="1.32435" x2="3.7745" y2="54.166" stroke="#F0EA6E" stroke-width="8" />
-              </svg>
+            <span class="settings-screen__action-slash" aria-hidden="true" data-state="{{SEP_THEME_PLAYER_STATE}}">
+              <img
+                class="settings-screen__action-slash-img settings-screen__action-slash-img--inactive"
+                src="{{CHIP_SEPARATOR_INACTIVE_SRC}}"
+                alt=""
+                width="27"
+                height="56"
+                decoding="async"
+              />
+              <img
+                class="settings-screen__action-slash-img settings-screen__action-slash-img--active"
+                src="{{CHIP_SEPARATOR_ACTIVE_SRC}}"
+                alt=""
+                width="37"
+                height="60"
+                decoding="async"
+              />
             </span>
             <span class="settings-screen__action-chip settings-screen__action-chip--player">{{FOOTER_PLAYER}}</span>
-            <span class="settings-screen__action-slash" aria-hidden="true">
-              <svg width="27" height="56" viewBox="0 0 27 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <line x1="22.3154" y1="1.32435" x2="3.7745" y2="54.166" stroke="#F0EA6E" stroke-width="8" />
-              </svg>
+            <span class="settings-screen__action-slash" aria-hidden="true" data-state="{{SEP_PLAYER_BOARD_STATE}}">
+              <img
+                class="settings-screen__action-slash-img settings-screen__action-slash-img--inactive"
+                src="{{CHIP_SEPARATOR_INACTIVE_SRC}}"
+                alt=""
+                width="27"
+                height="56"
+                decoding="async"
+              />
+              <img
+                class="settings-screen__action-slash-img settings-screen__action-slash-img--active"
+                src="{{CHIP_SEPARATOR_ACTIVE_SRC}}"
+                alt=""
+                width="37"
+                height="60"
+                decoding="async"
+              />
             </span>
             <span class="settings-screen__action-chip settings-screen__action-chip--board">{{FOOTER_BOARD}}</span>
             <button type="button" class="settings-screen__start" data-action="start-game" {{START_BTN_DISABLED_ATTR}}>
