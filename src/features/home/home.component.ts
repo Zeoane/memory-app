@@ -4,6 +4,8 @@ import stadiaSvg from '../../assets/img_homescreen/stadia_controller.svg?raw';
 import { fillTemplate } from '../../shared/template-utils';
 import { getTemplate } from '../../shared/template-registry';
 
+/** Generates the home screen HTML by populating the template with 
+ required asset URLs and SVG icons.*/
 export function buildHomeHtml(): string {
   return fillTemplate(getTemplate('home.html'), {
     PRIMARY_BUTTON_SRC: primaryButtonUrl,

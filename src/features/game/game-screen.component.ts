@@ -3,10 +3,12 @@ import type { BoardSizeOption, GameSettings, PlayerColors, VisualThemeId } from 
 import { buildGameBarHtml } from './ui/game-bar.component';
 import { buildMemoryCardHtml } from './ui/memory-card.component';
 import { buildExitConfirmDialogHtml } from './ui/exit-confirm-dialog.component';
-import { buildCodeVibesWinnerBlueDialogHtml } from './ui/code-vibes-winner-blue-dialog.component';
-import { buildCodeVibesWinnerOrangeDialogHtml } from './ui/code-vibes-winner-orange-dialog.component';
-import { buildGamingWinnerBlueDialogHtml } from './ui/gaming-winner-blue-dialog.component';
-import { buildGamingWinnerOrangeDialogHtml } from './ui/gaming-winner-orange-dialog.component';
+import {
+  buildCodeVibesWinnerBlueDialogHtml,
+  buildCodeVibesWinnerOrangeDialogHtml,
+  buildGamingWinnerBlueDialogHtml,
+  buildGamingWinnerOrangeDialogHtml,
+} from './ui/winner-dialogs.component';
 import { buildGameOverDialogHtml } from './ui/game-over-dialog.component';
 import type { MemoryGame, MemoryGameSnapshot } from '../../domain/memory-game';
 import { fillTemplate } from '../../shared/template-utils';
